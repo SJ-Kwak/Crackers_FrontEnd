@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import styled from "styled-components/native";
-import { Display2 } from "/Users/geunhye/crackersDEMO/crackers/src/static/text.js";
+import { Display2 } from "../static/text.js";
 import DatePicker from "react-native-datepicker";
 
 import { createStackNavigator } from "@react-navigation/stack";
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Stack = createStackNavigator();
 
@@ -39,7 +38,6 @@ export default function ChooseTime({ navigation }) {
     console.log(selectedTime2);
   }, [selectedTime2]);
 
-
   const onPressDay = (index) => {
     setIsTouched((prev) => {
       const nextState = [...prev];
@@ -50,26 +48,25 @@ export default function ChooseTime({ navigation }) {
     console.log(selectedDayIndex);
     setStart(true);
 
-     // 선택한 요일 정보를 userdata에 저장
-     setUserData((prevData) => ({ ...prevData, day: days[index] }));
+    // 선택한 요일 정보를 userdata에 저장
+    setUserData((prevData) => ({ ...prevData, day: days[index] }));
   };
 
   const getUserData = async () => {
     try {
-      const userData = await AsyncStorage.getItem('user');
+      const userData = await AsyncStorage.getItem("user");
       //return userData ? JSON.parse(userData) : null;
 
       if (userData) {
         userData.day = userData.day; // 새로운 닉네임 추가
-        userData.startTime=userdata.selectedTime1;
-        userdata.endTime=userdata.selectedTime2;
-        userdata.timeGap=calculateTimeDifference;
-        await AsyncStorage.setItem('userData', JSON.stringify(userData)); // 업데이트된 정보 저장
+        userData.startTime = userdata.selectedTime1;
+        userdata.endTime = userdata.selectedTime2;
+        userdata.timeGap = calculateTimeDifference;
+        await AsyncStorage.setItem("userData", JSON.stringify(userData)); // 업데이트된 정보 저장
         console.log("일 종류가 저장되었습니다");
-        }
-
+      }
     } catch (error) {
-      console.log('불러오기 실패:', error);
+      console.log("불러오기 실패:", error);
       return null;
     }
   };
@@ -91,7 +88,6 @@ export default function ChooseTime({ navigation }) {
   };*/
 
   const onTimeChange1 = (time) => {
-
     setSelectedTime1(time);
 
     const [hour, minute] = time.split(":");
@@ -101,7 +97,6 @@ export default function ChooseTime({ navigation }) {
   };
 
   const onTimeChange2 = (time) => {
-
     setSelectedTime2(time);
 
     const [hour, minute] = time.split(":");
@@ -109,7 +104,6 @@ export default function ChooseTime({ navigation }) {
     setSelectedMinute2(minute);
     console.log(selectedHour2, selectedMinute2);
   };
-
 
   const saveUserData = () => {
     // userdata에 시작 시간과 종료 시간을 저장하는 로직을 구현하세요.
@@ -132,7 +126,9 @@ export default function ChooseTime({ navigation }) {
     const timeDifferenceInMilliseconds = endTime - startTime;
 
     // 시간 간격을 계산하여 원하는 형식으로 표시할 수 있습니다.
-    const timeDifferenceInMinutes = Math.floor(timeDifferenceInMilliseconds / (1000 * 60));
+    const timeDifferenceInMinutes = Math.floor(
+      timeDifferenceInMilliseconds / (1000 * 60)
+    );
 
     return timeDifferenceInMinutes;
     //console.log("시간 간격:", formattedTimeDifference);
@@ -151,16 +147,13 @@ export default function ChooseTime({ navigation }) {
   return (
     <Container>
       <HeaderWrapper>
-        <Image 
-        style={{height: 24, width: 217}}
-        source={Headerimg} />
+        <Image style={{ height: 24, width: 217 }} source={Headerimg} />
       </HeaderWrapper>
       <MainContainer>
         <Display2>알바 시간 정하기</Display2>
         <DayListContainer>{daysList}</DayListContainer>
         <TimePick>
-          {start && <Text 
-          style={{ top: 15 }}>시작</Text>}
+          {start && <Text style={{ top: 15 }}>시작</Text>}
           {selectedDayIndex >= 0 && (
             <DatePickerContainer>
               <DatePicker
@@ -202,8 +195,7 @@ export default function ChooseTime({ navigation }) {
           )}
         </TimePick>
         <TimePick>
-        {start && <Text 
-          style={{ top: 15 }}>종료</Text>}
+          {start && <Text style={{ top: 15 }}>종료</Text>}
           {selectedDayIndex >= 0 && (
             <DatePickerContainer>
               <DatePicker
@@ -244,19 +236,20 @@ export default function ChooseTime({ navigation }) {
           )}
         </TimePick>
       </MainContainer>
-      <NextBtnContainer onPress={() => {
-        navigation.navigate("ChooseMoney");
-        calculateTimeDifference;
-        saveUserData;
-      }}>
-        <Image 
-        style={{height: 40, width: 40}}
-        source={start ? NextBtn : NextBtnGray} />
+      <NextBtnContainer
+        onPress={() => {
+          navigation.navigate("ChooseMoney");
+          calculateTimeDifference;
+          saveUserData;
+        }}
+      >
+        <Image
+          style={{ height: 40, width: 40 }}
+          source={start ? NextBtn : NextBtnGray}
+        />
       </NextBtnContainer>
       <BackBtnContainer onPress={() => navigation.navigate("ChooseJob")}>
-        <Image 
-        style={{height: 40, width: 40}}
-        source={BackBtn} />
+        <Image style={{ height: 40, width: 40 }} source={BackBtn} />
       </BackBtnContainer>
     </Container>
   );
@@ -279,7 +272,6 @@ const DayContainer = styled.Text`
   font-weight: 500;
   line-height: 16.71px;
   color: ${(props) => (props.isTouched ? "white" : "black")};
-  
 `;
 
 const DayListContainer = styled.View`
@@ -308,7 +300,7 @@ const MainContainer = styled.View`
   margin: 20px;
 `;
 
-const Headerimg = require("/Users/geunhye/crackersDEMO/crackers/src/assets/onBoarding/Header3.png");
+const Headerimg = require("../assets/onBoarding/Header3.png");
 const HeaderWrapper = styled.View`
   display: flex;
   justify-content: center;
@@ -325,8 +317,8 @@ const TimePick = styled.View`
   flex-direction: row;
 `;
 
-const NextBtn = require("/Users/geunhye/crackersDEMO/crackers/src/assets/onBoarding/Nextbtn.png");
-const NextBtnGray = require("/Users/geunhye/crackersDEMO/crackers/src/assets/onBoarding/NextbtnGray.png");
+const NextBtn = require("../assets/onBoarding/Nextbtn.png");
+const NextBtnGray = require("../assets/onBoarding/NextbtnGray.png");
 
 const NextBtnContainer = styled.TouchableOpacity`
   position: absolute;
@@ -340,7 +332,7 @@ const NextBtnContainer = styled.TouchableOpacity`
   height: 40px;
 `;
 
-const BackBtn = require("/Users/geunhye/crackersDEMO/crackers/src/assets/onBoarding/BackbtnGray.png");
+const BackBtn = require("../assets/onBoarding/BackbtnGray.png");
 const BackBtnContainer = styled.TouchableOpacity`
   position: absolute;
   display: flex;

@@ -1,24 +1,18 @@
 import React, { Component } from "react-native";
 import styled from "styled-components/native";
 
-import {
-    StyleSheet,
-    Text,
-    View,
-    Image,
-  } from "react-native";
-  import { useState, useEffect } from "react";
-  import { createStackNavigator } from "@react-navigation/stack";
+import { StyleSheet, Text, View, Image } from "react-native";
+import { useState, useEffect } from "react";
+import { createStackNavigator } from "@react-navigation/stack";
 
-  const Stack = createStackNavigator();
+const Stack = createStackNavigator();
 
-  const CardView = require("/Users/geunhye/crackersDEMO/crackers/src/assets/CardView.gif");
-  //const [start, setStart] = useState(true);
+const CardView = require("../assets/CardView.gif");
+//const [start, setStart] = useState(true);
 
-  const tempCard=require("/Users/geunhye/crackersDEMO/crackers/src/assets/cards/Haedal.png");
+const tempCard = require("../assets/cards/Haedal.png");
 
-
-  /*export default function CardScreen({navigation}){
+/*export default function CardScreen({navigation}){
 
     useEffect(()=>{
         if(start) {
@@ -59,12 +53,11 @@ import {
 
 }*/
 
-
 const CardScreen = ({ navigation }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       // 화면 전환 코드 작성
-      navigation.navigate('CardPick');
+      navigation.navigate("CardPick");
       /*return (
         <View style={{flex: 1, backgroundColor: "white"}}>
             <Image
@@ -78,16 +71,15 @@ const CardScreen = ({ navigation }) => {
   }, []); // useEffect를 한 번만 실행하도록 빈 배열을 전달합니다.
 
   return (
-    <View style={{flex: 1, backgroundColor: "white"}}>
-    <Image source={CardView} 
-    style={{width: "100%"}} />
- </View>
+    <View style={{ flex: 1, backgroundColor: "white" }}>
+      <Image source={CardView} style={{ width: "100%" }} />
+    </View>
   );
 };
 
 export default CardScreen;
 
- /*useEffect(() => {
+/*useEffect(() => {
     //if (running) updatePercentage()
     let interval;
     if(running1){
@@ -101,7 +93,7 @@ export default CardScreen;
     return()=>clearInterval(interval);
   }, [running1]);*/
 
-  /*export default class CardScreen extends React.Component{
+/*export default class CardScreen extends React.Component{
     componentDidMount(){
         // Start counting when the page is loaded
         this.timeoutHandle = setTimeout(()=>{

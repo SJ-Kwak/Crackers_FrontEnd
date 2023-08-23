@@ -17,7 +17,7 @@ import SignupScreen from "./SignupScreen";
 
 //import start_logo from "src/screens/start_logo.png";
 const Stack = createStackNavigator();
-const start_logo=require("/Users/geunhye/crackersDEMO/crackers/src/assets/logo.png");
+const start_logo=require("../assets/logo.png");
 
 export default function HomeScreen({navigation}) {
   return (

@@ -1,11 +1,11 @@
 import React, { View, Text, Image, TouchableOpacity } from "react-native";
 import styled from "styled-components";
-import { Display2 } from "/Users/geunhye/crackersDEMO/crackers/src/static/text.js";
+import { Display2 } from "../static/text.js";
 import { useState } from "react";
 
 import { createStackNavigator } from "@react-navigation/stack";
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import axios from "axios";
 import { API_URL, updateAdditionalInfo } from "../api/auth";
@@ -29,7 +29,6 @@ export default function ChooseJob({ navigation }) {
     Array(JOB_DATA.length).fill(false)
   );
   const [userData, setUserData] = useState(); // userdata에 알바 종류를 저장하기 위한 상태 변수
-
 
   /*const onPressJob = (index) => {
     setIsTouched((prev) => {
@@ -65,25 +64,24 @@ export default function ChooseJob({ navigation }) {
 
   const getUserData = async (userData) => {
     try {
-      const userString = await AsyncStorage.getItem('user');
+      const userString = await AsyncStorage.getItem("user");
       if (userString) {
         const user = JSON.parse(userString);
         //user.job = userData;
-        user.job=JOB_DATA[selectedJobIndex];
+        user.job = JOB_DATA[selectedJobIndex];
         console.log(user);
         console.log(user.job);
 
-        await AsyncStorage.setItem('user', JSON.stringify(user));
+        await AsyncStorage.setItem("user", JSON.stringify(user));
         console.log("일 종류가 저장되었습니다");
         console.log(user.job);
       }
 
       console.log(JOB_DATA[selectedJobIndex]);
     } catch (error) {
-      console.log('불러오기 실패:', error);
+      console.log("불러오기 실패:", error);
     }
   };
-  
 
   const onPressJob = (index) => {
     setIsTouched((prev) => {
@@ -95,7 +93,6 @@ export default function ChooseJob({ navigation }) {
     setUserData((prevData) => ({ ...prevData, job: JOB_DATA[index] }));
 
     console.log(userData);
-
   };
 
   /*const jobList = JOB_DATA.map((job, index) => (
@@ -114,19 +111,24 @@ export default function ChooseJob({ navigation }) {
     <TouchableOpacity
       key={index}
       style={{
-        backgroundColor: isTouched[index] ? '#6100FF' : '#f5f5f5',
+        backgroundColor: isTouched[index] ? "#6100FF" : "#f5f5f5",
         borderRadius: 100,
         width: 280,
         height: 48,
         marginBottom: 15,
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: "center",
+        justifyContent: "center",
       }}
       onPress={() => {
-        onPressJob(index)
+        onPressJob(index);
       }}
     >
-      <Text style={{ color: isTouched[index] ? 'white' : '#858585', fontWeight: '500' }}>
+      <Text
+        style={{
+          color: isTouched[index] ? "white" : "#858585",
+          fontWeight: "500",
+        }}
+      >
         {job}
       </Text>
     </TouchableOpacity>
@@ -135,30 +137,31 @@ export default function ChooseJob({ navigation }) {
   return (
     <Container>
       <HeaderWrapper>
-        <Image 
-          style={{height: 24, width: 217}}
-        source={Headerimg} />
+        <Image style={{ height: 24, width: 217 }} source={Headerimg} />
       </HeaderWrapper>
       <MainContainer>
         <Display2>알바 종류 고르기</Display2>
       </MainContainer>
-      <View style={{height: 20}}/>
+      <View style={{ height: 20 }} />
       <JobListContainer>{jobList}</JobListContainer>
-      <NextBtnContainer onPress={() => {
-        getUserData();
-        updateAdditionalInfo(JOB_DATA[selectedJobIndex]);
-        navigation.navigate("ChooseTime")
-        }}>
-        <Image 
-        style={{height: 40, width: 40}}
-        source={selectedJobIndex !== -1  ? NextBtn : NextBtnGray} />
+      <NextBtnContainer
+        onPress={() => {
+          getUserData();
+          updateAdditionalInfo(JOB_DATA[selectedJobIndex]);
+          navigation.navigate("ChooseTime");
+        }}
+      >
+        <Image
+          style={{ height: 40, width: 40 }}
+          source={selectedJobIndex !== -1 ? NextBtn : NextBtnGray}
+        />
       </NextBtnContainer>
-      <BackBtnContainer onPress={() => {
-        navigation.navigate("JobNickname")
-        }}>
-        <Image 
-        style={{height: 40, width: 40}}
-        source={BackBtn} />
+      <BackBtnContainer
+        onPress={() => {
+          navigation.navigate("JobNickname");
+        }}
+      >
+        <Image style={{ height: 40, width: 40 }} source={BackBtn} />
       </BackBtnContainer>
     </Container>
   );
@@ -192,7 +195,7 @@ const MainContainer = styled.View`
   margin: 20px;
 `;
 
-const Headerimg = require("/Users/geunhye/crackersDEMO/crackers/src/assets/onBoarding/Header2.png");
+const Headerimg = require("../assets/onBoarding/Header2.png");
 const HeaderWrapper = styled.View`
   display: flex;
   justify-content: center;
@@ -207,8 +210,8 @@ const JobListContainer = styled.View`
   justify-content: center;
   align-items: center;
 `;
-const NextBtn = require("/Users/geunhye/crackersDEMO/crackers/src/assets/onBoarding/Nextbtn.png");
-const NextBtnGray = require("/Users/geunhye/crackersDEMO/crackers/src/assets/onBoarding/NextbtnGray.png");
+const NextBtn = require("../assets/onBoarding/Nextbtn.png");
+const NextBtnGray = require("../assets/onBoarding/NextbtnGray.png");
 
 const NextBtnContainer = styled.TouchableOpacity`
   position: absolute;
@@ -222,7 +225,7 @@ const NextBtnContainer = styled.TouchableOpacity`
   height: 40px;
 `;
 
-const BackBtn = require("/Users/geunhye/crackersDEMO/crackers/src/assets/onBoarding/BackbtnGray.png");
+const BackBtn = require("../assets/onBoarding/BackbtnGray.png");
 const BackBtnContainer = styled.TouchableOpacity`
   position: absolute;
   display: flex;
