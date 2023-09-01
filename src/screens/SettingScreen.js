@@ -17,12 +17,17 @@ import {
 import { useState, useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 //import useKeyboardHeight from "react-native-use-keyboard-height";
+import { getItemFromAsync, removeItemFromAsync } from "../api/storage";
+import { Request } from "../api/request";
 
 const Stack = createStackNavigator();
 const backIcon = require("../assets/tch_btnBack.png");
 
 export default function SettingScreen({ navigation }) {
   //const keyboardHeight = useKeyboardHeight();
+  const request = new Request();
+  const [accessToken, setAccessToken] = useState(getItemFromAsync('accessToken'))
+  const [refreshToken, setRefreshToken] = useState(getItemFromAsync('refreshToken'))
 
   const link1 = () => {
     Linking.openURL(
@@ -35,6 +40,20 @@ export default function SettingScreen({ navigation }) {
       "https://cracker-policy.notion.site/0454026d73314249bdf652816ac46280"
     );
   };
+
+  const logout = async () => {
+    const response = await request.post('/accounts/logout', {
+      accessToken: await getItemFromAsync('accessToken'),
+      refreshToken: await getItemFromAsync('refreshToken')
+    })
+    if (response.status == 200){
+      removeItemFromAsync('accessToken')
+      removeItemFromAsync('refreshToken')
+      navigation.navigate('Home')
+    } else {
+      Alert.alert('로그아웃에 실패했습니다.')
+    }
+  }
 
   return (
     <Wrapper>
@@ -66,6 +85,10 @@ export default function SettingScreen({ navigation }) {
       <Bar style={{ top: 261 }} />
       <Menu style={{ top: 277 }}>오픈 소스 라이선스</Menu>
       <Bar style={{ top: 312 }} />
+      <Menu onPress={() => navigation.navigate('Withdraw')} style={{ top: 328 }}>회원 탈퇴하기</Menu>
+      <Bar style={{ top: 363 }} />
+      <Menu onPress={logout} style={{ top: 379 }}>로그아웃</Menu>
+      <Bar style={{ top: 414 }} />
     </Wrapper>
   );
 }

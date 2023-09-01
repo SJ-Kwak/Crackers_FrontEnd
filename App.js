@@ -15,6 +15,7 @@ import CaroScreen from "./src/screens/CaroScreen";
 import MainDemo from "./src/screens/MainDemo";
 import SettingScreen from "./src/screens/SettingScreen";
 import AdjNickScreen from "./src/screens/AdjNickScreen";
+import WithdrawScreen from "./src/screens/WithdrawScreen";
 import { MyCarousel } from "./src/screens/MyCarousel";
 import styled from "styled-components/native";
 
@@ -63,7 +64,8 @@ export default function App() {
             <Stack.Screen name="Nickname" component={NicknameScreen} />
             <Stack.Screen name="Main" component={MainDemo} />
             <Stack.Screen name="Setting" component={SettingScreen} />   
-            <Stack.Screen name="AdjNickname" component={AdjNickScreen} />    
+            <Stack.Screen name="AdjNickname" component={AdjNickScreen} />
+            <Stack.Screen name="Withdraw" component={WithdrawScreen} />    
             <Stack.Screen name="JobNickname" component={JobNickname} />              
             <Stack.Screen name="ChooseJob" component={ChooseJob} />              
             <Stack.Screen name="ChooseTime" component={ChooseTime} />              

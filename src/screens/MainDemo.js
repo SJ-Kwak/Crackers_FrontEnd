@@ -397,8 +397,6 @@ export default function MainDemo({ navigation }) {
           }}
         >
           {item}
-          {category}
-          {selectedBusiness}
         </Text>
         <View>
           <TouchableOpacity

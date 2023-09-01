@@ -56,7 +56,7 @@ export default function NicknameScreen({ navigation, route }) {
     })
     console.error(response)
     await removeItemFromAsync('id')
-    await removeItemFromAsync('password')
+    // await removeItemFromAsync('password')
     if(response.status !== 'CONFLICT'){
       await setItemToAsync('accessToken', response.data.accessToken)
       await setItemToAsync('refreshToken', response.data.refreshToken)

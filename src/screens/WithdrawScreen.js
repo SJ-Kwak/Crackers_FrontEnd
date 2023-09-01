@@ -1,5 +1,3 @@
-//loginscreen.js
-
 import React from "react-native";
 import styled from "styled-components/native";
 
@@ -15,58 +13,80 @@ import {
   SafeAreaView,
   Pressable,
 } from "react-native";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { TextInput } from "react-native-gesture-handler";
 import { Formik } from "formik";
 import * as yup from "yup";
 //import useKeyboardHeight from "react-native-use-keyboard-height";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getItemFromAsync, removeItemFromAsync } from "../api/storage";
 
-import { AuthContext } from "../../AuthContext";
-import { loginRequest } from "../api/auth";
 import { Request } from "../api/request";
-import { setItemToAsync } from "../api/storage";
 
 const Stack = createStackNavigator();
 const backIcon = require("../assets/tch_btnBack.png");
 
-const loginSchema = yup.object().shape({
-  email: yup.string().required("아이디를 입력해 주세요"),
-  password: yup.string().required("암호를 입력해 주세요"),
+const signupSchema = yup.object().shape({
+//   password: yup
+//     .string()
+//     .required("비밀번호를 입력해 주세요")
+//     // .max(8, "8자 이내로 닉네임을 입력해주세요"),
+//   //.matches(/\d/, "영문과 숫자를 입력해주세요"),
+    password: yup
+    .string()
+    .oneOf([yup.ref("password")], "비밀번호가 일치하지 않습니다"),  
 });
 
-export default function LoginScreen({ navigation }) {
+export default function WithdrawScreen({ navigation }) {
   const [under, setUnder] = useState("#CCCCCC");
-
-  const { login } = useContext(AuthContext);
-  const [error, setError] = useState("");
+  var password = ''
   const request = new Request();
-
-  const handleLogin = async (values) => {
-    const response = await request.post('/accounts/signin', {
-      loginId: values.email,
-      password: values.password,
-    })
-    console.error(response)
-    if (response.status === 200) {
-      setItemToAsync('accessToken', response.data.accessToken)
-      setItemToAsync('refreshToken', response.data.refreshToken)
-      setItemToAsync('password', values.password)
-      navigation.navigate('Main')
-    } else {
-      Alert.alert('로그인에 실패하셨습니다.')
+  useEffect(() => {
+    const getPassword = async () => {
+      password = await getItemFromAsync('password')
     }
-  };
+    getPassword();
+  }, [])
+  
+  const withdraw = async () => {
+    const response = await request.patch('/accounts/withdraw')
+    if (response.status === 200) {
+      Alert.alert(response.data)
+      await removeItemFromAsync('accessToken')
+      await removeItemFromAsync('refreshToken')
+      await removeItemFromAsync('password')
+      navigation.navigate('Home');
+    } else {
+      Alert.alert('회원 탈퇴에 실패하였습니다!')
+    }
+  }
+
+  const withdrawConfirmAlert = async () => {
+    Alert.alert(
+        "알림",
+        "정말로 탈퇴하시겠습니까?",
+        [
+            {
+                text: "예",
+                onPress: withdraw,
+                style: 'destructive',
+            },
+            {
+                text: "아니오",
+                style: "cancel"
+            },
+        ],
+        { cancelable: false }
+    );
+  }
 
   return (
     <Formik
       initialValues={{
-        email: "",
         password: "",
       }}
-      validationSchema={loginSchema}
-      onSubmit={handleLogin}
+      validationSchema={signupSchema}
+      onSubmit={(values) => Alert.alert(JSON.stringify(values))}
     >
       {({
         values,
@@ -79,71 +99,51 @@ export default function LoginScreen({ navigation }) {
         isSubmitting,
       }) => (
         <Wrapper>
+          <BackToHome>
+            <BackIcon source={backIcon} />
+          </BackToHome>
           <FormContainer>
-            <BackToHome>
-              <BackIcon source={backIcon} />
-            </BackToHome>
-            <View style={{ height: 120 }} />
-            <Title>로그인</Title>
-            <View style={{ height: 40 }} />
-            <SubTitle>아이디</SubTitle>
+            <Title>회원 탈퇴하기</Title>
+            <View style={{ height: 200 }} />
+            <SubTitle>계정 비밀번호</SubTitle>
             <View style={{ height: 18 }} />
             <InputWrapper>
               <InputTxt
                 style={{
                   //position: "absolute",
-                  borderBottomColor: values.email ? "#6100FF" : "#CCCCCC",
-                  borderBottomWidth: values.email ? 2 : 1,
+                  borderBottomColor: values.nickname ? "#6100FF" : "#CCCCCC",
+                  borderBottomWidth: values.nickname ? 2 : 1,
                 }}
-                placeholder="아이디"
-                autoCapitalize={false}
-                value={values.email}
-                onChangeText={
-                  handleChange("email")
-                }
-                onBlur={() => setFieldTouched("email")}
-                keyboardType="email-address"
-              />
-              {touched.email && errors.email && (
-                <ErrorTxt>{errors.email}</ErrorTxt>
-              )}
-            </InputWrapper>
-            <View style={{ height: 30 }} />
-            <SubTitle>비밀번호</SubTitle>
-            <View style={{ height: 18 }} />
-            <InputWrapper>
-              <InputTxt
-                style={{
-                  borderBottomColor: values.password ? "#6100FF" : "#CCCCCC",
-                  borderBottomWidth: values.password ? 2 : 1,
-                }}
-                placeholder="비밀번호"
+                placeholder="비밀번호 입력"
                 autoCapitalize={false}
                 value={values.password}
-                autoCorrect={false}
+                onChangeText={
+                  handleChange("password")
+
+                  //setUnder("#6100FF")
+                }
+                onBlur={() => setFieldTouched("password")}
                 secureTextEntry={true}
                 textContentType="password"
-                onChangeText={handleChange("password")}
-                onBlur={() => setFieldTouched("password")}
               />
-              {touched.password && errors.password && (
-                <ErrorTxt>{errors.password}</ErrorTxt>
+              {values.password != password && (
+                <ErrorTxt>비밀번호가 일치하지 않습니다</ErrorTxt>
               )}
             </InputWrapper>
           </FormContainer>
           <SubmitBtn
             style={{
               backgroundColor:
-                isValid && values.email && values.password
+                values.password && values.password == password
                   ? "#6100FF"
                   : "white",
               //flex: 1,
               //justifyContent: "flex-end",
             }}
-            onPress={() => handleSubmit(values)}
-            disabled={!isValid}
+            onPress={withdrawConfirmAlert}
+            disabled={values.password != password}
           >
-            <SubmitTxt>로그인하기</SubmitTxt>
+            <SubmitTxt>회원 탈퇴하기</SubmitTxt>
           </SubmitBtn>
         </Wrapper>
       )}
@@ -163,20 +163,22 @@ const FormContainer = styled.View`
   width: 100%;
 `;
 const BackToHome = styled.TouchableOpacity`
-  width: 40;
+  position: absolute;
+  width: 20;
   height: 40;
+  left: 10;
 `;
 const BackIcon = styled.Image`
   position: absolute;
-  width: 40;
+  width: 20;
   height: 40;
-  //left: 10,
+  left: 10;
   top: 50;
 `;
 const Title = styled.Text`
   position: absolute;
   left: 5.13%;
-  right: 78.72%;
+  //right: 78.72%;
   top: 140;
   font-family: "Pretendard";
   font-style: normal;
