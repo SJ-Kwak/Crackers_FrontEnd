@@ -14,6 +14,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Formik } from "formik";
 import * as yup from "yup";
 
+import { Request } from "../api/request.js";
+import { getItemFromAsync, removeItemFromAsync } from "../api/storage.js";
+import axios from "axios";
+
 import { updateAdditionalInfo } from "../api/auth";
 
 const Stack = createStackNavigator();
@@ -34,33 +38,27 @@ const DismissKeyboard = ({ children }) => (
 );
 
 export default function ChooseMoney({ navigation }) {
-  //const [data, setData] = useState(); // userdata에 알바 종류를 저장하기 위한 상태 변수
-
   const [money, setMoney] = useState("");
+  const request = new Request();
 
-  const getUserData = async (values) => {
-    try {
-      const userData = await AsyncStorage.getItem("user");
-      //return userData ? JSON.parse(userData) : null;
+  const handleJobInfo = async (values) => {
+    const name = await getItemFromAsync('name')
+    const categoryId = await getItemFromAsync('categoryId')
+    const scheduleList = await getItemFromAsync('scheduleList')
+    const accessToken = await getItemFromAsync('accessToken')
 
-      //const data=({wage: parseInt(money)});
-
-      //const signupResponse = await updateAdditionalInfo(data);
-
-      if (userData) {
-        userData.money = parseInt(money); // 새로운 닉네임 추가
-        //userData.money=data;
-        await AsyncStorage.setItem("user", JSON.stringify(userData)); // 업데이트된 정보 저장
-        console.log("일 종류가 저장되었습니다");
-        console.log(JSON.stringify(userData));
-      }
-    } catch (error) {
-      console.log("불러오기 실패:", error);
-      return null;
+    const response = await request.post('/workspaces', 
+    {
+      name: name,
+      wage: values.money,
+      scheduleList: scheduleList,
+      categoryId: categoryId
+    }, 
+    )
+    if(response.status == 200){
+      navigation.navigate('Main')
     }
-  };
-
-  //const [userdata, setUserData] = useState({ money: ""});
+  }
 
   return (
     <Formik
@@ -127,10 +125,7 @@ export default function ChooseMoney({ navigation }) {
               )}
             </MoneyInputContainer>
             <NextBtnContainer
-              onPress={() => {
-                navigation.navigate("Main");
-                getUserData();
-              }}
+              onPress={() => handleJobInfo(values)}
             >
               <Image
                 style={{ height: 40, width: 40 }}

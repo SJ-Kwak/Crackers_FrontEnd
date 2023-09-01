@@ -21,6 +21,9 @@ import * as yup from "yup";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { updateAdditionalInfo } from "../api/auth";
+import axios from "axios";
+import { Request } from "../api/request";
+import { getItemFromAsync, removeItemFromAsync, setItemToAsync } from '../api/storage'
 
 //import useKeyboardHeight from "react-native-use-keyboard-height";
 
@@ -36,29 +39,32 @@ const signupSchema = yup.object().shape({
   //.matches(/\d/, "영문과 숫자를 입력해주세요"),
 });
 
-export default function NicknameScreen({ navigation }) {
+export default function NicknameScreen({ navigation, route }) {
   const [under, setUnder] = useState("#CCCCCC");
-  //const keyboardHeight = useKeyboardHeight();
   const [nickname, setNickname] = useState("");
+  const request = new Request();
 
-  const getUserData = async () => {
-    try {
-      const userData = await AsyncStorage.getItem("user");
-      //return userData ? JSON.parse(userData) : null;
 
-      if (userData) {
-        userData.nickname = nickname; // 새로운 닉네임 추가
-        await AsyncStorage.setItem("user", JSON.stringify(userData)); // 업데이트된 정보 저장
-      }
-
-      if (userData.nickname) {
-        console.log("닉네임이 저장되었습니다");
-      }
-    } catch (error) {
-      console.log("불러오기 실패:", error);
-      return null;
+  const handleSignUp = async () => {
+    const id = await getItemFromAsync('id')
+    const password = await getItemFromAsync('password')
+    console.log(id, password)
+    const response = await request.post('/accounts/signup', {
+      loginId: id,
+      password: password,
+      nickname: nickname
+    })
+    console.error(response)
+    await removeItemFromAsync('id')
+    await removeItemFromAsync('password')
+    if(response.status !== 'CONFLICT'){
+      await setItemToAsync('accessToken', response.data.accessToken)
+      await setItemToAsync('refreshToken', response.data.refreshToken)
+      navigation.navigate('JobNickname')
+    } else {
+      Alert.alert('회원 가입에 실패하였습니다')
     }
-  };
+  }
 
   return (
     <Formik
@@ -79,7 +85,7 @@ export default function NicknameScreen({ navigation }) {
         isSubmitting,
       }) => (
         <Wrapper>
-          <BackToHome>
+          <BackToHome onPress={() => navigation.goBack()}>
             <BackIcon source={backIcon} />
           </BackToHome>
           <FormContainer>
@@ -132,13 +138,7 @@ export default function NicknameScreen({ navigation }) {
               //flex: 1,
               //justifyContent: "flex-end",
             }}
-            //onPress={handleSubmit&&navigation.navigate('Main')}
-            onPress={() => {
-              //navigation.navigate('JobNickname')
-              //updateAdditionalInfo(values.nickname);
-              getUserData();
-              navigation.navigate("JobNickname");
-            }}
+            onPress={handleSignUp}
             disabled={!isValid}
           >
             <SubmitTxt>크래커 시작하기</SubmitTxt>

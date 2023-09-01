@@ -27,7 +27,7 @@ import NicknameScreen from "./NicknameScreen";
 const Stack = createStackNavigator();
 const backIcon = require("../assets/tch_btnBack.png");
 
-export default function TosScreen({ navigation }) {
+export default function TosScreen({ navigation, route }) {
   const [under, setUnder] = useState("#CCCCCC");
   //const keyboardHeight = useKeyboardHeight();
   const [isChecked1, setChecked1] = useState(false);

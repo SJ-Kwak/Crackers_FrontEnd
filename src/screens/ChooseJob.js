@@ -10,6 +10,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { API_URL, updateAdditionalInfo } from "../api/auth";
 
+import { setItemToAsync } from "../api/storage.js";
+
 const Stack = createStackNavigator();
 
 const JOB_DATA = [
@@ -29,6 +31,8 @@ export default function ChooseJob({ navigation }) {
     Array(JOB_DATA.length).fill(false)
   );
   const [userData, setUserData] = useState(); // userdata에 알바 종류를 저장하기 위한 상태 변수
+
+  const [job, setJob] = useState()
 
   /*const onPressJob = (index) => {
     setIsTouched((prev) => {
@@ -107,6 +111,11 @@ export default function ChooseJob({ navigation }) {
     </JobContainer>
   ));*/
 
+  const handleJob = async () => {
+    await setItemToAsync('categoryId', selectedJobIndex);
+    navigation.navigate('ChooseTime')
+  }
+
   const jobList = JOB_DATA.map((job, index) => (
     <TouchableOpacity
       key={index}
@@ -145,11 +154,12 @@ export default function ChooseJob({ navigation }) {
       <View style={{ height: 20 }} />
       <JobListContainer>{jobList}</JobListContainer>
       <NextBtnContainer
-        onPress={() => {
-          getUserData();
-          updateAdditionalInfo(JOB_DATA[selectedJobIndex]);
-          navigation.navigate("ChooseTime");
-        }}
+        // onPress={() => {
+        //   getUserData();
+        //   updateAdditionalInfo(JOB_DATA[selectedJobIndex]);
+        //   navigation.navigate("ChooseTime");
+        // }}
+        onPress={handleJob}
       >
         <Image
           style={{ height: 40, width: 40 }}

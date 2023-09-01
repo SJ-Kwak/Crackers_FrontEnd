@@ -2,3 +2,4 @@ node_modules/
 GoogleService-info.plist
 .expo/
 firebase.js
+.env

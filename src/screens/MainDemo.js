@@ -11,6 +11,7 @@ import {
   Alert,
   StyleSheet,
   Text,
+  TextInput,
   View,
   Image,
   Button,
@@ -22,14 +23,17 @@ import {
   ScrollView,
   Modal,
 } from "react-native";
-import { useState } from "react";
-//import { ScrollView } from "react-native-gesture-handler";
+import { useState, useContext, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import { Request } from "../api/request";
 import { createStackNavigator } from "@react-navigation/stack";
+import { getItemFromAsync } from "../api/storage.js";
 
 const Stack = createStackNavigator();
 const settingBtn = require("../assets/tch_btnSettings.png");
 
 const days = ["월", "화", "수", "목", "금", "토", "일"];
+const categories = ['카페∙베이커리', '편의점', '레스토랑', '학원∙과외', '배달', '물류∙포장', '공연∙전시스탭', '기타']
 
 export default function MainDemo({ navigation }) {
   const [start, setStart] = useState(false);
@@ -40,12 +44,21 @@ export default function MainDemo({ navigation }) {
   const [circlePo, setCirclePo] = useState(-50);
   const [circleTouched, setCircleTouched] = useState(false);
   const [mainColor, setMainColor] = useState("#6100FF");
-  const [jobNick, setJobNick] = useState("");
   const [duringTime, setDuringTime] = useState(10);
-  const [userName, setUserName] = useState("로키");
-  const [startTxt, setStartTxt] = useState(
-    userName + "님, \n오늘의 근무를 \n시작하세요"
-  );
+  const [startTxt, setStartTxt] = useState("");
+  const [workSpace, setWorkSpace] = useState([])
+  const [schedule, setSchedule] = useState([])
+  // const [isTouched, setIsTouched] = useState([])
+  const [selectedTime1, setSelectedTime1] = useState('');
+  const [selectedTime2, setSelectedTime2] = useState('');
+  const [wage, setWage] = useState('')
+  const [isTouched, setIsTouched] = useState(Array(days.length).fill(false));
+  const [selectedDayIndex, setSelectedDayIndex] = useState([]);
+  const [name, setName] = useState('');
+  const [selectedBusiness, setSelectedBusiness] = useState(0);
+  const [workSpaceId, setWorkSpaceId] = useState(0);
+
+  const request = new Request();
 
   const erase = require("../assets/tch_btnTxtX.png");
   const checked = require("../assets/tch_icnTxtCheck.png");
@@ -54,23 +67,66 @@ export default function MainDemo({ navigation }) {
   const money = require("../assets/icnWage.png");
   const rightBtn = require("../assets/btnRight.png");
 
-  useEffect(() => {
-    const loadUserData = async () => {
-      try {
-        const storedUser = await AsyncStorage.getItem("user");
-        const user = JSON.parse(storedUser);
+  const getUserInfo = async () => {
+    const response = await request.get('/accounts/profile')
+    setStartTxt(response.data.nickname + '님, \n오늘의 근무를 \n시작하세요')
+  }
 
-        if (user != null) {
-          setJobNick(user.jobNickname);
-          setDuringTime(user.timeGap);
-        }
-      } catch (error) {
-        console.log("Error retrieving data: ", error);
+  const getWorkSpace = async () => {
+    const response = await request.get('/workspaces')
+    console.error(response.data[0])
+    setWorkSpace(response.data[0])
+    let _schedule = response.data[0].schedules.map(schedule => schedule.day)
+    const defaultSelectedDays = days.reduce((acc, day, index) => {
+      if (_schedule.includes(day)) {
+        acc.push(index);
       }
-    };
+      return acc;
+    }, []);
+    setSelectedDayIndex(defaultSelectedDays);
+    setIsTouched(isTouched.map((value, index) =>
+      defaultSelectedDays.includes(index) ? true : value
+    ));
+    setName(response.data[0].name)
+    setSelectedBusiness(response.data[0].categoryId)
+    setSelectedTime1(response.data[0].schedules[0].startTime)
+    setSelectedTime2(response.data[0].schedules[0].endTime)
+    setWage(response.data[0].wage)
+    setSchedule(response.data[0].schedules)
+    console.log(wage);
+  }
 
-    loadUserData();
-  }, []);
+  useEffect(() => {
+    const loginCheck = async () => {
+      return await getItemFromAsync('accessToken')
+    }
+    if (loginCheck) {getUserInfo(); getWorkSpace();}
+  }, [modalVisible])
+
+  const [workDt, setWorkDt] = useState('')
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+
+  const getTime = () => {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더함
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const hours = String(currentDate.getHours()).padStart(2, '0');
+    const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+
+    const formattedDate = `${year}-${month}-${day}`;
+    const formattedTime = `${hours}${minutes}`;
+    setWorkDt(formattedDate);
+    return formattedTime;
+  }
+
+  const convertToMinutes = (time) => {
+    const hours = parseInt(time.slice(0,2), 10);
+    const minutes = parseInt(time.slice(2), 10);
+    console.log(hours, '시', minutes, '분')
+    return hours * 60 + minutes;
+  };
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible2, setModalVisible2] = useState(false);
@@ -161,24 +217,18 @@ export default function MainDemo({ navigation }) {
     scrollViewRef.current.scrollTo({ x: -15, animated: true });
   };
 
-  const defaultSelectedDays = [1, 3]; // 화요일과 목요일에 해당하는 요일 인덱스
-  //const [isTouched, setIsTouched] = useState(Array(days.length).fill(false));
-  const [isTouched, setIsTouched] = useState(
-    days.map((_, index) => defaultSelectedDays.includes(index))
-  );
-  const [selectedDayIndex, setSelectedDayIndex] = useState(1);
-  const [selectedTime1, setSelectedTime1] = useState(null);
-  const [selectedTime2, setSelectedTime2] = useState(null);
-  //const [start, setStart] = useState(false);
-
   const onPressDay = (index) => {
-    setIsTouched((prev) => {
-      const nextState = [...prev];
-      nextState[index] = !prev[index];
-      return nextState;
-    });
-    setSelectedDayIndex(index);
+    const updatedIsTouched = [...isTouched];
+    updatedIsTouched[index] = !updatedIsTouched[index];
+    setIsTouched(updatedIsTouched);
+  
+    if (updatedIsTouched[index]) {
+      setSelectedDayIndex([...selectedDayIndex, index]);
+    } else {
+      setSelectedDayIndex(selectedDayIndex.filter((selectedDay) => selectedDay !== index));
+    }
   };
+  
 
   const onTimeChange1 = (time) => {
     setSelectedTime1(time);
@@ -197,8 +247,47 @@ export default function MainDemo({ navigation }) {
       <DayContainer isTouched={isTouched[index]}>{day}</DayContainer>
     </Days>
   ));
+  // const daysList = days.map((day, index) => (
+  //   <Days
+  //     key={index}
+  //     isSelected={selectedDayIndex.includes(index)}
+  //     onPress={() => onPressDay(index)}
+  //   >
+  //     <DayContainer isSelected={selectedDayIndex.includes(index)}>{day}</DayContainer>
+  //   </Days>
+  // ));
+
+  const [workHistoryId, setWorkHistoryId] = useState(0);
+  const createWorkHistory = async () => {
+
+    const startMinutes = convertToMinutes(startTime);
+    const endMinutes = convertToMinutes(getTime());
+
+    // 임금 계산
+    const totalHours = (endMinutes - startMinutes) / 60;
+    const totalWage = totalHours * workSpace.wage;
+    const data = {
+      workspaceId: workSpace.workspaceId,
+      workDt: workDt,
+      startTime: parseInt(startTime),
+      endTime: parseInt(getTime()),
+      totalWage: parseInt(totalWage)
+    }
+    console.log(data);
+    const response = await request.post('/history', {
+      workspaceId: workSpace.workspaceId,
+      workDt: workDt,
+      startTime: parseInt(startTime),
+      endTime: parseInt(getTime()),
+      totalWage: parseInt(totalWage)
+    })
+    console.log(response);
+    const response_get = await request.get('/history')
+    setWorkHistoryId(response_get.data[response_get.data.length-1].workHistoryId)
+  }
 
   const showAlert = () => {
+    // setEndTime(getTime())
     Alert.alert(
       "퇴근하기\n",
       "오늘 근무를\n 여기서 마칠까요?",
@@ -210,6 +299,7 @@ export default function MainDemo({ navigation }) {
             setMainColor("#FFAF15");
             setStartBtnTxt("카드받기");
             setStartTxt("오늘의 \n알바 완료!");
+            createWorkHistory();
           },
           color: "#6100FF",
         },
@@ -218,21 +308,136 @@ export default function MainDemo({ navigation }) {
     );
   };
 
+  const createCard = async () => {
+    const response = await request.post('/card', {
+      workHistoryId: workHistoryId,
+      randNum: Math.floor(Math.random() * 9) + 1
+    })
+    if(response.status === 200) {
+      navigation.navigate('Card')
+    }
+  }
+
   const changeTxt = () => {
     setStartBtnTxt("퇴근하기");
     setStartTxt("오늘 \n하루도 \n화이팅!");
   };
 
-  const [selectedBusiness, setSelectedBusiness] = useState("");
 
   const handleBusinessSelection = (business) => {
-    setSelectedBusiness(business);
+    // setSelectedBusiness(business);
+    console.log(business)
+    setSelectedBusiness(categories.indexOf(business))
   };
+
+  const handleTime = async () => {
+    if (selectedDayIndex.length > 0 && selectedTime1 && selectedTime2) {
+      console.log(selectedDayIndex)
+      const newScheduleList = selectedDayIndex.map((day) => ({
+        day: days[day],
+        startTime: selectedTime1.replace(":", ""),
+        endTime: selectedTime2.replace(":", ""),
+      }));
+      // scheduleList와 newSchedule 배열 비교
+      for (const newSched of newScheduleList) {
+        let isMatch = false;
+
+        for (const sched of workSpace.schedules) {
+          if (
+            newSched.day === sched.day &&
+            newSched.startTime === sched.startTime &&
+            newSched.endTime === sched.endTime
+          ) {
+            isMatch = true;
+            break;
+          }
+        }
+
+        if (!isMatch) {
+          setSchedule(newScheduleList)
+        }
+      }
+    }
+  };
+
+  const [update, setUpdated] = useState(false)
+
+  const handleSchedule = async () => {
+    await handleTime();
+    const response = await request.patch('/workspaces/update', {
+      workspaceId: (workSpace.workspaceId).toString(),
+      name: (name !== workSpace.name ? name : workSpace.name).toString(),
+      wage: (wage !== workSpace.wage ? wage : workSpace.wage).toString(),
+      categoryId: (selectedBusiness !== workSpace.categoryId ? selectedBusiness : workSpace.categoryId).toString(),
+      scheduleList: schedule
+    })
+    if(response.status === 200 ){
+      closeModal();
+    }
+  }
+
+  const CategoryItem = ({item}) => {
+    const category = categories.indexOf(item)
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          borderBottomWidth: 0.17,
+          borderColor: "lightgray",
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 14,
+            fontWeight: 300,
+            marginBottom: 17,
+            marginTop: 17,
+            flex: 1
+          }}
+        >
+          {item}
+          {category}
+          {selectedBusiness}
+        </Text>
+        <View>
+          <TouchableOpacity
+            style={{
+              width: 18,
+              height: 18,
+              borderRadius: 30,
+              borderWidth: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              //paddingHorizontal: 10,
+              borderColor:
+                category === selectedBusiness
+                  ? "#6100FF"
+                  : "#D9D9D9",
+            }}
+            onPress={() => handleBusinessSelection(item)}
+          >
+            <View
+              style={{
+                width: 9,
+                height: 9,
+                borderRadius: 30,
+                backgroundColor:
+                  category === selectedBusiness
+                    ? "#6100FF"
+                    : "white",
+              }}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    )
+  }
 
   return (
     <View style={styles.container}>
       <AlbaFrame>
-        <Text>별다방</Text>
+        <Text>{workSpace.name}</Text>
       </AlbaFrame>
       <StartTxt>{startTxt}</StartTxt>
       <TouchableOpacity
@@ -323,11 +528,12 @@ export default function MainDemo({ navigation }) {
         onPress={() => {
           startBtnTxt == "시작하기" ? setRunning1(true) : setRunning1(false);
           startBtnTxt == "시작하기" ? setRunning2(true) : setRunning2(false);
-          setStart(true);
+          startBtnTxt == "시작하기" && setStartTime(getTime())
           startBtnTxt == "시작하기" && changeTxt();
-          //startBtnTxt=="퇴근하기" && !running1 ? navigation.navigate("Card") : setStartBtnTxt("퇴근하기")
-          startBtnTxt == "퇴근하기" && !running1 && showAlert();
-          startBtnTxt == "카드받기" && !running1 && navigation.navigate("Card");
+          setStart(true)
+          startBtnTxt == "퇴근하기" && setEndTime(getTime())
+          startBtnTxt == "퇴근하기" && showAlert();
+          startBtnTxt == "카드받기" && createCard();
 
           //Alert.alert(scrollPosition)
           //setRunning(true)
@@ -350,10 +556,9 @@ export default function MainDemo({ navigation }) {
         visible={modalVisible}
         onRequestClose={closeModal}
       >
-        <TouchableOpacity
+        <View
           style={styles.modalContainer}
-          activeOpacity={0.1}
-          onPressOut={closeModal}
+          // onPressOut={closeModal}
         >
           <View style={styles.modalContainer}>
             <View
@@ -377,23 +582,23 @@ export default function MainDemo({ navigation }) {
                   <TouchableOpacity onPressOut={closeModal}>
                     <Image source={erase} />
                   </TouchableOpacity>
-                  <TouchableOpacity onPressOut={closeModal}>
+                  <TouchableOpacity onPressOut={handleSchedule}>
                     <Image
                       style={{ width: 25, height: 25, marginLeft: 310 }}
                       source={checked}
                     />
                   </TouchableOpacity>
                 </View>
-                <Text
+                <TextInput
                   style={{
                     fontSize: 24,
                     marginLeft: 20,
-                    fontWeight: 600,
+                    fontWeight: '600',
                     marginBottom: 20,
                   }}
-                >
-                  별다방
-                </Text>
+                  value={name}
+                  onChangeText={setName}
+                />
                 <View
                   style={{
                     flexDirection: "row",
@@ -428,7 +633,7 @@ export default function MainDemo({ navigation }) {
                   <Text disabled={!isTouched} style={{ top: 10 }}>
                     시작
                   </Text>
-                  {selectedDayIndex >= 0 && (
+                  {selectedDayIndex.length > 0 && (
                     <DatePickerContainer>
                       <DatePicker
                         style={{ width: 90 }}
@@ -469,7 +674,7 @@ export default function MainDemo({ navigation }) {
                   )}
                   <View style={{ width: 10 }} />
                   <Text style={{ top: 10 }}>종료</Text>
-                  {selectedDayIndex >= 0 && (
+                  {selectedDayIndex.length > 0 && (
                     <DatePickerContainer>
                       <DatePicker
                         style={{ width: 90 }}
@@ -544,10 +749,10 @@ export default function MainDemo({ navigation }) {
                       marginLeft: 10,
                       marginTop: 17,
                       marginBottom: 17,
-                      marginRight: 180,
+                      flex: 1
                     }}
                   >
-                    카페∙베이커리
+                    {categories[selectedBusiness]}
                   </Text>
                   <TouchableOpacity
                     onPress={() => {
@@ -555,7 +760,7 @@ export default function MainDemo({ navigation }) {
                     }}
                   >
                     <Image
-                      style={{ width: 13, height: 13 }}
+                      style={{ width: 13, height: 13, marginRight: 5 }}
                       source={rightBtn}
                     />
                   </TouchableOpacity>
@@ -587,7 +792,7 @@ export default function MainDemo({ navigation }) {
                   >
                     시급
                   </Text>
-                  <Text
+                  <TextInput
                     style={{
                       fontSize: 16,
                       color: "gray",
@@ -595,14 +800,14 @@ export default function MainDemo({ navigation }) {
                       marginTop: 17,
                       marginBottom: 17,
                     }}
-                  >
-                    9,610원
-                  </Text>
+                    value={wage.toString()}
+                    onChangeText={setWage}
+                  />
                 </View>
               </View>
             </View>
           </View>
-        </TouchableOpacity>
+        </View>
         <Modal
           animationType="slide"
           transparent={true}
@@ -655,398 +860,9 @@ export default function MainDemo({ navigation }) {
                       알바 업종 리스트
                     </Text>
                   </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      borderBottomWidth: 0.17,
-                      borderColor: "lightgray",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        fontWeight: 300,
-                        marginBottom: 17,
-                        marginTop: 17,
-                      }}
-                    >
-                      카페∙베이커리
-                    </Text>
-                    <View>
-                      <TouchableOpacity
-                        style={{
-                          width: 18,
-                          height: 18,
-                          borderRadius: 30,
-                          borderWidth: 1,
-                          marginLeft: "82%",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          //paddingHorizontal: 10,
-                          borderColor:
-                            selectedBusiness === "카페∙베이커리"
-                              ? "#6100FF"
-                              : "#D9D9D9",
-                        }}
-                        onPress={() => handleBusinessSelection("카페∙베이커리")}
-                      >
-                        <View
-                          style={{
-                            width: 9,
-                            height: 9,
-                            borderRadius: 30,
-                            backgroundColor:
-                              selectedBusiness === "카페∙베이커리"
-                                ? "#6100FF"
-                                : "white",
-                          }}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      borderBottomWidth: 0.17,
-                      borderColor: "lightgray",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        fontWeight: 300,
-                        marginBottom: 17,
-                        marginTop: 17,
-                      }}
-                    >
-                      편의점
-                    </Text>
-                    <View>
-                      <TouchableOpacity
-                        style={{
-                          width: 18,
-                          height: 18,
-                          borderRadius: 30,
-                          borderWidth: 1,
-                          marginLeft: "88.8%",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          //paddingHorizontal: 10,
-                          borderColor:
-                            selectedBusiness === "편의점"
-                              ? "#6100FF"
-                              : "#D9D9D9",
-                        }}
-                        onPress={() => handleBusinessSelection("편의점")}
-                      >
-                        <View
-                          style={{
-                            width: 9,
-                            height: 9,
-                            borderRadius: 30,
-                            backgroundColor:
-                              selectedBusiness === "편의점"
-                                ? "#6100FF"
-                                : "white",
-                          }}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      borderBottomWidth: 0.17,
-                      borderColor: "lightgray",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        fontWeight: 300,
-                        marginBottom: 17,
-                        marginTop: 17,
-                      }}
-                    >
-                      레스토랑
-                    </Text>
-                    <View>
-                      <TouchableOpacity
-                        style={{
-                          width: 18,
-                          height: 18,
-                          borderRadius: 30,
-                          borderWidth: 1,
-                          marginLeft: "87%",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          //paddingHorizontal: 10,
-                          borderColor:
-                            selectedBusiness === "레스토랑"
-                              ? "#6100FF"
-                              : "#D9D9D9",
-                        }}
-                        onPress={() => handleBusinessSelection("레스토랑")}
-                      >
-                        <View
-                          style={{
-                            width: 9,
-                            height: 9,
-                            borderRadius: 30,
-                            backgroundColor:
-                              selectedBusiness === "레스토랑"
-                                ? "#6100FF"
-                                : "white",
-                          }}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      borderBottomWidth: 0.17,
-                      borderColor: "lightgray",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        fontWeight: 300,
-                        marginBottom: 17,
-                        marginTop: 17,
-                      }}
-                    >
-                      학원∙과외
-                    </Text>
-                    <View>
-                      <TouchableOpacity
-                        style={{
-                          width: 18,
-                          height: 18,
-                          borderRadius: 30,
-                          borderWidth: 1,
-                          marginLeft: "85.5%",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          //paddingHorizontal: 10,
-                          borderColor:
-                            selectedBusiness === "학원∙과외"
-                              ? "#6100FF"
-                              : "#D9D9D9",
-                        }}
-                        onPress={() => handleBusinessSelection("학원∙과외")}
-                      >
-                        <View
-                          style={{
-                            width: 9,
-                            height: 9,
-                            borderRadius: 30,
-                            backgroundColor:
-                              selectedBusiness === "학원∙과외"
-                                ? "#6100FF"
-                                : "white",
-                          }}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      borderBottomWidth: 0.17,
-                      borderColor: "lightgray",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        fontWeight: 300,
-                        marginBottom: 17,
-                        marginTop: 17,
-                      }}
-                    >
-                      배달
-                    </Text>
-                    <View>
-                      <TouchableOpacity
-                        style={{
-                          width: 18,
-                          height: 18,
-                          borderRadius: 30,
-                          borderWidth: 1,
-                          marginLeft: "90.6%",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          //paddingHorizontal: 10,
-                          borderColor:
-                            selectedBusiness === "배달" ? "#6100FF" : "#D9D9D9",
-                        }}
-                        onPress={() => handleBusinessSelection("배달")}
-                      >
-                        <View
-                          style={{
-                            width: 9,
-                            height: 9,
-                            borderRadius: 30,
-                            backgroundColor:
-                              selectedBusiness === "배달" ? "#6100FF" : "white",
-                          }}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      borderBottomWidth: 0.17,
-                      borderColor: "lightgray",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        fontWeight: 300,
-                        marginBottom: 17,
-                        marginTop: 17,
-                      }}
-                    >
-                      물류∙포장
-                    </Text>
-                    <View>
-                      <TouchableOpacity
-                        style={{
-                          width: 18,
-                          height: 18,
-                          borderRadius: 30,
-                          borderWidth: 1,
-                          marginLeft: "85.5%",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          //paddingHorizontal: 10,
-                          borderColor:
-                            selectedBusiness === "물류∙포장"
-                              ? "#6100FF"
-                              : "#D9D9D9",
-                        }}
-                        onPress={() => handleBusinessSelection("물류∙포장")}
-                      >
-                        <View
-                          style={{
-                            width: 9,
-                            height: 9,
-                            borderRadius: 30,
-                            backgroundColor:
-                              selectedBusiness === "물류∙포장"
-                                ? "#6100FF"
-                                : "white",
-                          }}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      borderBottomWidth: 0.17,
-                      borderColor: "lightgray",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        fontWeight: 300,
-                        marginBottom: 17,
-                        marginTop: 17,
-                      }}
-                    >
-                      공연∙전시스텝
-                    </Text>
-                    <View>
-                      <TouchableOpacity
-                        style={{
-                          width: 18,
-                          height: 18,
-                          borderRadius: 30,
-                          borderWidth: 1,
-                          marginLeft: "81.8%",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          //paddingHorizontal: 10,
-                          borderColor:
-                            selectedBusiness === "공연∙전시스텝"
-                              ? "#6100FF"
-                              : "#D9D9D9",
-                        }}
-                        onPress={() => handleBusinessSelection("공연∙전시스텝")}
-                      >
-                        <View
-                          style={{
-                            width: 9,
-                            height: 9,
-                            borderRadius: 30,
-                            backgroundColor:
-                              selectedBusiness === "공연∙전시스텝"
-                                ? "#6100FF"
-                                : "white",
-                          }}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      borderBottomWidth: 0.17,
-                      borderColor: "lightgray",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        fontWeight: 300,
-                        marginBottom: 17,
-                        marginTop: 17,
-                      }}
-                    >
-                      기타
-                    </Text>
-                    <View>
-                      <TouchableOpacity
-                        style={{
-                          width: 18,
-                          height: 18,
-                          borderRadius: 30,
-                          borderWidth: 1,
-                          marginLeft: "90.6%",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          //paddingHorizontal: 10,
-                          borderColor:
-                            selectedBusiness === "기타" ? "#6100FF" : "#D9D9D9",
-                        }}
-                        onPress={() => handleBusinessSelection("기타")}
-                      >
-                        <View
-                          style={{
-                            width: 9,
-                            height: 9,
-                            borderRadius: 30,
-                            backgroundColor:
-                              selectedBusiness === "기타" ? "#6100FF" : "white",
-                          }}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
+                  <FlatList data={categories} renderItem={({item}) => { return (
+                    <CategoryItem item={item} />
+                  )}} />
                 </View>
               </View>
             </View>
@@ -1159,7 +975,7 @@ const styles = StyleSheet.create({
 
 const AlbaFrame = styled.View`
   position: absolute;
-  width: fit-content;
+  // width: fit-content;
   height: 38px;
   top: 78px;
   //background: #FFFFFF;

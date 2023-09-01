@@ -21,14 +21,14 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { TextInput } from "react-native-gesture-handler";
 import { Formik } from "formik";
 import * as yup from "yup";
-//import useKeyboardHeight from "react-native-use-keyboard-height";
 
 import axios from "axios";
 import { API_URL, signupRequest } from "../api/auth";
+import { Request } from "../api/request";
+import { setItemToAsync } from '../api/storage';
 
 const Stack = createStackNavigator();
 const backIcon = require("../assets/tch_btnBack.png");
-//const [emailCheck, setEmailCheck]=useState("영문, 숫자를 모두 포함하여 입력해주세요")
 
 const signupSchema = yup.object().shape({
   email: yup.string().matches(/\d/, "영문, 숫자를 모두 포함하여 입력해주세요"),
@@ -40,36 +40,8 @@ const signupSchema = yup.object().shape({
     .oneOf([yup.ref("password")], "비밀번호가 일치하지 않습니다"),
 });
 
-/*const signUp = (email, password) => {
-    firebase.auth().createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        // 회원가입 성공
-        const user = userCredential.user;
-        console.log(user);
-      })
-      .catch((error) => {
-        // 회원가입 실패
-        console.log(error);
-      });
-  };
-  
-  // 로그인
-  const signIn = (email, password) => {
-    firebase.auth().signInWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        // 로그인 성공
-        const user = userCredential.user;
-        console.log(user);
-      })
-      .catch((error) => {
-        // 로그인 실패
-        console.log(error);
-      });
-  };*/
-
 export default function SignupScreen({ navigation }) {
   const [under, setUnder] = useState("#CCCCCC");
-  //const keyboardHeight = useKeyboardHeight();
   const [check1, setCheck1] = useState("white");
   const [check2, setCheck2] = useState("#6100FF");
   const [check3, setCheck3] = useState("#CCCCCC");
@@ -85,78 +57,28 @@ export default function SignupScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const nickname = "살라살라";
-
-  /*const handleSignup = async (values) => {
-        // 이메일과 비밀번호를 AsyncStorage에 저장
-        if(values.email&&values.password&&values.pwCheck){
-        try {
-            const user = {
-              email: values.email,
-              password: values.password
-            };
-        
-            await AsyncStorage.setItem('user', JSON.stringify(user));
-            
-            // 회원가입 성공 시 다음 화면으로 이동
-            //navigation.navigate('Tos');
-          } catch (error) {
-            console.log('Error saving data: ', error);
-          }
-        }
-      };*/
+  const request = new Request();
 
   const handleCheckEmail = async () => {
     try {
-      const response = await signupRequest.checkEmail(email);
-
-      if (response.isEmailTaken) {
-        setIsEmailTaken(true);
+      const response = await request.get(`/accounts/check/${email}`, {}, {})
+      if(response.status==200){
+        setIsEmailTaken(false)
       } else {
-        setIsEmailTaken(false);
+        setIsEmailTaken(true)
       }
-    } catch (error) {
-      console.error("Error checking email:", error);
+      setCheck2("#CCCCCC");
+      setSubmit(1);
+    } catch (err) {
+      console.error('err', err)
     }
   };
 
-  const handleSignup = async () => {
-    try {
-      //console.log("dmkdmkdmkdmkdㅡ아아가아각!")
-
-      console.log(email, password);
-
-      const signupResponse = await signupRequest(email, password, nickname);
-
-      const user = {
-        email: email,
-        password: password,
-        nickname: "",
-        job: "",
-        money: "",
-      };
-
-      await AsyncStorage.setItem("user", JSON.stringify(user));
-
-      console.log("Signup success:", signupResponse);
-      // 회원가입 성공 후 처리 로직 추가
-
-      navigation.navigate("Tos");
-
-      // 예시: 회원가입 후 자동 로그인 처리
-      //const { token, user } = signupResponse;
-
-      // 토큰과 사용자 정보를 로컬 저장소에 저장
-      //await AsyncStorage.setItem('token', token);
-      //await AsyncStorage.setItem('user', JSON.stringify(user));
-
-      // 로그인 상태로 변경
-      //login(user);
-    } catch (error) {
-      console.error("Error signing up:", error);
-      // 회원가입 실패 처리 로직 추가
-    }
-  };
+  const setSignupInfo = () => {
+    setItemToAsync('id', email)
+    setItemToAsync('password', password)
+    navigation.navigate("Tos")
+  }
 
   return (
     <Formik
@@ -165,7 +87,7 @@ export default function SignupScreen({ navigation }) {
         password: "",
       }}
       validationSchema={signupSchema}
-      onSubmit={() => handleSignup}
+      onSubmit={setSignupInfo}
     >
       {({
         values,
@@ -227,14 +149,7 @@ export default function SignupScreen({ navigation }) {
                   </EraseAll>
                 )}
                 <CheckBtn
-                  onPress={() => {
-                    //Alert.alert("사용 가능한 아이디입니다");
-                    handleCheckEmail;
-                    setTemp(values.email);
-                    console.log(temp);
-                    setCheck2("#CCCCCC");
-                    setSubmit(1);
-                  }}
+                  onPress={handleCheckEmail}
                   disabled={errors.email}
                   style={{
                     backgroundColor:
@@ -355,17 +270,7 @@ export default function SignupScreen({ navigation }) {
               //flex: 1,
               //justifyContent: "flex-end",
             }}
-            //onPress={handleSubmit&&navigation.navigate("Tos")}
-            /*onPress={()=>{
-                                navigation.navigate('Tos')
-                                //signUp(values.email, values.password);
-                            }}*/
-            onPress={() => {
-              //handleSubmit
-              //console.log("dmdkdmkmdkmkdm")
-              handleSignup();
-              //navigation.navigate("Tos")
-            }}
+            onPress={setSignupInfo}
             disabled={!isValid}
           >
             <SubmitTxt>다음</SubmitTxt>

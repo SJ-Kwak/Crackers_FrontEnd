@@ -25,20 +25,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { AuthContext } from "../../AuthContext";
 import { loginRequest } from "../api/auth";
+import { Request } from "../api/request";
+import { setItemToAsync } from "../api/storage";
 
 const Stack = createStackNavigator();
 const backIcon = require("../assets/tch_btnBack.png");
-
-/*const signupSchema = yup.object().shape({
-      email: yup
-          .string()
-          .required("아이디를 입력해 주세요"),
-          //.matches(/\d/, "영문과 숫자를 입력해주세요"),
-      password: yup
-          .string()
-          .required("암호를 입력해 주세요"),
-          //.min(8, "너무 짧습니다"),
-  });*/
 
 const loginSchema = yup.object().shape({
   email: yup.string().required("아이디를 입력해 주세요"),
@@ -47,48 +38,41 @@ const loginSchema = yup.object().shape({
 
 export default function LoginScreen({ navigation }) {
   const [under, setUnder] = useState("#CCCCCC");
-  //const keyboardHeight = useKeyboardHeight();
 
   const { login } = useContext(AuthContext);
   const [error, setError] = useState("");
+  const request = new Request();
 
-  /*useEffect(() => {
-      }, []);
-    
-      const handleLogin = async (values) => {
-
-        try {
-            const storedUser = await AsyncStorage.getItem('user');
-            const user = JSON.parse(storedUser);
-        
-            if (user && user.email === values.email && user.password === values.password) {
-              // 이메일과 비밀번호가 일치하는 경우, 로그인 성공
-              navigation.navigate('Main');
-            } else {
-              // 이메일과 비밀번호가 일치하지 않는 경우, 에러 처리
-              Alert.alert('Invalid credentials', 'Please enter a valid email and password.');
-            }
-          } catch (error) {
-            console.log('Error retrieving data: ', error);
-          }
-      };*/
-
-  useEffect(() => {}, []);
+  const processLoginResponse = (response: any, navigation: any, setLogin: (value: boolean) => void) => {
+    if (response.status == 200) {
+      const nickname = response.data.data.nickname
+      const accessToken = response.data.data.access
+      const refreshToken = response.data.data.refresh
+      setNickname(nickname)
+      setAccessToken(accessToken)
+      setRefreshToken(refreshToken)
+      setLogin(true);
+      navigation.navigate('Main');
+    } else if (response.status == 400) {
+      Alert.alert(response.data.extra.fields !== undefined ? response.data.extra.fields.detail : response.data.message)
+    }
+    else {
+      Alert.alert('예상치 못한 오류가 발생하였습니다.')
+    }
+  }
 
   const handleLogin = async (values) => {
-    try {
-      const response = await loginRequest(values.email, values.password);
-      // 로그인 성공 시 처리
-      if (response) {
-        // 로그인 상태로 변경
-        login(response.user);
-        setError("");
-
-        navigation.navigate("Main");
-      }
-    } catch (error) {
-      console.error("Error logging in:", error);
-      setError("Invalid username or password");
+    const response = await request.post('/accounts/signin', {
+      loginId: values.email,
+      password: values.password,
+    })
+    console.error(response)
+    if (response.status === 200) {
+      setItemToAsync('accessToken', response.data.accessToken)
+      setItemToAsync('refreshToken', response.data.refreshToken)
+      navigation.navigate('Main')
+    } else {
+      Alert.alert('로그인에 실패하셨습니다.')
     }
   };
 
@@ -133,8 +117,6 @@ export default function LoginScreen({ navigation }) {
                 value={values.email}
                 onChangeText={
                   handleChange("email")
-
-                  //setUnder("#6100FF")
                 }
                 onBlur={() => setFieldTouched("email")}
                 keyboardType="email-address"
@@ -175,9 +157,7 @@ export default function LoginScreen({ navigation }) {
               //flex: 1,
               //justifyContent: "flex-end",
             }}
-            //onPress={handleSubmit&&navigation.navigate("Main")}
-            //onPress={()=>{navigation.navigate("Main")}}
-            onPress={handleSubmit}
+            onPress={() => handleSubmit(values)}
             disabled={!isValid}
           >
             <SubmitTxt>로그인하기</SubmitTxt>

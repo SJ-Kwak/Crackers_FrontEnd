@@ -8,26 +8,34 @@ import * as yup from "yup";
 import { createStackNavigator } from "@react-navigation/stack";
 //import { View } from "react-native-web";
 
+import { Request } from "../api/request.js";
+import { setItemToAsync } from "../api/storage.js";
+
 const Stack = createStackNavigator();
 
 export default function JobNickname({ navigation }) {
   //const [userdata, setUserData] = useState({ jobNickname: ""});
 
-  const getUserData = async (values) => {
-    try {
-      const userData = await AsyncStorage.getItem("user");
-      //return userData ? JSON.parse(userData) : null;
+  // const getUserData = async (values) => {
+  //   try {
+  //     const userData = await AsyncStorage.getItem("user");
+  //     //return userData ? JSON.parse(userData) : null;
 
-      if (userData) {
-        userData.jobNickname = values.jobNickname; // 새로운 닉네임 추가
-        await AsyncStorage.setItem("userData", JSON.stringify(userData)); // 업데이트된 정보 저장
-        console.log("일 종류가 저장되었습니다");
-      }
-    } catch (error) {
-      console.log("불러오기 실패:", error);
-      return null;
-    }
-  };
+  //     if (userData) {
+  //       userData.jobNickname = values.jobNickname; // 새로운 닉네임 추가
+  //       await AsyncStorage.setItem("userData", JSON.stringify(userData)); // 업데이트된 정보 저장
+  //       console.log("일 종류가 저장되었습니다");
+  //     }
+  //   } catch (error) {
+  //     console.log("불러오기 실패:", error);
+  //     return null;
+  //   }
+  // };
+
+  const setItem = async (values) => {
+    await setItemToAsync('name', values.jobNickname)
+    navigation.navigate('ChooseJob')
+  }
 
   return (
     <Formik
@@ -76,11 +84,7 @@ export default function JobNickname({ navigation }) {
             />
           </NicknameInputContainer>
           <NextBtnContainer
-            onPress={() => {
-              navigation.navigate("ChooseJob");
-              //setUserData({jobNickname: values.jobNickname});
-              getUserData;
-            }}
+            onPress={() => setItem(values)}
           >
             <Image
               style={{ height: 40, width: 40 }}

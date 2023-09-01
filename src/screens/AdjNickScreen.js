@@ -20,6 +20,8 @@ import { Formik } from "formik";
 import * as yup from "yup";
 //import useKeyboardHeight from "react-native-use-keyboard-height";
 
+import { Request } from "../api/request";
+
 const Stack = createStackNavigator();
 const backIcon = require("../assets/tch_btnBack.png");
 
@@ -34,6 +36,18 @@ const signupSchema = yup.object().shape({
 export default function AdjNickScreen({ navigation }) {
   const [under, setUnder] = useState("#CCCCCC");
   //const keyboardHeight = useKeyboardHeight();
+  const request = new Request();
+
+  const handleNickname = async (values) => {
+    const response = await request.patch('/accounts/profile', {
+      nickname: values.nickname
+    })
+    if (response.status === 200) {
+      navigation.goBack();
+    } else {
+      Alert.alert('닉네임 수정에 실패하였습니다!')
+    }
+  }
 
   return (
     <Formik
@@ -94,10 +108,7 @@ export default function AdjNickScreen({ navigation }) {
               //flex: 1,
               //justifyContent: "flex-end",
             }}
-            //onPress={handleSubmit&&navigation.navigate('Main')}
-            onPress={() => {
-              navigation.goBack();
-            }}
+            onPress={() => handleNickname(values)}
             disabled={!isValid}
           >
             <SubmitTxt>완료</SubmitTxt>
