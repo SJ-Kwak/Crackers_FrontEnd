@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import styled from "styled-components/native";
-import { Display2 } from "/Users/geunhye/crackersDEMO/crackers/src/static/text.js";
+import { Display2 } from "../static/text.js";
 import DatePicker from "react-native-datepicker";
 
 import { createStackNavigator } from "@react-navigation/stack";
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { setItemToAsync } from "../api/storage.js";
 
 const Stack = createStackNavigator();
 
@@ -15,15 +15,15 @@ const days = ["월", "화", "수", "목", "금", "토", "일"];
 
 export default function ChooseTime({ navigation }) {
   const [isTouched, setIsTouched] = useState(Array(days.length).fill(false));
-  const [selectedDayIndex, setSelectedDayIndex] = useState(-1);
+  const [selectedDayIndex, setSelectedDayIndex] = useState([]);
 
   const [selectedTime1, setSelectedTime1] = useState(null);
   const [selectedTime2, setSelectedTime2] = useState(null);
 
-  const [selectedHour1, setSelectedHour1] = useState(null);
-  const [selectedMinute1, setSelectedMinute1] = useState(null);
-  const [selectedHour2, setSelectedHour2] = useState(null);
-  const [selectedMinute2, setSelectedMinute2] = useState(null);
+  const [selectedHour1, setSelectedHour1] = useState(0);
+  const [selectedMinute1, setSelectedMinute1] = useState(0);
+  const [selectedHour2, setSelectedHour2] = useState(0);
+  const [selectedMinute2, setSelectedMinute2] = useState(0);
   const [start, setStart] = useState(false);
   const [userdata, setUserData] = useState({
     day: "",
@@ -31,137 +31,75 @@ export default function ChooseTime({ navigation }) {
     endTime: null,
   }); // userdata에 알바 시간 정보를 저장하기 위한 상태 변수
 
-  useEffect(() => {
-    console.log(selectedTime1);
-  }, [selectedTime1]);
-
-  useEffect(() => {
-    console.log(selectedTime2);
-  }, [selectedTime2]);
-
+  const [scheduleList, setScheduleList] = useState([])
 
   const onPressDay = (index) => {
-    setIsTouched((prev) => {
-      const nextState = [...prev];
-      nextState[index] = !prev[index];
-      return nextState;
-    });
-    setSelectedDayIndex(index);
-    console.log(selectedDayIndex);
-    setStart(true);
+    if (isTouched.includes(index)) {
+      setIsTouched(isTouched.filter(id => id !== index));
+      setSelectedDayIndex(selectedDayIndex.filter((id) => id !== days[index]));
+    } else {
+      setIsTouched([...isTouched, index]);
+      setSelectedDayIndex([...selectedDayIndex, days[index]]);
+    }
 
-     // 선택한 요일 정보를 userdata에 저장
-     setUserData((prevData) => ({ ...prevData, day: days[index] }));
+    setStart(true);
   };
 
-  const getUserData = async () => {
-    try {
-      const userData = await AsyncStorage.getItem('user');
-      //return userData ? JSON.parse(userData) : null;
+  const saveScheduleList = async (scheduleList) => {
+    await setItemToAsync('scheduleList', scheduleList);
+    console.error('성공!')
+    navigation.navigate('ChooseMoney')
+  };
 
-      if (userData) {
-        userData.day = userData.day; // 새로운 닉네임 추가
-        userData.startTime=userdata.selectedTime1;
-        userdata.endTime=userdata.selectedTime2;
-        userdata.timeGap=calculateTimeDifference;
-        await AsyncStorage.setItem('userData', JSON.stringify(userData)); // 업데이트된 정보 저장
-        console.log("일 종류가 저장되었습니다");
-        }
+  const handleTime = async () => {
+    if (selectedDayIndex.length > 0 && selectedHour1 !== null && selectedHour2 !== null) {
+      const newScheduleList = selectedDayIndex.map((day) => ({
+        day,
+        startTime: selectedHour1.toString()+selectedMinute1.toString(),
+        endTime: selectedHour2.toString()+selectedMinute2.toString(),
+      }));
 
-    } catch (error) {
-      console.log('불러오기 실패:', error);
-      return null;
+      await saveScheduleList(newScheduleList);
     }
   };
 
-  /*const onTimeChange1 = (time) => {
-    setSelectedTime1(time);
-    console.log(selectedTime1);
-  
-    // 선택한 시작 시간을 userdata에 저장
-    setUserData((prevData) => ({ ...prevData, startTime: time }));
-  };
-
-  const onTimeChange2 = (time) => {
-    setSelectedTime2(time);
-    console.log(selectedTime2);
-
-    // 선택한 종료 시간을 userdata에 저장
-    setUserData((prevData) => ({ ...prevData, endTime: time }));
-  };*/
-
   const onTimeChange1 = (time) => {
-
     setSelectedTime1(time);
 
     const [hour, minute] = time.split(":");
     setSelectedHour1(hour);
     setSelectedMinute1(minute);
-    console.log(selectedHour1, selectedMinute1);
   };
 
   const onTimeChange2 = (time) => {
-
     setSelectedTime2(time);
 
     const [hour, minute] = time.split(":");
     setSelectedHour2(hour);
     setSelectedMinute2(minute);
-    console.log(selectedHour2, selectedMinute2);
-  };
-
-
-  const saveUserData = () => {
-    // userdata에 시작 시간과 종료 시간을 저장하는 로직을 구현하세요.
-    const userdata = {
-      startTime: selectedTime1,
-      endTime: selectedTime2,
-    };
-    // userdata를 서버에 전송하거나 로컬 스토리지 등에 저장하는 등의 작업을 수행할 수 있습니다.
-    console.log(userdata);
-  };
-
-  const calculateTimeDifference = () => {
-    /*if (!selectedTime1 || !selectedTime2) {
-      console.log("시작 시간과 종료 시간을 선택해주세요.");
-      return;
-    }*/
-
-    const startTime = new Date(selectedTime1);
-    const endTime = new Date(selectedTime2);
-    const timeDifferenceInMilliseconds = endTime - startTime;
-
-    // 시간 간격을 계산하여 원하는 형식으로 표시할 수 있습니다.
-    const timeDifferenceInMinutes = Math.floor(timeDifferenceInMilliseconds / (1000 * 60));
-
-    return timeDifferenceInMinutes;
-    //console.log("시간 간격:", formattedTimeDifference);
   };
 
   const daysList = days.map((day, index) => (
     <Days
       key={index}
-      isTouched={isTouched[index]}
+      isTouched={isTouched.includes(index)}
       onPress={() => onPressDay(index)}
     >
-      <DayContainer isTouched={isTouched[index]}>{day}</DayContainer>
+      <DayContainer isTouched={isTouched.includes(index)}>{day}</DayContainer>
     </Days>
   ));
 
   return (
     <Container>
       <HeaderWrapper>
-        <Image 
-        style={{height: 24, width: 217}}
-        source={Headerimg} />
+        <Image style={{ height: 24, width: 217 }} source={Headerimg} />
       </HeaderWrapper>
       <MainContainer>
         <Display2>알바 시간 정하기</Display2>
         <DayListContainer>{daysList}</DayListContainer>
         <TimePick>
-          {start && <Text 
-          style={{ top: 15 }}>시작</Text>}
-          {selectedDayIndex >= 0 && (
+          {start && <Text style={{ top: 15 }}>시작</Text>}
+          {selectedDayIndex.length > 0 && (
             <DatePickerContainer>
               <DatePicker
                 style={{ width: 265 }}
@@ -202,9 +140,8 @@ export default function ChooseTime({ navigation }) {
           )}
         </TimePick>
         <TimePick>
-        {start && <Text 
-          style={{ top: 15 }}>종료</Text>}
-          {selectedDayIndex >= 0 && (
+          {start && <Text style={{ top: 15 }}>종료</Text>}
+          {selectedDayIndex.length > 0 && (
             <DatePickerContainer>
               <DatePicker
                 style={{ width: 265 }}
@@ -244,19 +181,21 @@ export default function ChooseTime({ navigation }) {
           )}
         </TimePick>
       </MainContainer>
-      <NextBtnContainer onPress={() => {
-        navigation.navigate("ChooseMoney");
-        calculateTimeDifference;
-        saveUserData;
-      }}>
-        <Image 
-        style={{height: 40, width: 40}}
-        source={start ? NextBtn : NextBtnGray} />
+      <NextBtnContainer
+        onPress={handleTime}
+        // onPress={() => {
+        //   navigation.navigate("ChooseMoney");
+        //   calculateTimeDifference;
+        //   saveUserData;
+        // }}
+      >
+        <Image
+          style={{ height: 40, width: 40 }}
+          source={start ? NextBtn : NextBtnGray}
+        />
       </NextBtnContainer>
       <BackBtnContainer onPress={() => navigation.navigate("ChooseJob")}>
-        <Image 
-        style={{height: 40, width: 40}}
-        source={BackBtn} />
+        <Image style={{ height: 40, width: 40 }} source={BackBtn} />
       </BackBtnContainer>
     </Container>
   );
@@ -279,7 +218,6 @@ const DayContainer = styled.Text`
   font-weight: 500;
   line-height: 16.71px;
   color: ${(props) => (props.isTouched ? "white" : "black")};
-  
 `;
 
 const DayListContainer = styled.View`
@@ -308,7 +246,7 @@ const MainContainer = styled.View`
   margin: 20px;
 `;
 
-const Headerimg = require("/Users/geunhye/crackersDEMO/crackers/src/assets/onBoarding/Header3.png");
+const Headerimg = require("../assets/onBoarding/Header3.png");
 const HeaderWrapper = styled.View`
   display: flex;
   justify-content: center;
@@ -325,8 +263,8 @@ const TimePick = styled.View`
   flex-direction: row;
 `;
 
-const NextBtn = require("/Users/geunhye/crackersDEMO/crackers/src/assets/onBoarding/Nextbtn.png");
-const NextBtnGray = require("/Users/geunhye/crackersDEMO/crackers/src/assets/onBoarding/NextbtnGray.png");
+const NextBtn = require("../assets/onBoarding/Nextbtn.png");
+const NextBtnGray = require("../assets/onBoarding/NextbtnGray.png");
 
 const NextBtnContainer = styled.TouchableOpacity`
   position: absolute;
@@ -340,7 +278,7 @@ const NextBtnContainer = styled.TouchableOpacity`
   height: 40px;
 `;
 
-const BackBtn = require("/Users/geunhye/crackersDEMO/crackers/src/assets/onBoarding/BackbtnGray.png");
+const BackBtn = require("../assets/onBoarding/BackbtnGray.png");
 const BackBtnContainer = styled.TouchableOpacity`
   position: absolute;
   display: flex;
