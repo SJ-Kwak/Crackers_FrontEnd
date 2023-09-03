@@ -19,7 +19,7 @@ import { TextInput } from "react-native-gesture-handler";
 import { Formik } from "formik";
 import * as yup from "yup";
 //import useKeyboardHeight from "react-native-use-keyboard-height";
-import { getItemFromAsync, removeItemFromAsync } from "../api/storage";
+import { getItemFromAsync, removeItemFromAsync, clearItemsFromAsync } from "../api/storage";
 
 import { Request } from "../api/request";
 
@@ -52,9 +52,7 @@ export default function WithdrawScreen({ navigation }) {
     const response = await request.patch('/accounts/withdraw')
     if (response.status === 200) {
       Alert.alert(response.data)
-      await removeItemFromAsync('accessToken')
-      await removeItemFromAsync('refreshToken')
-      await removeItemFromAsync('password')
+      await clearItemsFromAsync();
       navigation.navigate('Home');
     } else {
       Alert.alert('회원 탈퇴에 실패하였습니다!')

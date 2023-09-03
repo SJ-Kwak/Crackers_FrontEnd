@@ -73,8 +73,7 @@ export default function MainDemo({ navigation }) {
   }
 
   const getWorkSpace = async () => {
-    const response = await request.get('/workspaces')
-    console.error(response.data[0])
+    const response = await request.get('/workspaces');
     setWorkSpace(response.data[0])
     let _schedule = response.data[0].schedules.map(schedule => schedule.day)
     const defaultSelectedDays = days.reduce((acc, day, index) => {
@@ -93,14 +92,11 @@ export default function MainDemo({ navigation }) {
     setSelectedTime2(response.data[0].schedules[0].endTime)
     setWage(response.data[0].wage)
     setSchedule(response.data[0].schedules)
-    console.log(wage);
   }
 
   useEffect(() => {
-    const loginCheck = async () => {
-      return await getItemFromAsync('accessToken')
-    }
-    if (loginCheck) {getUserInfo(); getWorkSpace();}
+    getUserInfo(); 
+    getWorkSpace();
   }, [modalVisible])
 
   const [workDt, setWorkDt] = useState('')
@@ -124,7 +120,6 @@ export default function MainDemo({ navigation }) {
   const convertToMinutes = (time) => {
     const hours = parseInt(time.slice(0,2), 10);
     const minutes = parseInt(time.slice(2), 10);
-    console.log(hours, '시', minutes, '분')
     return hours * 60 + minutes;
   };
 
@@ -273,7 +268,6 @@ export default function MainDemo({ navigation }) {
       endTime: parseInt(getTime()),
       totalWage: parseInt(totalWage)
     }
-    console.log(data);
     const response = await request.post('/history', {
       workspaceId: workSpace.workspaceId,
       workDt: workDt,
@@ -281,7 +275,6 @@ export default function MainDemo({ navigation }) {
       endTime: parseInt(getTime()),
       totalWage: parseInt(totalWage)
     })
-    console.log(response);
     const response_get = await request.get('/history')
     setWorkHistoryId(response_get.data[response_get.data.length-1].workHistoryId)
   }
@@ -325,8 +318,6 @@ export default function MainDemo({ navigation }) {
 
 
   const handleBusinessSelection = (business) => {
-    // setSelectedBusiness(business);
-    console.log(business)
     setSelectedBusiness(categories.indexOf(business))
   };
 

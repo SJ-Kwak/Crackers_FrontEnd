@@ -1,41 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// export async function setItem (key, value) {
-//   await AsyncStorage.setItem(key, JSON.stringify(value))
-// }
-
-// export async function getItem (key) {
-//   await AsyncStorage.getItem(key)
-// }
-
-// export async function removeItem (key) {
-//   await AsyncStorage.removeItem(key)
-// }
-
-// export async function setAccessToken (token) {
-//   await AsyncStorage.setItem('accessToken', JSON.stringify(token))
-// }
-
-// export async function getAccessToken () {
-//   await AsyncStorage.getItem('accessToken')
-// }
-
-// export async function removeAccessToken () {
-//   await AsyncStorage.removeItem('accessToken')
-// }
-
-// export async function setRefreshToken (token) {
-//   await AsyncStorage.setItem('refreshToken', JSON.stringify(token))
-// }
-
-// export async function getRefreshToken () {
-//   await AsyncStorage.getItem('refreshToken')
-// }
-
-// export async function removeRefreshToken () {
-//   await AsyncStorage.removeItem('refreshToken')
-// }
-
 const isEmpty = function (value) {
   if (value === '' || value === null || value === undefined || (value !== null && typeof value === 'object' && !Object.keys(value).length)) {
     return true;
@@ -54,13 +18,18 @@ export const getItemFromAsync = (storageName) => {
     AsyncStorage.getItem(storageName, (err, result) => {
       if (err) {
         reject(err);
+        return; // 오류 발생 시 함수 종료
       }
       
-      if (result === null) {
-        resolve(null);
+      try {
+        if (result === null) {
+          resolve(null);
+        } else {
+          resolve(JSON.parse(result));
+        }
+      } catch (error) {
+        reject(error); // JSON 파싱 오류 처리
       }
-      
-      resolve(JSON.parse(result));
     });
   });
 };
@@ -101,4 +70,8 @@ export const removeItemFromAsync = (storageName) => {
       resolve('remove Success');
     });
   });
+}
+
+export const clearItemsFromAsync = () => {
+  AsyncStorage.clear()
 }

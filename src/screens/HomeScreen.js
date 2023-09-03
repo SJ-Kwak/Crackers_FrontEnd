@@ -12,14 +12,22 @@ import {
   Pressable,
 } from "react-native";
 import { createStackNavigator } from '@react-navigation/stack';
-import LoginScreen from "./LoginScreen";
-import SignupScreen from "./SignupScreen";
+import { useState, useEffect, useContext, useCallback } from "react";
+import { getItemFromAsync } from "../api/storage";
 
 //import start_logo from "src/screens/start_logo.png";
 const Stack = createStackNavigator();
 const start_logo=require("../assets/logo.png");
 
-export default function HomeScreen({navigation}) {
+export default function HomeScreen ({navigation}) {
+  const [token, setToken] = useState(null)
+  useEffect(() => {
+    const checkLogin = async () => {
+      setToken(await getItemFromAsync('accessToken'))
+    }
+    checkLogin();
+    if(token) navigation.replace('Main')
+  })
   return (
   <Container>
     <Image 

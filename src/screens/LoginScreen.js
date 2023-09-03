@@ -53,7 +53,7 @@ export default function LoginScreen({ navigation }) {
       setItemToAsync('accessToken', response.data.accessToken)
       setItemToAsync('refreshToken', response.data.refreshToken)
       setItemToAsync('password', values.password)
-      navigation.navigate('Main')
+      navigation.replace('Main')
     } else {
       Alert.alert('로그인에 실패하셨습니다.')
     }

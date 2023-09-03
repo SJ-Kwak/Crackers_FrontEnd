@@ -17,7 +17,7 @@ import {
 import { useState, useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 //import useKeyboardHeight from "react-native-use-keyboard-height";
-import { getItemFromAsync, removeItemFromAsync } from "../api/storage";
+import { getItemFromAsync, removeItemFromAsync, clearItemsFromAsync } from "../api/storage";
 import { Request } from "../api/request";
 
 const Stack = createStackNavigator();
@@ -47,8 +47,7 @@ export default function SettingScreen({ navigation }) {
       refreshToken: await getItemFromAsync('refreshToken')
     })
     if (response.status == 200){
-      removeItemFromAsync('accessToken')
-      removeItemFromAsync('refreshToken')
+      clearItemsFromAsync();
       navigation.navigate('Home')
     } else {
       Alert.alert('로그아웃에 실패했습니다.')

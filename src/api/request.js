@@ -44,7 +44,7 @@ export class Request {
                     const response = await axios.post(
                         CRACKERS_API_URL + "/accounts/token/refresh",
                         {
-                            refresh: refreshToken,
+                            refreshToken: refreshToken,
                         },
                         {
                             headers: {
