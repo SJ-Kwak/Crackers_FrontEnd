@@ -79,10 +79,10 @@ export default function LoginScreen({ navigation }) {
         isSubmitting,
       }) => (
         <Wrapper>
+          <BackToHome onPress={() => navigation.goBack()}>
+            <BackIcon source={backIcon} />
+          </BackToHome>
           <FormContainer>
-            <BackToHome>
-              <BackIcon source={backIcon} />
-            </BackToHome>
             <View style={{ height: 120 }} />
             <Title>로그인</Title>
             <View style={{ height: 40 }} />
@@ -154,35 +154,31 @@ export default function LoginScreen({ navigation }) {
 const Wrapper = styled.View`
   background: white;
   flex: 1;
-  //paddingTop: 100,
   align-items: center;
-  //paddingHorizontal: 15,
 `;
 const FormContainer = styled.View`
   padding: 20px;
   width: 100%;
+  flex: 1;
 `;
 const BackToHome = styled.TouchableOpacity`
-  width: 40;
-  height: 40;
+  width: 60;
+  height: 60;
+  margin: 10px 0px;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
 `;
 const BackIcon = styled.Image`
-  position: absolute;
   width: 40;
   height: 40;
-  //left: 10,
-  top: 50;
 `;
 const Title = styled.Text`
-  position: absolute;
-  left: 5.13%;
-  right: 78.72%;
-  top: 140;
+  color: #202020;
   font-family: "Pretendard";
+  font-size: 20px;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
-  line-height: 29px;
   display: flex;
   align-items: center;
   color: #202020;
@@ -201,13 +197,6 @@ const InputWrapper = styled.View`
 
 const InputTxt = styled.TextInput`
   padding-bottom: 8px;
-  /*
-    borderBottomColor: values.email ? "#6100FF" : "#CCCCCC",
-    borderBottomWidth: values.email ? 2 : 1,
-    border-bottom-color: values.password
-        ? #6100FF
-        : #CCCCCC;
-    border-bottom-width: values.password ? 2 : 1;*/
 `;
 const ErrorTxt = styled.Text`
   padding-top: 5px;
@@ -217,16 +206,12 @@ const ErrorTxt = styled.Text`
 `;
 
 const SubmitBtn = styled.TouchableOpacity`
-  position: absolute;
-  //top: keyboardHeight;
-  //background-color: #395B64;
   width: 350;
   height: 44;
-  bottom: 52;
-  //padding: 10px;
   border-radius: 100;
   justify-content: center;
   align-items: center;
+  margin-bottom: 30px;
 `;
 
 const SubmitTxt = styled.Text`

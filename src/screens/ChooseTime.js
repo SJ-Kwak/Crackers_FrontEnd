@@ -208,7 +208,7 @@ const Days = styled.TouchableOpacity`
 
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: 180;
 
   background-color: ${(props) => (props.isTouched ? "#6100FF" : "#f5f5f5")};
 `;

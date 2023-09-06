@@ -56,108 +56,69 @@ export default function SettingScreen({ navigation }) {
 
   return (
     <Wrapper>
-      <BackToHome
-        onPress={() => {
-          navigation.goBack();
-        }}
-      >
+      <View style={{flexDirection: 'row', borderBottomColor: '#f5f5f5', borderBottomWidth: 1, height: 70, alignItems: 'flex-end'}}>
+      <BackToHome onPress={() => navigation.goBack()}>
         <Image source={backIcon} />
       </BackToHome>
       <Title>설정</Title>
-      <Bar style={{ top: 108 }} />
+      </View>
       <Menu
         onPress={() => {
           navigation.navigate("AdjNickname");
         }}
-        style={{ top: 124 }}
       >
         닉네임 수정하기
       </Menu>
-      <Bar style={{ top: 159 }} />
-      <Menu onPress={link2} style={{ top: 175 }}>
+      <Menu onPress={link2}>
         개인정보처리방침
       </Menu>
-      <Bar style={{ top: 210 }} />
-      <Menu onPress={link1} style={{ top: 226 }}>
+      <Menu onPress={link1}>
         서비스 이용약관
       </Menu>
-      <Bar style={{ top: 261 }} />
-      <Menu style={{ top: 277 }}>오픈 소스 라이선스</Menu>
-      <Bar style={{ top: 312 }} />
-      <Menu onPress={() => navigation.navigate('Withdraw')} style={{ top: 328 }}>회원 탈퇴하기</Menu>
-      <Bar style={{ top: 363 }} />
-      <Menu onPress={logout} style={{ top: 379 }}>로그아웃</Menu>
-      <Bar style={{ top: 414 }} />
+      <Menu onPress={() => {}}>오픈 소스 라이선스</Menu>
+      <Menu onPress={() => navigation.navigate('Withdraw')}>회원 탈퇴하기</Menu>
+      <Menu onPress={logout}>로그아웃</Menu>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.View`
-  background: white;
+  background-color: white;
   flex: 1;
-  //paddingTop: 100,
   align-items: center;
-  //paddingHorizontal: 15,
 `;
-const FormContainer = styled.View`
-  padding: 20px;
-  width: 100%;
-`;
+
 const BackToHome = styled.TouchableOpacity`
   position: absolute;
-  width: 20;
-  height: 40;
-  left: 10;
-  top: 50;
+  width: 60px;
+  height: 60px;
+  margin: 10px 0px;
+  align-items: center;
+  justify-content: center;
+  z-index: 1
 `;
-const Title = styled.Text`
-  position: absolute;
-  width: 32px;
-  height: 21px;
-  //left: 179px;
-  top: 60px;
 
+const Title = styled.Text`
   font-family: "Pretendard";
   font-style: normal;
   font-weight: 700;
   font-size: 18px;
-  line-height: 21px;
-  display: flex;
-  align-items: center;
   text-align: center;
-
-  /* black */
-
-  color: #1c1c1c;
+  flex: 1;
+  margin: 20px 0px;
 `;
 
 const Menu = styled.Text`
-  position: absolute;
-  //width: 101px;
-  height: 19px;
-  left: 24px;
-  //top: 124px;
-
+  width: 100%;
+  padding: 10px;
+  border-bottom-width: 1px;
+  border-color: #f5f5f5;
   font-family: "Pretendard";
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 19px;
-  /* identical to box height */
-
-  /* black */
-
-  color: #1c1c1c;
-`;
-const Bar = styled.View`
-  position: absolute;
-  width: 450px;
-  height: 0px;
-  //left: 0px;
-  //top: 108px;
+  padding: 15px;
   align-items: center;
-
-  /* gray4 */
-
-  border: 1px solid #f5f5f5;
+  color: #1c1c1c;
 `;
