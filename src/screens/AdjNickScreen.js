@@ -68,7 +68,7 @@ export default function AdjNickScreen({ navigation }) {
         isSubmitting,
       }) => (
         <Wrapper>
-          <BackToHome>
+          <BackToHome onPress={() => navigation.goBack()}>
             <BackIcon source={backIcon} />
           </BackToHome>
           <FormContainer>
@@ -131,17 +131,16 @@ const FormContainer = styled.View`
   width: 100%;
 `;
 const BackToHome = styled.TouchableOpacity`
-  position: absolute;
-  width: 20;
-  height: 40;
-  left: 10;
+  width: 60;
+  height: 60;
+  margin: 10px 0px;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
 `;
 const BackIcon = styled.Image`
-  position: absolute;
-  width: 20;
+  width: 40;
   height: 40;
-  left: 10;
-  top: 50;
 `;
 const Title = styled.Text`
   position: absolute;

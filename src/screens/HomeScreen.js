@@ -10,14 +10,15 @@ import {
   Button,
   SafeAreaView,
   Pressable,
+  Dimensions
 } from "react-native";
 import { createStackNavigator } from '@react-navigation/stack';
 import { useState, useEffect, useContext, useCallback } from "react";
 import { getItemFromAsync } from "../api/storage";
 
-//import start_logo from "src/screens/start_logo.png";
 const Stack = createStackNavigator();
 const start_logo=require("../assets/logo.png");
+const { width, height } = Dimensions.get('window')
 
 export default function HomeScreen ({navigation}) {
   const [token, setToken] = useState(null)
@@ -39,10 +40,11 @@ export default function HomeScreen ({navigation}) {
         //left: 115,
         top: 240,}}/>
     <SignUpbtn
-        onPress={()=>{navigation.navigate('Signup');}}/>
-    <SignUpTxt>회원가입</SignUpTxt>
+      onPress={()=>{navigation.navigate('Signup');}}>
+      <SignUpTxt>회원가입</SignUpTxt>
+    </SignUpbtn>
     <InnerContainer>
-      <AlreadyHas>이미 계정이 있나요?</AlreadyHas>
+      <AlreadyHas>이미 계정이 있나요? </AlreadyHas>
       <LoginBtn
         onPress={()=>{navigation.navigate('Login');}}>
         로그인
@@ -65,65 +67,40 @@ const Container2 = styled.View`
 
 const InnerContainer = styled.View`
   flex-direction: row;
-  //align-items: center;
+  justify-content: flex-end;
+  align-items: flex-end;
+  flex: 1;
+  margin-bottom: 15%
 `
 
 const SignUpbtn = styled.TouchableOpacity`
   position: absolute;
   width: 342;
   height: 44;
-  //left: 24;
-  bottom: 116;
+  bottom: 15%;
   background-color: #6100ff;
   border-radius: 100;
-  //align-items: center;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
 `;
 
 const SignUpTxt = styled.Text`
-  font-size: 16;
+  font-size: 16px;
   font-Weight: 600;
   color: white;
-  position: absolute;
-  width: 56;
-  height: 19;
-  //left: 167;
-  //top: 720;
-  bottom: 128;
-  align-items: center;
+  text-align: center;
 `
 
 const AlreadyHas = styled.Text`
-  position: absolute;
-  //width: 81;
-  //height: 11;
-  left: -18%;
-  top: 750;
+  align-self: flex-end;
   color: black;
-  font-size: 12;
+  font-size: 12px;
   font-weight: 400;
 `
 
 const LoginBtn = styled.Text`
-  position: absolute;
-  //width: 26;
-  //height: 12;
-  left: 7.5%;
-  top: 751;
   color: #6100FF;
-  font-size: 12;
+  font-size: 12px;
   font-Weight: 600;
 `
-
-
-// const styles = StyleSheet.create({
-// 	logo: {
-// 		position: "absolute",
-// 		width: 160,
-// 		height: 30.39,
-// 		left: 115,
-// 		top: 240,
-// 	},
-// 	signup: {
-
-// 	},
-// });

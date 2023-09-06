@@ -10,7 +10,6 @@ import SignupScreen from "./src/screens/SignupScreen";
 import TosScreen from "./src/screens/TosScreen";
 import NicknameScreen from "./src/screens/NicknameScreen";
 import LiquidScreen from "./src/screens/LiquidScreen";
-import MainScreen from "./src/screens/MainScreen"; 
 import CaroScreen from "./src/screens/CaroScreen";
 import MainDemo from "./src/screens/MainDemo";
 import SettingScreen from "./src/screens/SettingScreen";
