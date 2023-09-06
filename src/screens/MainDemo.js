@@ -167,7 +167,7 @@ export default function MainDemo({ navigation }) {
 
         setMainColor("#FFAF15");
         setStartBtnTxt("카드받기");
-        setStartTxt("오늘의 \n알바 완료!");
+        setStartTxt(" 오늘의 \n 알바 완료!");
       }
     } else {
       clearInterval(interval);
@@ -186,7 +186,7 @@ export default function MainDemo({ navigation }) {
         setRunning2(false);
         setMainColor("#FFAF15");
         setStartBtnTxt("카드받기");
-        setStartTxt("오늘의 \n알바 완료!");
+        setStartTxt(" 오늘의 \n 알바 완료!");
       }
     } else {
       clearInterval(interval);
@@ -444,7 +444,7 @@ export default function MainDemo({ navigation }) {
           ]}
         />
       </TouchableOpacity>
-      <View style={styles.circle1}>
+      <View style={[styles.circle1, { top: "1%" }]}>
         <View style={[styles.circleFill1, { height: "100%" }]} />
 
         {circlePo == -50 ? (
@@ -619,9 +619,7 @@ export default function MainDemo({ navigation }) {
                 </View>
                 <DayListContainer>{daysList}</DayListContainer>
                 <TimePick>
-                  <Text disabled={!isTouched} style={{ top: 10 }}>
-                    시작
-                  </Text>
+                {selectedDayIndex.length > 0 && <Text style={{ top: 10 }}>시작</Text>}
                   {selectedDayIndex.length > 0 && (
                     <DatePickerContainer>
                       <DatePicker
@@ -662,7 +660,7 @@ export default function MainDemo({ navigation }) {
                     </DatePickerContainer>
                   )}
                   <View style={{ width: 10 }} />
-                  <Text style={{ top: 10 }}>종료</Text>
+                  {selectedDayIndex.length > 0 && <Text style={{ top: 10 }}>종료</Text>}
                   {selectedDayIndex.length > 0 && (
                     <DatePickerContainer>
                       <DatePicker
@@ -964,10 +962,10 @@ const styles = StyleSheet.create({
 });
 
 const AlbaFrame = styled.View`
-  position: absolute;
+  //position: absolute;
   // width: fit-content;
   height: 38px;
-  top: 78px;
+  top: -7%;
   //background: #FFFFFF;
   border: 1px solid #b0b0b0;
   border-radius: 30px;
@@ -978,7 +976,7 @@ const AlbaFrame = styled.View`
 `;
 
 const AlbaTxt = styled.Text`
-  position: absolute;
+  //position: absolute;
   //width: 42px;
   //height: 19px;
   //top: 88px;
@@ -993,11 +991,11 @@ const AlbaTxt = styled.Text`
   color: #1c1c1c;
 `;
 const StartTxt = styled.Text`
-  position: absolute;
+  //position: absolute;
   //width: 131px;
   height: 108px;
-  left: 20px;
-  top: 148px;
+  left: -35%;
+  top:-3%;
   font-family: "Pretendard";
   font-style: normal;
   font-weight: 600;
@@ -1006,20 +1004,20 @@ const StartTxt = styled.Text`
 `;
 const StartBtn = styled.TouchableOpacity`
   background-color: #6100ff;
-  position: absolute;
+  //position: absolute;
   width: 290;
   height: 52;
-  top: 88%;
+  top: 15%;
   padding: 10px;
   border-radius: 100;
   justify-content: center;
 `;
 const AdjustBtn = styled.TouchableOpacity`
   //background-color: #395B64;
-  position: absolute;
+  //position: absolute;
   width: 290;
   height: 52;
-  top: 80%;
+  top: 14%;
   padding: 10px;
   border-radius: 100;
   justify-content: center;
@@ -1031,12 +1029,12 @@ const SubmitTxt = styled.Text`
   font-weight: 400;
 `;
 const SettingBtn = styled.TouchableOpacity`
-  position: absolute;
+  //position: absolute;
   width: 40px;
   height: 40px;
   //left: 340px;
-  right: 10px;
-  top: 50px;
+  right: -43%;
+  top: -73%;
 `;
 
 const Days = styled.TouchableOpacity`
