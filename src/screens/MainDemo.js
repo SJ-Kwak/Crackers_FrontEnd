@@ -430,7 +430,7 @@ export default function MainDemo({ navigation }) {
       </AlbaFrame>
       <StartTxt>{startTxt}</StartTxt>
       <TouchableOpacity
-        style={[styles.circle2, { left: circlePo, borderColor: mainColor }]}
+        style={[styles.circle2, { left: circlePo, borderColor: mainColor, top: "35%" }]}
         //onPress={()=>{scrollPosition.x>-100 ? scrollToRight : scrollToLeft}}
         onPress={() => {
           circlePo == -50 ? setCirclePo(200) : setCirclePo(-50);
@@ -890,10 +890,11 @@ const styles = StyleSheet.create({
     //left: -200,s
     //top: 278,
     //bottom: 278,
-    shadowOffset: { width: 1, height: 1 },
-    shadowOpacity: 1,
-    shadowColor: "#BDBDBD",
-    shadowRadius: 7,
+    //shadowOffset: { width: 1, height: 1 },
+    //shadowOpacity: 1,
+    //shadowColor: "#BDBDBD",
+    //shadowRadius: 7,
+    //elevation: 5,
     backgroundColor: "white",
   },
   circle2: {
