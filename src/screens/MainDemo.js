@@ -6,6 +6,7 @@ import LiquidProgress from "react-native-liquid-progress";
 import Swiper from "react-native-swiper";
 import { Display2 } from "../static/text.js";
 import DatePicker from "react-native-datepicker";
+// import DateTimePicker from '@react-native-community/datetimepicker';
 
 import {
   Alert,
@@ -22,6 +23,7 @@ import {
   Animated,
   ScrollView,
   Modal,
+  Dimensions
 } from "react-native";
 import { useState, useContext, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
@@ -31,6 +33,7 @@ import { getItemFromAsync } from "../api/storage.js";
 
 const Stack = createStackNavigator();
 const settingBtn = require("../assets/tch_btnSettings.png");
+const { width, height } = Dimensions.get('window')
 
 const days = ["월", "화", "수", "목", "금", "토", "일"];
 const categories = ['카페∙베이커리', '편의점', '레스토랑', '학원∙과외', '배달', '물류∙포장', '공연∙전시스탭', '기타']
@@ -44,7 +47,7 @@ export default function MainDemo({ navigation }) {
   const [circlePo, setCirclePo] = useState(-50);
   const [circleTouched, setCircleTouched] = useState(false);
   const [mainColor, setMainColor] = useState("#6100FF");
-  const [duringTime, setDuringTime] = useState(10);
+  const [duringTime, setDuringTime] = useState(10); // 소요시간
   const [startTxt, setStartTxt] = useState("");
   const [workSpace, setWorkSpace] = useState([])
   const [schedule, setSchedule] = useState([])
@@ -75,6 +78,7 @@ export default function MainDemo({ navigation }) {
   const getWorkSpace = async () => {
     const response = await request.get('/workspaces');
     setWorkSpace(response.data[0])
+    setDuringTime(((response.data[0].schedules[0].endTime - response.data[0].schedules[0].startTime) / 100) * 60);
     let _schedule = response.data[0].schedules.map(schedule => schedule.day)
     const defaultSelectedDays = days.reduce((acc, day, index) => {
       if (_schedule.includes(day)) {
@@ -97,6 +101,7 @@ export default function MainDemo({ navigation }) {
   useEffect(() => {
     getUserInfo(); 
     getWorkSpace();
+    console.error(duringTime)
   }, [modalVisible])
 
   const [workDt, setWorkDt] = useState('')
@@ -253,6 +258,7 @@ export default function MainDemo({ navigation }) {
   // ));
 
   const [workHistoryId, setWorkHistoryId] = useState(0);
+  const [totalTime, setTotalTime] = useState(0);
   const createWorkHistory = async () => {
 
     const startMinutes = convertToMinutes(startTime);
@@ -260,14 +266,8 @@ export default function MainDemo({ navigation }) {
 
     // 임금 계산
     const totalHours = (endMinutes - startMinutes) / 60;
+    setTotalTime(totalHours);
     const totalWage = totalHours * workSpace.wage;
-    const data = {
-      workspaceId: workSpace.workspaceId,
-      workDt: workDt,
-      startTime: parseInt(startTime),
-      endTime: parseInt(getTime()),
-      totalWage: parseInt(totalWage)
-    }
     const response = await request.post('/history', {
       workspaceId: workSpace.workspaceId,
       workDt: workDt,
@@ -307,7 +307,7 @@ export default function MainDemo({ navigation }) {
       randNum: Math.floor(Math.random() * 9) + 1
     })
     if(response.status === 200) {
-      navigation.navigate('Card')
+      navigation.navigate('Card', { hours: totalTime })
     }
   }
 
@@ -430,7 +430,7 @@ export default function MainDemo({ navigation }) {
       </AlbaFrame>
       <StartTxt>{startTxt}</StartTxt>
       <TouchableOpacity
-        style={[styles.circle2, { left: circlePo, borderColor: mainColor, top: "35%" }]}
+        style={[styles.circle2, { left: circlePo, borderColor: mainColor, top: "37%" }]}
         //onPress={()=>{scrollPosition.x>-100 ? scrollToRight : scrollToLeft}}
         onPress={() => {
           circlePo == -50 ? setCirclePo(200) : setCirclePo(-50);
@@ -561,13 +561,12 @@ export default function MainDemo({ navigation }) {
               <View
                 style={{
                   backgroundColor: "white",
-                  padding: 15,
                   width: 390,
                   height: 700,
                   borderRadius: 10,
                 }}
               >
-                <View style={{ flexDirection: "row", marginBottom: 20 }}>
+                <View style={{ flexDirection: "row", marginBottom: 20, padding: 15 }}>
                   <TouchableOpacity onPressOut={closeModal}>
                     <Image source={erase} />
                   </TouchableOpacity>
@@ -588,13 +587,12 @@ export default function MainDemo({ navigation }) {
                   value={name}
                   onChangeText={setName}
                 />
+                <View style={{borderBottomWidth: 1, borderBottomColor: '#f5f5f5', width: width}} />
                 <View
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
-                    borderTopWidth: 0.17,
-                    borderBottomWidth: 0.17,
-                    borderColor: "lightgray",
+                    padding: 15
                   }}
                 >
                   <Image
@@ -602,16 +600,13 @@ export default function MainDemo({ navigation }) {
                     style={{
                       width: 20,
                       height: 20,
-                      marginBottom: 17,
-                      marginTop: 17,
+                      marginTop: 3
                     }}
                   />
                   <Text
                     style={{
                       fontSize: 16,
                       marginLeft: 10,
-                      marginBottom: 17,
-                      marginTop: 17,
                     }}
                   >
                     일정
@@ -700,14 +695,14 @@ export default function MainDemo({ navigation }) {
                     </DatePickerContainer>
                   )}
                 </TimePick>
+                <View style={{borderBottomWidth: 1, borderBottomColor: '#f5f5f5', width: width, marginTop: 20}} />
                 <View
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
-                    marginTop: 30,
-                    borderTopWidth: 0.17,
-                    borderBottomWidth: 0.17,
-                    borderColor: "lightgray",
+                    paddingHorizontal: 15,
+                    height: 55,
+                    borderColor: "#f5f5f5",
                   }}
                 >
                   <Image
@@ -715,16 +710,13 @@ export default function MainDemo({ navigation }) {
                     style={{
                       width: 20,
                       height: 20,
-                      marginTop: 17,
-                      marginBottom: 17,
+                      marginTop: 3
                     }}
                   />
                   <Text
                     style={{
                       fontSize: 16,
                       marginLeft: 10,
-                      marginTop: 17,
-                      marginBottom: 17,
                     }}
                   >
                     업종
@@ -734,8 +726,6 @@ export default function MainDemo({ navigation }) {
                       fontSize: 16,
                       color: "gray",
                       marginLeft: 10,
-                      marginTop: 17,
-                      marginBottom: 17,
                       flex: 1
                     }}
                   >
@@ -752,12 +742,13 @@ export default function MainDemo({ navigation }) {
                     />
                   </TouchableOpacity>
                 </View>
+                <View style={{borderBottomWidth: 1, borderBottomColor: '#f5f5f5', width: width}} />
                 <View
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
-                    borderBottomWidth: 0.17,
-                    borderColor: "lightgray",
+                    height: 55,
+                    paddingHorizontal: 15
                   }}
                 >
                   <Image
@@ -765,16 +756,13 @@ export default function MainDemo({ navigation }) {
                     style={{
                       width: 20,
                       height: 20,
-                      marginTop: 17,
-                      marginBottom: 17,
+                      marginTop: 3
                     }}
                   />
                   <Text
                     style={{
                       fontSize: 16,
                       marginLeft: 10,
-                      marginTop: 17,
-                      marginBottom: 17,
                     }}
                   >
                     시급
@@ -784,13 +772,13 @@ export default function MainDemo({ navigation }) {
                       fontSize: 16,
                       color: "gray",
                       marginLeft: 10,
-                      marginTop: 17,
-                      marginBottom: 17,
+                      marginTop: 3
                     }}
                     value={wage.toString()}
                     onChangeText={setWage}
                   />
                 </View>
+                <View style={{borderBottomWidth: 1, borderBottomColor: '#f5f5f5', width: width}} />
               </View>
             </View>
           </View>
@@ -892,7 +880,7 @@ const styles = StyleSheet.create({
     //shadowOpacity: 1,
     //shadowColor: "#BDBDBD",
     //shadowRadius: 7,
-    //elevation: 5,
+    elevation: 5,
     backgroundColor: "white",
   },
   circle2: {
@@ -969,10 +957,11 @@ const AlbaFrame = styled.View`
   //background: #FFFFFF;
   border: 1px solid #b0b0b0;
   border-radius: 30px;
-  padding: 10px;
+  padding: 5px;
   padding-left: 15px;
   padding-right: 15px;
   align-items: center;
+  justify-content: center;
 `;
 
 const AlbaTxt = styled.Text`
@@ -984,7 +973,7 @@ const AlbaTxt = styled.Text`
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
-  line-height: 19px;
+  // line-height: 19px;
   //display: flex;
   //align-items: center;
   //text-align: center;
@@ -992,9 +981,9 @@ const AlbaTxt = styled.Text`
 `;
 const StartTxt = styled.Text`
   //position: absolute;
-  //width: 131px;
+  width: 100%;
   height: 108px;
-  left: -35%;
+  left: 5%;
   top:-3%;
   font-family: "Pretendard";
   font-style: normal;
@@ -1009,7 +998,7 @@ const StartBtn = styled.TouchableOpacity`
   height: 52;
   top: 15%;
   padding: 10px;
-  border-radius: 100;
+  border-radius: 100px;
   justify-content: center;
 `;
 const AdjustBtn = styled.TouchableOpacity`
@@ -1019,7 +1008,7 @@ const AdjustBtn = styled.TouchableOpacity`
   height: 52;
   top: 14%;
   padding: 10px;
-  border-radius: 100;
+  border-radius: 100px;
   justify-content: center;
 `;
 const SubmitTxt = styled.Text`
@@ -1029,12 +1018,12 @@ const SubmitTxt = styled.Text`
   font-weight: 400;
 `;
 const SettingBtn = styled.TouchableOpacity`
-  //position: absolute;
+  position: absolute;
+  top: 30px;
+  right: 10px;
   width: 40px;
   height: 40px;
-  //left: 340px;
-  right: -43%;
-  top: -73%;
+  align-self: flex-end;
 `;
 
 const Days = styled.TouchableOpacity`
@@ -1044,7 +1033,7 @@ const Days = styled.TouchableOpacity`
 
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: 180px;
 
   background-color: ${(props) => (props.isTouched ? "#6100FF" : "#f5f5f5")};
 `;
@@ -1060,7 +1049,7 @@ const DayListContainer = styled.View`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 30px;
+  margin-top: 20px;
   margin-bottom: 10px;
   margin-left: 20;
   margin-right: 20;
