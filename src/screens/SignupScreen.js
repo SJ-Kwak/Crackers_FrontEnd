@@ -31,7 +31,9 @@ const Stack = createStackNavigator();
 const backIcon = require("../assets/tch_btnBack.png");
 
 const signupSchema = yup.object().shape({
-  email: yup.string().matches(/\d/, "영문, 숫자를 모두 포함하여 입력해주세요"),
+  email: yup
+    .string()
+    .matches(/\d/, "영문, 숫자를 모두 포함하여 입력해주세요"),
   password: yup
     .string()
     .matches(/\d/, "영문, 숫자를 모두 포함하여 입력해주세요"),
@@ -108,9 +110,9 @@ export default function SignupScreen({ navigation }) {
             >
               <Image source={backIcon} />
             </BackToHome>
-            <View style={{ height: 120 }} />
+            <View style={{ height: "25%" }} />
             <Title>회원가입</Title>
-            <View style={{ height: 40 }} />
+            <View style={{ height: "10%" }} />
             <SubTitle>아이디</SubTitle>
             <View style={{ height: 18 }} />
             <InputWrapper>
@@ -118,7 +120,7 @@ export default function SignupScreen({ navigation }) {
                 <InputTxt
                   style={{
                     //position: "absolute",
-                    width: 270,
+                    width: "70%",
                     borderBottomColor: values.email
                       ? !errors.email
                         ? "#6100FF"
@@ -180,6 +182,7 @@ export default function SignupScreen({ navigation }) {
                   </CheckTxt>
                 </CheckBtn>
               </View>
+              {errors.email && <ErrorTxt>{errors.email}</ErrorTxt>}
               {isEmailTaken && <ErrorTxt>사용할 수 없는 아이디입니다</ErrorTxt>}
               {submit == 1 && !isEmailTaken && (
                 <NoErrorTxt>사용 가능한 아이디입니다</NoErrorTxt>
@@ -284,6 +287,7 @@ export default function SignupScreen({ navigation }) {
 const Wrapper = styled.View`
   background: white;
   flex: 1;
+  height: 100%;
   //paddingTop: 100,
   align-items: center;
   //paddingHorizontal: 15,
@@ -293,24 +297,16 @@ const FormContainer = styled.View`
   width: 100%;
 `;
 const BackToHome = styled.TouchableOpacity`
-  //position: absolute;
+  position: absolute;
   width: 40px;
   height: 40px;
-  left: -10px;
-  top: 30px;
-`;
-const BackIcon = styled.Image`
-  position: absolute;
-  width: 40;
-  height: 40;
-  //left: 10,
-  top: 50;
+  left: 2%;
+  top: 10%;
 `;
 const Title = styled.Text`
   position: absolute;
-  left: 5.13%;
-  right: 78.72%;
-  top: 150;
+  top: 25%;
+  left: 5%;
   font-family: "Pretendard";
   font-style: normal;
   font-weight: 600;
@@ -323,6 +319,7 @@ const Title = styled.Text`
 
 const SubTitle = styled.Text`
   //position: absolute;
+  //top: 40%;
   color: #606060;
   font-size: 14;
   font-weight: 400;
@@ -343,23 +340,23 @@ const InputTxt = styled.TextInput`
     border-bottom-width: values.password ? 2 : 1;*/
 `;
 const ErrorTxt = styled.Text`
-  position: absolute;
-  padding-top: 35px;
+  //position: absolute;
+  padding-top: 3%;
   font-size: 10;
   color: #ff2626;
   //right: "5.13%",
 `;
 
 const NoErrorTxt = styled.Text`
-  position: absolute;
-  padding-top: 35px;
+  //position: absolute;
+  padding-top: 3%;
   font-size: 10;
   color: #6100ff;
   //right: "5.13%",
 `;
 
 const SubmitBtn = styled.TouchableOpacity`
-  position: absolute;
+  //position: absolute;
   //top: keyboardHeight;
   //background-color: #395B64;
   width: 350;
@@ -379,7 +376,7 @@ const SubmitTxt = styled.Text`
 `;
 
 const CheckBtn = styled.TouchableOpacity`
-  position: absolute;
+  //position: absolute;
   left: 80%;
   background-color: #cccccc;
   width: 81;
@@ -407,12 +404,12 @@ const EraseAll2 = styled.TouchableOpacity`
   left: 93.72%;
   //right: 5.13%;
   //top: 40.64%;
-  bottom: 10.52%;
+  //bottom: 10.52%;
 `;
 const EraseAll3 = styled.TouchableOpacity`
   position: absolute;
   left: 93.72%;
   //right: 5.13%;
   //top: 50.83%;
-  bottom: 10.52%;
+  //bottom: 10.52%;
 `;
