@@ -273,7 +273,7 @@ const NextBtnContainer = styled.TouchableOpacity`
   justify-content: flex-end;
   align-items: flex-end;
   left: 85%;
-  top: 752px;
+  bottom: -90%;
   width: 40px;
   height: 40px;
 `;
@@ -286,7 +286,7 @@ const BackBtnContainer = styled.TouchableOpacity`
   justify-content: flex-end;
   align-items: flex-end;
   left: 72%;
-  top: 752px;
+  bottom: -90%;
   width: 40px;
   height: 40px;
 `;
