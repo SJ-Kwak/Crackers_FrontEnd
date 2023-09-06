@@ -3,6 +3,7 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import styled from "styled-components/native";
 import { Display2 } from "../static/text.js";
 import DatePicker from "react-native-datepicker";
+import { Dimensions } from "react-native";
 
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -10,6 +11,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { setItemToAsync } from "../api/storage.js";
 
 const Stack = createStackNavigator();
+const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
 
 const days = ["월", "화", "수", "목", "금", "토", "일"];
 
@@ -98,7 +101,7 @@ export default function ChooseTime({ navigation }) {
         <Display2>알바 시간 정하기</Display2>
         <DayListContainer>{daysList}</DayListContainer>
         <TimePick>
-          {start && <Text style={{ top: 15 }}>시작</Text>}
+          {selectedDayIndex.length > 0 && <Text style={{ top: 15 }}>시작</Text>}
           {selectedDayIndex.length > 0 && (
             <DatePickerContainer>
               <DatePicker
@@ -140,7 +143,7 @@ export default function ChooseTime({ navigation }) {
           )}
         </TimePick>
         <TimePick>
-          {start && <Text style={{ top: 15 }}>종료</Text>}
+          {selectedDayIndex.length > 0 && <Text style={{ top: 15 }}>종료</Text>}
           {selectedDayIndex.length > 0 && (
             <DatePickerContainer>
               <DatePicker
@@ -191,7 +194,7 @@ export default function ChooseTime({ navigation }) {
       >
         <Image
           style={{ height: 40, width: 40 }}
-          source={start ? NextBtn : NextBtnGray}
+          source={selectedDayIndex.length > 0 ? NextBtn : NextBtnGray}
         />
       </NextBtnContainer>
       <BackBtnContainer onPress={() => navigation.navigate("ChooseJob")}>
@@ -272,8 +275,8 @@ const NextBtnContainer = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: flex-end;
   align-items: flex-end;
-  left: 85%;
-  bottom: -90%;
+  left: ${windowWidth * 0.85};
+  top: ${windowHeight * 0.9};
   width: 40px;
   height: 40px;
 `;
@@ -285,8 +288,8 @@ const BackBtnContainer = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: flex-end;
   align-items: flex-end;
-  left: 72%;
-  bottom: -90%;
+  left: ${windowWidth * 0.72};
+  top: ${windowHeight * 0.9};
   width: 40px;
   height: 40px;
 `;

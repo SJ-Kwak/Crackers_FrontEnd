@@ -7,6 +7,7 @@ import React, {
 import { useState } from "react";
 import styled from "styled-components/native";
 import { Caption1, Display2 } from "../static/text.js";
+import { Dimensions } from "react-native";
 
 import { createStackNavigator } from "@react-navigation/stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -21,6 +22,8 @@ import axios from "axios";
 import { updateAdditionalInfo } from "../api/auth";
 
 const Stack = createStackNavigator();
+const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
 const checked = require("../assets/tch_icnTxtCheck.png");
 
 const signupSchema = yup.object().shape({
@@ -190,8 +193,8 @@ const NextBtnContainer = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: flex-end;
   align-items: flex-end;
-  left: 85%;
-  top: 262%;
+  left: ${windowWidth * 0.85};
+  top: ${windowHeight * 0.9};
   width: 40px;
   height: 40px;
 `;
@@ -203,8 +206,8 @@ const BackBtnContainer = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: flex-end;
   align-items: flex-end;
-  left: 72%;
-  top: 262%;
+  left: ${windowWidth * 0.72};
+  top: ${windowHeight * 0.9};
   width: 40px;
   height: 40px;
 `;
