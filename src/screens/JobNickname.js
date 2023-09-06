@@ -1,6 +1,7 @@
 import React, { Image, View, useState } from "react-native";
 import styled from "styled-components/native";
 import { Display2, Caption1 } from "../static/text.js";
+import { Dimensions } from "react-native";
 
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -12,6 +13,9 @@ import { Request } from "../api/request.js";
 import { setItemToAsync } from "../api/storage.js";
 
 const Stack = createStackNavigator();
+const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
+
 
 export default function JobNickname({ navigation }) {
   //const [userdata, setUserData] = useState({ jobNickname: ""});
@@ -84,7 +88,9 @@ export default function JobNickname({ navigation }) {
             />
           </NicknameInputContainer>
           <NextBtnContainer
-            onPress={() => setItem(values)}
+            onPress={() => 
+              {console.log(windowHeight)
+              setItem(values)}}
           >
             <Image
               style={{ height: 40, width: 40 }}
@@ -140,13 +146,13 @@ const NextBtn = require("../assets/onBoarding/Nextbtn.png");
 const NextBtnGray = require("../assets/onBoarding/NextbtnGray.png");
 
 const NextBtnContainer = styled.TouchableOpacity`
- //position: absolute;
+  position: absolute;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   align-items: flex-end;
-  left: 105%;
-  top: 110%;
+  left: ${windowWidth * 0.85};
+  top: ${windowHeight * 0.9};
   width: 40px;
   height: 40px;
 `;

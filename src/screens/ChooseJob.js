@@ -2,6 +2,7 @@ import React, { View, Text, Image, TouchableOpacity } from "react-native";
 import styled from "styled-components";
 import { Display2 } from "../static/text.js";
 import { useState } from "react";
+import { Dimensions } from "react-native";
 
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -13,6 +14,8 @@ import { API_URL, updateAdditionalInfo } from "../api/auth";
 import { setItemToAsync } from "../api/storage.js";
 
 const Stack = createStackNavigator();
+const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
 
 const JOB_DATA = [
   "카페 베이커리",
@@ -229,8 +232,8 @@ const NextBtnContainer = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: flex-end;
   align-items: flex-end;
-  left: 85%;
-  top: 110%;
+  left: ${windowWidth * 0.85};
+  top: ${windowHeight * 0.9};
   width: 40px;
   height: 40px;
 `;
@@ -242,8 +245,8 @@ const BackBtnContainer = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: flex-end;
   align-items: flex-end;
-  left: 72%;
-  top: 110%;
+  left: ${windowWidth * 0.72};
+  top: ${windowHeight * 0.9};
   width: 40px;
   height: 40px;
 `;
