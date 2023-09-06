@@ -53,11 +53,11 @@ const tempCard = require("../assets/cards/Haedal.png");
 
 }*/
 
-const CardScreen = ({ navigation }) => {
+const CardScreen = ({ navigation, route }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       // 화면 전환 코드 작성
-      navigation.navigate("CardPick");
+      navigation.navigate("CardPick", { hours: route.params.hours});
       /*return (
         <View style={{flex: 1, backgroundColor: "white"}}>
             <Image

@@ -90,9 +90,9 @@ export default function NicknameScreen({ navigation, route }) {
           </BackToHome>
           <FormContainer>
             <Title>닉네임 짓기</Title>
-            <View style={{ height: 200 }} />
+            <View style={{ marginTop: 50 }} />
             <SubTitle>닉네임</SubTitle>
-            <View style={{ height: 18 }} />
+            <View style={{ marginTop: 10}} />
             <InputWrapper>
               <InputTxt
                 style={{
@@ -161,23 +161,19 @@ const FormContainer = styled.View`
   width: 100%;
 `;
 const BackToHome = styled.TouchableOpacity`
-  position: absolute;
-  width: 20;
-  height: 40;
-  left: 10;
+  width: 60;
+  height: 60;
+  margin: 10px 0px;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  z-index: 1;
 `;
 const BackIcon = styled.Image`
-  position: absolute;
-  width: 20;
+  width: 40;
   height: 40;
-  left: 10;
-  top: 50;
 `;
 const Title = styled.Text`
-  position: absolute;
-  left: 5.13%;
-  //right: 78.72%;
-  top: 140;
   font-family: "Pretendard";
   font-style: normal;
   font-weight: 600;

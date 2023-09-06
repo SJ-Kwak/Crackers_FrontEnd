@@ -15,6 +15,7 @@ import {
   Keyboard,
   SafeAreaView,
   Pressable,
+  Dimensions
 } from "react-native";
 import { useState, useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -41,6 +42,8 @@ const signupSchema = yup.object().shape({
     .string()
     .oneOf([yup.ref("password")], "비밀번호가 일치하지 않습니다"),
 });
+
+const { width, height } = Dimensions.get('window');
 
 export default function SignupScreen({ navigation }) {
   const [under, setUnder] = useState("#CCCCCC");
@@ -110,9 +113,9 @@ export default function SignupScreen({ navigation }) {
             >
               <Image source={backIcon} />
             </BackToHome>
-            <View style={{ height: "25%" }} />
+            <View style={{ marginTop: height * 0.1 }} />
             <Title>회원가입</Title>
-            <View style={{ height: "10%" }} />
+            <View style={{ marginTop: 50 }} />
             <SubTitle>아이디</SubTitle>
             <View style={{ height: 18 }} />
             <InputWrapper>
@@ -166,7 +169,6 @@ export default function SignupScreen({ navigation }) {
                         ? "white"
                         : "#CCCCCC"
                       : "#CCCCCC",
-                    paddingBottom: 10,
                   }}
                 >
                   <CheckTxt
@@ -188,7 +190,7 @@ export default function SignupScreen({ navigation }) {
                 <NoErrorTxt>사용 가능한 아이디입니다</NoErrorTxt>
               )}
             </InputWrapper>
-            <View style={{ height: 40 }} />
+            <View style={{ height: 30 }} />
             <SubTitle>비밀번호</SubTitle>
             <View style={{ height: 18 }} />
             <InputWrapper>
@@ -269,9 +271,7 @@ export default function SignupScreen({ navigation }) {
               backgroundColor:
                 isValid && values.email && values.password && values.pwCheck
                   ? "#6100FF"
-                  : "white",
-              //flex: 1,
-              //justifyContent: "flex-end",
+                  : "white",         
             }}
             onPress={setSignupInfo}
             disabled={!isValid}
@@ -295,18 +295,18 @@ const Wrapper = styled.View`
 const FormContainer = styled.View`
   padding: 20px;
   width: 100%;
+  flex: 1
 `;
 const BackToHome = styled.TouchableOpacity`
   position: absolute;
-  width: 40px;
-  height: 40px;
-  left: 2%;
-  top: 10%;
+  width: 60px;
+  height: 60px;
+  margin: 10px 0px;
+  align-items: center;
+  justify-content: center;
+  z-index: 1
 `;
 const Title = styled.Text`
-  position: absolute;
-  top: 25%;
-  left: 5%;
   font-family: "Pretendard";
   font-style: normal;
   font-weight: 600;
@@ -318,8 +318,6 @@ const Title = styled.Text`
 `;
 
 const SubTitle = styled.Text`
-  //position: absolute;
-  //top: 40%;
   color: #606060;
   font-size: 14;
   font-weight: 400;
@@ -381,15 +379,15 @@ const CheckBtn = styled.TouchableOpacity`
   background-color: #cccccc;
   width: 81;
   height: 33;
-  //padding-bottom: 10px;
   border-radius: 100;
+  justify-content: center;
 `;
 
 const CheckTxt = styled.Text`
   text-align: center;
-  font-size: 14;
+  font-size: 14px;
   font-weight: 400;
-  padding-top: 8px;
+  line-height: 20px;
 `;
 
 const EraseAll = styled.TouchableOpacity`

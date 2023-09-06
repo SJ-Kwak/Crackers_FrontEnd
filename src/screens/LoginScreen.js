@@ -83,7 +83,7 @@ export default function LoginScreen({ navigation }) {
             <BackIcon source={backIcon} />
           </BackToHome>
           <FormContainer>
-            <View style={{ height: 120 }} />
+            <View style={{ height: 40 }} />
             <Title>로그인</Title>
             <View style={{ height: 40 }} />
             <SubTitle>아이디</SubTitle>

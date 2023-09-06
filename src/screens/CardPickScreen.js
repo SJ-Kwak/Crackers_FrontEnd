@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Image, TouchableOpacity, Text } from "react-native";
+import { View, Image, TouchableOpacity, Text, ImageBackground } from "react-native";
 
 import { createStackNavigator } from "@react-navigation/stack";
 import { Request } from "../api/request";
 
 const Stack = createStackNavigator();
 
-export default function CardPickScreen({ navigation }) {
+export default function CardPickScreen({ navigation, route }) {
   const cards = [
     { name: '아보카도가', source: require("../assets/cards/Abocado.png") },
     { name: '개미가', source: require("../assets/cards/Ant.png") },
@@ -24,7 +24,7 @@ export default function CardPickScreen({ navigation }) {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [index, setIndex] = useState(0);
   const [times, setTimes] = useState('');
-  const [workTime, setWorkTime] = useState("n시간");
+  const [workTime, setWorkTime] = useState(route.params.hours+'시간');
   const xBtn = require("../assets/tch_btnX.png");
   const request = new Request();
   const [firstWord, setFirstWord] = useState('')
@@ -58,6 +58,7 @@ export default function CardPickScreen({ navigation }) {
 
   useEffect(() => {
     getCard()
+    console.error(selectedPhoto);
   }, [])
 
   const handleRandomPhoto = () => {
@@ -113,15 +114,15 @@ export default function CardPickScreen({ navigation }) {
           marginTop: "10%",
         }}
       >
-        {workTime + "일하는 동안..."}
+        {workTime + " 일하는 동안..."}
       </Text>
       <View style={{ marginTop: "7%", flex: 1, width: "100%" }}>
         {selectedPhoto && <Image source={selectedPhoto} resizeMode="cover" />}
         <Text
           style={{
             position: "absolute",
-            top: 142,
-            left: "24%",
+            top: 140,
+            left: "20%",
             fontSize: 24,
             fontWeight: 600,
             color: "#6100FF",
