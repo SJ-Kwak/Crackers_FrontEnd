@@ -27,8 +27,8 @@ const signupSchema = yup.object().shape({
   money: yup
     .number("금액을 입력해주세요")
     .required("시급을 입력해주세요")
-    .max(500000, "500,000원 미만으로 입력해주세요"),
-  //.matches(/\d/, "영문과 숫자를 입력해주세요"),
+    .max(500000, "500,000원 미만으로 입력해주세요")
+    //.matches(/\d/, "영문과 숫자를 입력해주세요"),
 });
 
 const DismissKeyboard = ({ children }) => (
@@ -191,7 +191,7 @@ const NextBtnContainer = styled.TouchableOpacity`
   justify-content: flex-end;
   align-items: flex-end;
   left: 85%;
-  top: 752px;
+  top: 262%;
   width: 40px;
   height: 40px;
 `;
@@ -204,7 +204,7 @@ const BackBtnContainer = styled.TouchableOpacity`
   justify-content: flex-end;
   align-items: flex-end;
   left: 72%;
-  top: 752px;
+  top: 262%;
   width: 40px;
   height: 40px;
 `;

@@ -119,12 +119,13 @@ const MainContainer = styled.View`
 `;
 
 const NicknameInputContainer = styled.View`
-  margin: 18px 20px;
+  margin: 10px 20px;
+  height: 40px;
 `;
 
 const NicknameInput = styled.TextInput`
   font-size: 16;
-  line-height: 16;
+  line-height: 20px;
   //border-bottom: 5px;
   //border-color: black;
   /*:focus {
@@ -133,19 +134,19 @@ const NicknameInput = styled.TextInput`
     border-top-width: 0;
     border-bottom-width: 50px;
   }*/
-  padding-bottom: 8px;
+   padding-bottom: 8px;
 `;
 const NextBtn = require("../assets/onBoarding/Nextbtn.png");
 const NextBtnGray = require("../assets/onBoarding/NextbtnGray.png");
 
 const NextBtnContainer = styled.TouchableOpacity`
-  position: absolute;
+ //position: absolute;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   align-items: flex-end;
-  left: 85%;
-  top: 752px;
+  left: 105%;
+  top: 110%;
   width: 40px;
   height: 40px;
 `;
