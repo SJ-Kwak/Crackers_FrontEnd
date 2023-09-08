@@ -15,7 +15,7 @@ import {
   Keyboard,
   SafeAreaView,
   Pressable,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import { useState, useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -26,15 +26,13 @@ import * as yup from "yup";
 import axios from "axios";
 import { API_URL, signupRequest } from "../api/auth";
 import { Request } from "../api/request";
-import { setItemToAsync } from '../api/storage';
+import { setItemToAsync } from "../api/storage";
 
 const Stack = createStackNavigator();
 const backIcon = require("../assets/tch_btnBack.png");
 
 const signupSchema = yup.object().shape({
-  email: yup
-    .string()
-    .matches(/\d/, "영문, 숫자를 모두 포함하여 입력해주세요"),
+  email: yup.string().matches(/\d/, "영문, 숫자를 모두 포함하여 입력해주세요"),
   password: yup
     .string()
     .matches(/\d/, "영문, 숫자를 모두 포함하여 입력해주세요"),
@@ -43,7 +41,7 @@ const signupSchema = yup.object().shape({
     .oneOf([yup.ref("password")], "비밀번호가 일치하지 않습니다"),
 });
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 
 export default function SignupScreen({ navigation }) {
   const [under, setUnder] = useState("#CCCCCC");
@@ -66,24 +64,24 @@ export default function SignupScreen({ navigation }) {
 
   const handleCheckEmail = async () => {
     try {
-      const response = await request.get(`/accounts/check/${email}`, {}, {})
-      if(response.status==200){
-        setIsEmailTaken(false)
+      const response = await request.get(`/accounts/check/${email}`, {}, {});
+      if (response.status == 200) {
+        setIsEmailTaken(false);
       } else {
-        setIsEmailTaken(true)
+        setIsEmailTaken(true);
       }
       setCheck2("#CCCCCC");
       setSubmit(1);
     } catch (err) {
-      console.error('err', err)
+      console.error("err", err);
     }
   };
 
   const setSignupInfo = () => {
-    setItemToAsync('id', email)
-    setItemToAsync('password', password)
-    navigation.navigate("Tos")
-  }
+    setItemToAsync("id", email);
+    setItemToAsync("password", password);
+    navigation.navigate("Tos");
+  };
 
   return (
     <Formik
@@ -271,7 +269,7 @@ export default function SignupScreen({ navigation }) {
               backgroundColor:
                 isValid && values.email && values.password && values.pwCheck
                   ? "#6100FF"
-                  : "white",         
+                  : "transparent",
             }}
             onPress={setSignupInfo}
             disabled={!isValid}
@@ -285,17 +283,15 @@ export default function SignupScreen({ navigation }) {
 }
 
 const Wrapper = styled.View`
-  background: white;
+  background-color: white;
   flex: 1;
   height: 100%;
-  //paddingTop: 100,
   align-items: center;
-  //paddingHorizontal: 15,
 `;
 const FormContainer = styled.View`
   padding: 20px;
   width: 100%;
-  flex: 1
+  flex: 1;
 `;
 const BackToHome = styled.TouchableOpacity`
   position: absolute;
@@ -304,10 +300,10 @@ const BackToHome = styled.TouchableOpacity`
   margin: 10px 0px;
   align-items: center;
   justify-content: center;
-  z-index: 1
+  z-index: 1;
 `;
 const Title = styled.Text`
-  font-family: "Pretendard";
+  font-family: "PretendardVariable";
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -319,7 +315,7 @@ const Title = styled.Text`
 
 const SubTitle = styled.Text`
   color: #606060;
-  font-size: 14;
+  font-size: 14px;
   font-weight: 400;
 `;
 
@@ -329,47 +325,33 @@ const InputWrapper = styled.View`
 
 const InputTxt = styled.TextInput`
   padding-bottom: 8px;
-  /*
-    borderBottomColor: values.email ? "#6100FF" : "#CCCCCC",
-    borderBottomWidth: values.email ? 2 : 1,
-    border-bottom-color: values.password
-        ? #6100FF
-        : #CCCCCC;
-    border-bottom-width: values.password ? 2 : 1;*/
 `;
 const ErrorTxt = styled.Text`
-  //position: absolute;
   padding-top: 3%;
-  font-size: 10;
+  font-size: 10px;
   color: #ff2626;
-  //right: "5.13%",
 `;
 
 const NoErrorTxt = styled.Text`
-  //position: absolute;
   padding-top: 3%;
-  font-size: 10;
+  font-size: 10px;
   color: #6100ff;
-  //right: "5.13%",
 `;
 
 const SubmitBtn = styled.TouchableOpacity`
-  //position: absolute;
-  //top: keyboardHeight;
-  //background-color: #395B64;
-  width: 350;
-  height: 44;
-  bottom: 52;
+  width: 350px;
+  height: 44px;
+  bottom: 52px;
   //padding: 10px;
-  border-radius: 100;
+  border-radius: 100px;
   justify-content: center;
   align-items: center;
 `;
 
 const SubmitTxt = styled.Text`
-  color: #fff;
+  color: #ffffff;
   text-align: center;
-  font-size: 16;
+  font-size: 16px;
   font-weight: 600;
 `;
 
@@ -377,9 +359,9 @@ const CheckBtn = styled.TouchableOpacity`
   //position: absolute;
   left: 80%;
   background-color: #cccccc;
-  width: 81;
-  height: 33;
-  border-radius: 100;
+  width: 81px;
+  height: 33px;
+  border-radius: 100px;
   justify-content: center;
 `;
 
@@ -400,14 +382,8 @@ const EraseAll = styled.TouchableOpacity`
 const EraseAll2 = styled.TouchableOpacity`
   position: absolute;
   left: 93.72%;
-  //right: 5.13%;
-  //top: 40.64%;
-  //bottom: 10.52%;
 `;
 const EraseAll3 = styled.TouchableOpacity`
   position: absolute;
   left: 93.72%;
-  //right: 5.13%;
-  //top: 50.83%;
-  //bottom: 10.52%;
 `;

@@ -17,7 +17,11 @@ import {
 import { useState, useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 //import useKeyboardHeight from "react-native-use-keyboard-height";
-import { getItemFromAsync, removeItemFromAsync, clearItemsFromAsync } from "../api/storage";
+import {
+  getItemFromAsync,
+  removeItemFromAsync,
+  clearItemsFromAsync,
+} from "../api/storage";
 import { Request } from "../api/request";
 
 const Stack = createStackNavigator();
@@ -26,8 +30,12 @@ const backIcon = require("../assets/tch_btnBack.png");
 export default function SettingScreen({ navigation }) {
   //const keyboardHeight = useKeyboardHeight();
   const request = new Request();
-  const [accessToken, setAccessToken] = useState(getItemFromAsync('accessToken'))
-  const [refreshToken, setRefreshToken] = useState(getItemFromAsync('refreshToken'))
+  const [accessToken, setAccessToken] = useState(
+    getItemFromAsync("accessToken")
+  );
+  const [refreshToken, setRefreshToken] = useState(
+    getItemFromAsync("refreshToken")
+  );
 
   const link1 = () => {
     Linking.openURL(
@@ -42,25 +50,33 @@ export default function SettingScreen({ navigation }) {
   };
 
   const logout = async () => {
-    const response = await request.post('/accounts/logout', {
-      accessToken: await getItemFromAsync('accessToken'),
-      refreshToken: await getItemFromAsync('refreshToken')
-    })
-    if (response.status == 200){
+    const response = await request.post("/accounts/logout", {
+      accessToken: await getItemFromAsync("accessToken"),
+      refreshToken: await getItemFromAsync("refreshToken"),
+    });
+    if (response.status == 200) {
       clearItemsFromAsync();
-      navigation.navigate('Home')
+      navigation.navigate("Home");
     } else {
-      Alert.alert('로그아웃에 실패했습니다.')
+      Alert.alert("로그아웃에 실패했습니다.");
     }
-  }
+  };
 
   return (
     <Wrapper>
-      <View style={{flexDirection: 'row', borderBottomColor: '#f5f5f5', borderBottomWidth: 1, height: 70, alignItems: 'flex-end'}}>
-      <BackToHome onPress={() => navigation.goBack()}>
-        <Image source={backIcon} />
-      </BackToHome>
-      <Title>설정</Title>
+      <View
+        style={{
+          flexDirection: "row",
+          borderBottomColor: "#f5f5f5",
+          borderBottomWidth: 1,
+          height: 70,
+          alignItems: "flex-end",
+        }}
+      >
+        <BackToHome onPress={() => navigation.goBack()}>
+          <Image source={backIcon} />
+        </BackToHome>
+        <Title>설정</Title>
       </View>
       <Menu
         onPress={() => {
@@ -69,14 +85,10 @@ export default function SettingScreen({ navigation }) {
       >
         닉네임 수정하기
       </Menu>
-      <Menu onPress={link2}>
-        개인정보처리방침
-      </Menu>
-      <Menu onPress={link1}>
-        서비스 이용약관
-      </Menu>
+      <Menu onPress={link2}>개인정보처리방침</Menu>
+      <Menu onPress={link1}>서비스 이용약관</Menu>
       <Menu onPress={() => {}}>오픈 소스 라이선스</Menu>
-      <Menu onPress={() => navigation.navigate('Withdraw')}>회원 탈퇴하기</Menu>
+      <Menu onPress={() => navigation.navigate("Withdraw")}>회원 탈퇴하기</Menu>
       <Menu onPress={logout}>로그아웃</Menu>
     </Wrapper>
   );
@@ -95,11 +107,11 @@ const BackToHome = styled.TouchableOpacity`
   margin: 10px 0px;
   align-items: center;
   justify-content: center;
-  z-index: 1
+  z-index: 1;
 `;
 
 const Title = styled.Text`
-  font-family: "Pretendard";
+  font-family: "PretendardVariable";
   font-style: normal;
   font-weight: 700;
   font-size: 18px;
@@ -113,7 +125,7 @@ const Menu = styled.Text`
   padding: 10px;
   border-bottom-width: 1px;
   border-color: #f5f5f5;
-  font-family: "Pretendard";
+  font-family: "PretendardVariable";
   font-style: normal;
   font-weight: 400;
   font-size: 16px;

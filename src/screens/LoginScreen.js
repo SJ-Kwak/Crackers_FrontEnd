@@ -44,18 +44,18 @@ export default function LoginScreen({ navigation }) {
   const request = new Request();
 
   const handleLogin = async (values) => {
-    const response = await request.post('/accounts/signin', {
+    const response = await request.post("/accounts/signin", {
       loginId: values.email,
       password: values.password,
-    })
-    console.error(response)
+    });
+    console.error(response);
     if (response.status === 200) {
-      setItemToAsync('accessToken', response.data.accessToken)
-      setItemToAsync('refreshToken', response.data.refreshToken)
-      setItemToAsync('password', values.password)
-      navigation.replace('Main')
+      setItemToAsync("accessToken", response.data.accessToken);
+      setItemToAsync("refreshToken", response.data.refreshToken);
+      setItemToAsync("password", values.password);
+      navigation.replace("Main");
     } else {
-      Alert.alert('로그인에 실패하셨습니다.')
+      Alert.alert("로그인에 실패하셨습니다.");
     }
   };
 
@@ -98,9 +98,7 @@ export default function LoginScreen({ navigation }) {
                 placeholder="아이디"
                 autoCapitalize={false}
                 value={values.email}
-                onChangeText={
-                  handleChange("email")
-                }
+                onChangeText={handleChange("email")}
                 onBlur={() => setFieldTouched("email")}
                 keyboardType="email-address"
               />
@@ -152,7 +150,7 @@ export default function LoginScreen({ navigation }) {
 }
 
 const Wrapper = styled.View`
-  background: white;
+  background-color: white;
   flex: 1;
   align-items: center;
 `;
@@ -162,20 +160,20 @@ const FormContainer = styled.View`
   flex: 1;
 `;
 const BackToHome = styled.TouchableOpacity`
-  width: 60;
-  height: 60;
+  width: 60px;
+  height: 60px;
   margin: 10px 0px;
   align-items: center;
   justify-content: center;
   align-self: flex-start;
 `;
 const BackIcon = styled.Image`
-  width: 40;
-  height: 40;
+  width: 40px;
+  height: 40px;
 `;
 const Title = styled.Text`
   color: #202020;
-  font-family: "Pretendard";
+  font-family: "PretendardVariable";
   font-size: 20px;
   font-style: normal;
   font-weight: 600;

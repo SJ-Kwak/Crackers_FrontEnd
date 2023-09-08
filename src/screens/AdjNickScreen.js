@@ -39,15 +39,15 @@ export default function AdjNickScreen({ navigation }) {
   const request = new Request();
 
   const handleNickname = async (values) => {
-    const response = await request.patch('/accounts/profile', {
-      nickname: values.nickname
-    })
+    const response = await request.patch("/accounts/profile", {
+      nickname: values.nickname,
+    });
     if (response.status === 200) {
       navigation.goBack();
     } else {
-      Alert.alert('닉네임 수정에 실패하였습니다!')
+      Alert.alert("닉네임 수정에 실패하였습니다!");
     }
-  }
+  };
 
   return (
     <Formik
@@ -120,34 +120,31 @@ export default function AdjNickScreen({ navigation }) {
 }
 
 const Wrapper = styled.View`
-  background: white;
+  background-color: white;
   flex: 1;
-  //paddingTop: 100,
   align-items: center;
-  //paddingHorizontal: 15,
 `;
 const FormContainer = styled.View`
   padding: 20px;
   width: 100%;
 `;
 const BackToHome = styled.TouchableOpacity`
-  width: 60;
-  height: 60;
+  width: 60px;
+  height: 60px;
   margin: 10px 0px;
   align-items: center;
   justify-content: center;
   align-self: flex-start;
 `;
 const BackIcon = styled.Image`
-  width: 40;
-  height: 40;
+  width: 40px;
+  height: 40px;
 `;
 const Title = styled.Text`
   position: absolute;
   left: 5.13%;
-  //right: 78.72%;
-  top: 140;
-  font-family: "Pretendard";
+  top: 140px;
+  font-family: "PretendardVariable";
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -158,9 +155,8 @@ const Title = styled.Text`
 `;
 
 const SubTitle = styled.Text`
-  //position: absolute;
   color: #606060;
-  font-size: 14;
+  font-size: 14px;
   font-weight: 400;
 `;
 
@@ -170,30 +166,19 @@ const InputWrapper = styled.View`
 
 const InputTxt = styled.TextInput`
   padding-bottom: 8px;
-  /*
-    borderBottomColor: values.email ? "#6100FF" : "#CCCCCC",
-    borderBottomWidth: values.email ? 2 : 1,
-    border-bottom-color: values.password
-        ? #6100FF
-        : #CCCCCC;
-    border-bottom-width: values.password ? 2 : 1;*/
 `;
 const ErrorTxt = styled.Text`
   padding-top: 5px;
-  font-size: 10;
+  font-size: 10px;
   color: #ff2626;
-  //right: "5.13%",
 `;
 
 const SubmitBtn = styled.TouchableOpacity`
   position: absolute;
-  //top: keyboardHeight;
-  //background-color: #395B64;
-  width: 350;
-  height: 44;
-  bottom: 52;
-  //padding: 10px;
-  border-radius: 100;
+  width: 350px;
+  height: 44px;
+  bottom: 52px;
+  border-radius: 100px;
   justify-content: center;
   align-items: center;
 `;
@@ -201,22 +186,22 @@ const SubmitBtn = styled.TouchableOpacity`
 const SubmitTxt = styled.Text`
   color: #fff;
   text-align: center;
-  font-size: 16;
+  font-size: 16px;
   font-weight: 600;
 `;
 
 const CheckBtn = styled.TouchableOpacity`
   position: absolute;
-  left: 270;
+  left: 270px;
   background-color: #cccccc;
-  width: 81;
-  height: 33;
+  width: 81px;
+  height: 33px;
   padding: 10px;
-  border-radius: 100;
+  border-radius: 100px;
 `;
 
 const CheckTxt = styled.Text`
   text-align: center;
-  font-size: 14;
+  font-size: 14px;
   font-weight: 400;
 `;

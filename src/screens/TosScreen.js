@@ -89,13 +89,13 @@ export default function TosScreen({ navigation, route }) {
           navigation.goBack();
         }}
       >
-        <Image
-          source={backIcon}
-        />
+        <Image source={backIcon} />
       </BackToHome>
       <FormContainer>
         <Title>약관동의</Title>
-        <View style={{ flexDirection: "row", alignItems: "center", marginTop: 50 }}>
+        <View
+          style={{ flexDirection: "row", alignItems: "center", marginTop: 50 }}
+        >
           <SubTitle>전체 동의합니다.</SubTitle>
           <Checkbox
             style={{
@@ -168,7 +168,7 @@ export default function TosScreen({ navigation, route }) {
 }
 
 const Wrapper = styled.View`
-  background: white;
+  background-color: white;
   flex: 1;
   align-items: center;
 `;
@@ -185,7 +185,7 @@ const BackToHome = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
   align-self: flex-start;
-  z-index: 1
+  z-index: 1;
 `;
 const BackIcon = styled.Image`
   width: 40;
@@ -193,7 +193,7 @@ const BackIcon = styled.Image`
 `;
 const Title = styled.Text`
   margin-top: 80px;
-  font-family: "Pretendard";
+  font-family: "PretendardVariable";
   font-style: normal;
   font-weight: 600;
   font-size: 24px;

@@ -147,9 +147,8 @@ export default function ChooseMoney({ navigation }) {
 
 const Container = styled.SafeAreaView`
   display: flex;
-  justify-content: center;
-  //padding-left: 20px;
-  //padding-right: 20px;
+  flex: 1;
+  background-color: white;
 `;
 
 const Headerimg = require("../assets/onBoarding/Header4.png");
@@ -171,16 +170,8 @@ const MoneyInputContainer = styled.View`
 `;
 
 const MoneyInput = styled.TextInput`
-  font-size: 16;
+  font-size: 16px;
   line-height: 19;
-  /*border-bottom: 5px;
-  :focus {
-    border-left-width: 0;
-    border-right-width: 0;
-    border-top-width: 0;
-    border-bottom-width: 2px;
-  }*/
-  //border-bottom-width: 2px;
   padding-bottom: 8px;
 `;
 
@@ -215,7 +206,7 @@ const BackBtnContainer = styled.TouchableOpacity`
 const ErrorTxt = styled.Text`
   position: absolute;
   padding-top: 35px;
-  font-size: 10;
+  font-size: 10px;
   color: #ff2626;
   //right: "5.13%",
 `;

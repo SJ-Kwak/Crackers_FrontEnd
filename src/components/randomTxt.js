@@ -1,5 +1,3 @@
-import { selectedJobIndex } from "src/screens/ChooseJob.js"
-
 /*
   "카페 베이커리",
   "편의점",
@@ -11,7 +9,7 @@ import { selectedJobIndex } from "src/screens/ChooseJob.js"
   "기타",
 */
 
-export const randomTxt = () => {
+export const randomTxt = async (selectedJobIndex: number) => {
     if (selectedJobIndex==0) {
         const randomIndex = Math.floor(Math.random() * cafe.length);
         return cafe[randomIndex];
@@ -36,6 +34,7 @@ export const randomTxt = () => {
         const randomIndex = Math.floor(Math.random() * basic.length);
         return basic[randomIndex];          
     }
+    // console.log(selectedJobIndex)
 }
 
 const basic = [

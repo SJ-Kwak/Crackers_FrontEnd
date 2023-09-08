@@ -24,7 +24,7 @@ export default function CardPickScreen({ navigation, route }) {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [index, setIndex] = useState(0);
   const [times, setTimes] = useState('');
-  const [workTime, setWorkTime] = useState(route.params.hours+'시간');
+  const [workTime, setWorkTime] = useState(route.params.hours.toFixed(1)+'시간');
   const xBtn = require("../assets/tch_btnX.png");
   const request = new Request();
   const [firstWord, setFirstWord] = useState('')

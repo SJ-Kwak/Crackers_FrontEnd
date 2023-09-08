@@ -33,62 +33,8 @@ export default function ChooseJob({ navigation }) {
   const [isTouched, setIsTouched] = useState(
     Array(JOB_DATA.length).fill(false)
   );
-  const [userData, setUserData] = useState(); // userdata에 알바 종류를 저장하기 위한 상태 변수
 
-  const [job, setJob] = useState()
-
-  /*const onPressJob = (index) => {
-    setIsTouched((prev) => {
-      const nextState = [...prev];
-      nextState[index] = !prev[index];
-      return nextState;
-    });
-    setSelectedJobIndex(index);
-    console.log(selectedJobIndex);
-  };*/
-
-  /*const getUserData = async (userData) => {
-    try {
-      const user = await AsyncStorage.getItem('user');
-      //return userData ? JSON.parse(userData) : null;
-
-      //const signupResponse = await updateAdditionalInfo(userdata);
-
-      console.log(user);
-
-      if (user) {
-        user.job = userData.job; // 새로운 닉네임 추가
-        await AsyncStorage.setItem('user', JSON.stringify(user)); // 업데이트된 정보 저장
-        console.log("일 종류가 저장되었습니다");
-        console.log(user.job);
-        }
-
-    } catch (error) {
-      console.log('불러오기 실패:', error);
-      return null;
-    }
-  };*/
-
-  const getUserData = async (userData) => {
-    try {
-      const userString = await AsyncStorage.getItem("user");
-      if (userString) {
-        const user = JSON.parse(userString);
-        //user.job = userData;
-        user.job = JOB_DATA[selectedJobIndex];
-        console.log(user);
-        console.log(user.job);
-
-        await AsyncStorage.setItem("user", JSON.stringify(user));
-        console.log("일 종류가 저장되었습니다");
-        console.log(user.job);
-      }
-
-      console.log(JOB_DATA[selectedJobIndex]);
-    } catch (error) {
-      console.log("불러오기 실패:", error);
-    }
-  };
+  const [job, setJob] = useState();
 
   const onPressJob = (index) => {
     setIsTouched((prev) => {
@@ -97,23 +43,7 @@ export default function ChooseJob({ navigation }) {
     });
 
     setSelectedJobIndex(index);
-    setUserData((prevData) => ({ ...prevData, job: JOB_DATA[index] }));
-
-    console.log(userData);
   };
-
-  /*const jobList = JOB_DATA.map((job, index) => (
-    <JobContainer
-      key={index}
-      onPress={() => {
-        onPressJob(index);
-      }}
-      isTouched={isTouched[index]}
-    >
-      <JobTouchArea isTouched={isTouched[index]}>{job}</JobTouchArea>
-    </JobContainer>
-  ));*/
-
   const handleJob = async () => {
     await setItemToAsync('categoryId', selectedJobIndex);
     navigation.navigate('ChooseTime')
@@ -157,11 +87,6 @@ export default function ChooseJob({ navigation }) {
       <View style={{ height: 20 }} />
       <JobListContainer>{jobList}</JobListContainer>
       <NextBtnContainer
-        // onPress={() => {
-        //   getUserData();
-        //   updateAdditionalInfo(JOB_DATA[selectedJobIndex]);
-        //   navigation.navigate("ChooseTime");
-        // }}
         onPress={handleJob}
       >
         <Image
@@ -182,9 +107,10 @@ export default function ChooseJob({ navigation }) {
 
 const Container = styled.SafeAreaView`
   display: flex;
-  justify-content: center;
   padding-left: 20px;
   padding-right: 20px;
+  flex: 1;
+  background-color: white;
 `;
 
 const JobContainer = styled.TouchableOpacity`

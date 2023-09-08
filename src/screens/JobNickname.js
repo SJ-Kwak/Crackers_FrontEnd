@@ -105,9 +105,8 @@ export default function JobNickname({ navigation }) {
 
 const Container = styled.SafeAreaView`
   display: flex;
-  justify-content: center;
-  //margin-left: 20px;
-  //margin-right: 20px;
+  background-color: white;
+  flex: 1;
 `;
 
 const Headerimg = require("../assets/onBoarding/Header1.png");
@@ -132,15 +131,7 @@ const NicknameInputContainer = styled.View`
 const NicknameInput = styled.TextInput`
   font-size: 16;
   line-height: 20px;
-  //border-bottom: 5px;
-  //border-color: black;
-  /*:focus {
-    border-left-width: 0;
-    border-right-width: 0;
-    border-top-width: 0;
-    border-bottom-width: 50px;
-  }*/
-   padding-bottom: 8px;
+  padding-bottom: 8px;
 `;
 const NextBtn = require("../assets/onBoarding/Nextbtn.png");
 const NextBtnGray = require("../assets/onBoarding/NextbtnGray.png");
