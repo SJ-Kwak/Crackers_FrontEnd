@@ -8,11 +8,10 @@ import { asPickerFormat } from "../components/utils.js";
 import { BUTTON_HEIGHT, VIEW_WIDTH } from "../components/values.js";
 import TimePicker from "../components/TImePicker.js";
 import { randomTxt } from "../components/randomTxt.js";
-
+import { TextPretendard as Text } from "../static/CustomText.js";
 import {
   Alert,
   StyleSheet,
-  Text,
   TextInput,
   View,
   Image,
@@ -289,7 +288,7 @@ export default function MainDemo({ navigation }) {
       isTouched={isTouched[index]}
       onPress={() => onPressDay(index)}
     >
-      <DayContainer isTouched={isTouched[index]}>{day}</DayContainer>
+      <Text style={dayStyles(isTouched[index]).day}>{day}</Text>
     </Days>
   ));
 
@@ -320,7 +319,7 @@ export default function MainDemo({ navigation }) {
     // setEndTime(getTime())
     Alert.alert(
       "퇴근하기\n",
-      "오늘 근무를\n 여기서 마칠까요?",
+      "오늘 근무를\n여기서 마칠까요?",
       [
         { text: "취소", onPress: () => console.log("cnlth") },
         {
@@ -476,7 +475,7 @@ export default function MainDemo({ navigation }) {
       <AlbaFrame>
         <Text>{workSpace.name}</Text>
       </AlbaFrame>
-      <StartTxt>{startTxt}</StartTxt>
+      <Text style={styles.start}>{startTxt}</Text>
       <TouchableOpacity
         style={[
           styles.circle2,
@@ -562,8 +561,6 @@ export default function MainDemo({ navigation }) {
       <StartBtn
         style={{
           backgroundColor: mainColor,
-          //flex: 1,
-          //justifyContent: "flex-end",
         }}
         onPress={() => {
           startBtnTxt == "시작하기" ? setRunning1(true) : setRunning1(false);
@@ -574,13 +571,9 @@ export default function MainDemo({ navigation }) {
           startBtnTxt == "퇴근하기" && setEndTime(getTime());
           startBtnTxt == "퇴근하기" && showAlert();
           startBtnTxt == "카드받기" && createCard();
-
-          //Alert.alert(scrollPosition)
-          //setRunning(true)
         }}
-        //disabled={startBtnTxt=="퇴근하기"}
       >
-        <SubmitTxt>{startBtnTxt}</SubmitTxt>
+        <Text style={styles.submit}>{startBtnTxt}</Text>
       </StartBtn>
       <SettingBtn
         onPress={() => {
@@ -640,6 +633,7 @@ export default function MainDemo({ navigation }) {
                     marginLeft: 20,
                     fontWeight: "600",
                     marginBottom: 20,
+                    fontFamily: 'Pretendard'
                   }}
                   value={name}
                   onChangeText={setName}
@@ -1118,7 +1112,30 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  start: {
+    width: '100%',
+    height: 108,
+    left: '5%',
+    top: '-3%',
+    fontWeight: '600',
+    fontSize: 24,
+    lineHeight: 36
+  },
+  submit: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center'
+  },
 });
+
+const dayStyles = (isTouched) => StyleSheet.create({
+  day: {
+    fontSize: 14,
+    fontWeight: '500',
+    lineHeight: 16.71,
+    color: isTouched ? 'white' : 'black'
+  }
+})
 
 const AlbaFrame = styled.View`
   height: 38px;
@@ -1132,23 +1149,6 @@ const AlbaFrame = styled.View`
   justify-content: center;
 `;
 
-const AlbaTxt = styled.Text`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  color: #1c1c1c;
-`;
-const StartTxt = styled.Text`
-  width: 100%;
-  height: 108px;
-  left: 5%;
-  top: -3%;
-  font-family: PretendardVariable;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 36px;
-`;
 const StartBtn = styled.TouchableOpacity`
   background-color: #6100ff;
   width: 290px;
@@ -1166,12 +1166,7 @@ const AdjustBtn = styled.TouchableOpacity`
   border-radius: 100px;
   justify-content: center;
 `;
-const SubmitTxt = styled.Text`
-  color: #fff;
-  text-align: center;
-  font-size: 16px;
-  font-weight: 400;
-`;
+
 const SettingBtn = styled.TouchableOpacity`
   position: absolute;
   top: 30px;
@@ -1191,13 +1186,6 @@ const Days = styled.TouchableOpacity`
   border-radius: 180px;
 
   background-color: ${(props) => (props.isTouched ? "#6100FF" : "#f5f5f5")};
-`;
-
-const DayContainer = styled.Text`
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 16.71px;
-  color: ${(props) => (props.isTouched ? "white" : "black")};
 `;
 
 const DayListContainer = styled.View`

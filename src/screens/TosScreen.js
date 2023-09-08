@@ -92,11 +92,11 @@ export default function TosScreen({ navigation, route }) {
         <Image source={backIcon} />
       </BackToHome>
       <FormContainer>
-        <Title>약관동의</Title>
+      <Text style={styles.title}>약관동의</Text>
         <View
           style={{ flexDirection: "row", alignItems: "center", marginTop: 50 }}
         >
-          <SubTitle>전체 동의합니다.</SubTitle>
+          <Text style={styles.subtitle}>전체 동의합니다.</Text>
           <Checkbox
             style={{
               position: "absolute",
@@ -114,7 +114,7 @@ export default function TosScreen({ navigation, route }) {
         </View>
         <View style={{ height: 25 }} />
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <AgreeTxt onPress={link1}>서비스 이용약관(필수)</AgreeTxt>
+          <Text style={styles.agree} onPress={link1}>서비스 이용약관(필수)</Text>
           <Checkbox
             style={{
               position: "absolute",
@@ -132,7 +132,7 @@ export default function TosScreen({ navigation, route }) {
         </View>
         <View style={{ height: 25 }} />
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <AgreeTxt onPress={link2}>개인정보 수집 및 이용 동의(필수)</AgreeTxt>
+          <Text style={styles.agree} onPress={link2}>개인정보 수집 및 이용 동의(필수)</Text>
           <Checkbox
             style={{
               position: "absolute",
@@ -161,11 +161,36 @@ export default function TosScreen({ navigation, route }) {
         }}
         disabled={!isChecked1 && !isChecked2 && !isChecked3}
       >
-        <SubmitTxt>다음</SubmitTxt>
+        <Text style={styles.submit}>다음</Text>
       </SubmitBtn>
     </Wrapper>
   );
 }
+
+const styles = StyleSheet.create({
+  title: {
+    color: '#202020',
+    fontSize: 24,
+    fontWeight: '600',
+    lineHeight: 29,
+    marginTop: 80
+  },
+  subtitle: {
+    color: '#606060',
+    fontSize: 14,
+    fontWeight: '500'
+  },
+  submit: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: 'white',
+    fontWeight: '600'
+  },
+  agree: {
+    fontSize: 14,
+    textDecorationLine: 'underline'
+  }
+})
 
 const Wrapper = styled.View`
   background-color: white;
@@ -191,32 +216,6 @@ const BackIcon = styled.Image`
   width: 40;
   height: 40;
 `;
-const Title = styled.Text`
-  margin-top: 80px;
-  font-family: "PretendardVariable";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 29px;
-  display: flex;
-  align-items: center;
-  color: #202020;
-`;
-
-const SubTitle = styled.Text`
-  //position: absolute;
-  color: black;
-  font-size: 14;
-  font-weight: 500;
-`;
-
-const AgreeTxt = styled.Text`
-  //position: absolute;
-  color: black;
-  font-size: 14;
-  font-weight: 400;
-  text-decoration: underline;
-`;
 
 const InputWrapper = styled.View`
   margin-bottom: 15px;
@@ -232,12 +231,6 @@ const InputTxt = styled.TextInput`
         : #CCCCCC;
     border-bottom-width: values.password ? 2 : 1;*/
 `;
-const ErrorTxt = styled.Text`
-  padding-top: 5px;
-  font-size: 10;
-  color: #ff2626;
-  //right: "5.13%",
-`;
 
 const SubmitBtn = styled.TouchableOpacity`
   position: absolute;
@@ -250,27 +243,4 @@ const SubmitBtn = styled.TouchableOpacity`
   border-radius: 100;
   justify-content: center;
   align-items: center;
-`;
-
-const SubmitTxt = styled.Text`
-  color: #fff;
-  text-align: center;
-  font-size: 16;
-  font-weight: 600;
-`;
-
-const CheckBtn = styled.TouchableOpacity`
-  position: absolute;
-  left: 270;
-  background-color: #cccccc;
-  width: 81;
-  height: 33;
-  padding: 10px;
-  border-radius: 100;
-`;
-
-const CheckTxt = styled.Text`
-  text-align: center;
-  font-size: 14;
-  font-weight: 400;
 `;

@@ -112,9 +112,9 @@ export default function SignupScreen({ navigation }) {
               <Image source={backIcon} />
             </BackToHome>
             <View style={{ marginTop: height * 0.1 }} />
-            <Title>회원가입</Title>
+            <Text style={styles.title}>회원가입</Text>
             <View style={{ marginTop: 50 }} />
-            <SubTitle>아이디</SubTitle>
+            <Text style={styles.subtitle}>아이디</Text>
             <View style={{ height: 18 }} />
             <InputWrapper>
               <View style={{ flexDirection: "row" }}>
@@ -128,6 +128,7 @@ export default function SignupScreen({ navigation }) {
                         : "#FF2626"
                       : "#CCCCCC",
                     borderBottomWidth: values.email ? 2 : 1,
+                    fontFamily: 'Pretendard'
                   }}
                   placeholder="아이디"
                   autoCapitalize={false}
@@ -169,27 +170,27 @@ export default function SignupScreen({ navigation }) {
                       : "#CCCCCC",
                   }}
                 >
-                  <CheckTxt
-                    style={{
+                  <Text
+                    style={[styles.check, {
                       color: values.email
                         ? !errors.email
                           ? "white"
                           : "#CCCCCC"
                         : "#CCCCCC",
-                    }}
+                    }]}
                   >
                     중복확인
-                  </CheckTxt>
+                  </Text>
                 </CheckBtn>
               </View>
-              {errors.email && <ErrorTxt>{errors.email}</ErrorTxt>}
-              {isEmailTaken && <ErrorTxt>사용할 수 없는 아이디입니다</ErrorTxt>}
+              {errors.email && <Text style={styles.error}>{errors.email}</Text>}
+              {isEmailTaken && <Text style={styles.error}>사용할 수 없는 아이디입니다</Text>}
               {submit == 1 && !isEmailTaken && (
-                <NoErrorTxt>사용 가능한 아이디입니다</NoErrorTxt>
+                <Text style={styles.noError}>사용 가능한 아이디입니다</Text>
               )}
             </InputWrapper>
             <View style={{ height: 30 }} />
-            <SubTitle>비밀번호</SubTitle>
+            <Text style={styles.subtitle}>비밀번호</Text>
             <View style={{ height: 18 }} />
             <InputWrapper>
               <InputTxt
@@ -200,6 +201,7 @@ export default function SignupScreen({ navigation }) {
                       : "#FF2626"
                     : "#CCCCCC",
                   borderBottomWidth: values.password ? 2 : 1,
+                  fontFamily: 'Pretendard'
                 }}
                 placeholder="비밀번호"
                 autoCapitalize={false}
@@ -213,7 +215,7 @@ export default function SignupScreen({ navigation }) {
                 }}
                 onBlur={() => setFieldTouched("password")}
               />
-              {errors.password && <ErrorTxt>{errors.password}</ErrorTxt>}
+              {errors.password && <Text style={styles.error}>{errors.password}</Text>}
               {values.password && !errors.password && (
                 <EraseAll2
                   disabled={!values.password}
@@ -228,7 +230,7 @@ export default function SignupScreen({ navigation }) {
               )}
             </InputWrapper>
             <View style={{ height: 24 }} />
-            <SubTitle>비밀번호 확인</SubTitle>
+            <Text style={styles.subtitle}>비밀번호 확인</Text>
             <View style={{ height: 18 }} />
             <InputWrapper>
               <InputTxt
@@ -239,6 +241,7 @@ export default function SignupScreen({ navigation }) {
                       : "#FF2626"
                     : "#CCCCCC",
                   borderBottomWidth: values.pwCheck ? 2 : 1,
+                  fontFamily: 'Pretendard'
                 }}
                 placeholder="비밀번호 확인"
                 autoCapitalize={false}
@@ -249,7 +252,7 @@ export default function SignupScreen({ navigation }) {
                 onChangeText={handleChange("pwCheck")}
                 onBlur={() => setFieldTouched("pwCheck")}
               />
-              {errors.pwCheck && <ErrorTxt>{errors.pwCheck}</ErrorTxt>}
+              {errors.pwCheck && <Text style={styles.error}>{errors.pwCheck}</Text>}
               {values.pwCheck && !errors.pwCheck && (
                 <EraseAll3
                   disabled={!values.pwCheck}
@@ -274,13 +277,47 @@ export default function SignupScreen({ navigation }) {
             onPress={setSignupInfo}
             disabled={!isValid}
           >
-            <SubmitTxt>다음</SubmitTxt>
+            <Text style={styles.submit}>다음</Text>
           </SubmitBtn>
         </Wrapper>
       )}
     </Formik>
   );
 }
+
+const styles = StyleSheet.create({
+  title: {
+    color: '#202020',
+    fontSize: 24,
+    fontWeight: '600',
+    lineHeight: 29,
+  },
+  subtitle: {
+    color: '#606060',
+    fontSize: 14
+  },
+  submit: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: 'white',
+    fontWeight: '600'
+  },
+  error: {
+    paddingTop: '3%',
+    fontSize: 10,
+    color: '#FF2626'
+  },
+  noError: {
+    paddingTop: '3%',
+    fontSize: 10,
+    color: '#6100FF'
+  },
+  check: {
+    textAlign: 'center',
+    fontSize: 14,
+    lineHeight: 20
+  }
+})
 
 const Wrapper = styled.View`
   background-color: white;
@@ -302,22 +339,6 @@ const BackToHome = styled.TouchableOpacity`
   justify-content: center;
   z-index: 1;
 `;
-const Title = styled.Text`
-  font-family: "PretendardVariable";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 29px;
-  display: flex;
-  align-items: center;
-  color: #202020;
-`;
-
-const SubTitle = styled.Text`
-  color: #606060;
-  font-size: 14px;
-  font-weight: 400;
-`;
 
 const InputWrapper = styled.View`
   margin-bottom: 15px;
@@ -325,17 +346,6 @@ const InputWrapper = styled.View`
 
 const InputTxt = styled.TextInput`
   padding-bottom: 8px;
-`;
-const ErrorTxt = styled.Text`
-  padding-top: 3%;
-  font-size: 10px;
-  color: #ff2626;
-`;
-
-const NoErrorTxt = styled.Text`
-  padding-top: 3%;
-  font-size: 10px;
-  color: #6100ff;
 `;
 
 const SubmitBtn = styled.TouchableOpacity`
@@ -348,13 +358,6 @@ const SubmitBtn = styled.TouchableOpacity`
   align-items: center;
 `;
 
-const SubmitTxt = styled.Text`
-  color: #ffffff;
-  text-align: center;
-  font-size: 16px;
-  font-weight: 600;
-`;
-
 const CheckBtn = styled.TouchableOpacity`
   //position: absolute;
   left: 80%;
@@ -363,13 +366,6 @@ const CheckBtn = styled.TouchableOpacity`
   height: 33px;
   border-radius: 100px;
   justify-content: center;
-`;
-
-const CheckTxt = styled.Text`
-  text-align: center;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 20px;
 `;
 
 const EraseAll = styled.TouchableOpacity`

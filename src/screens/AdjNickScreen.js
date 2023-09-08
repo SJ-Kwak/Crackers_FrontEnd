@@ -1,10 +1,9 @@
 import React from "react-native";
 import styled from "styled-components/native";
-
+import { TextPretendard as Text } from "../static/CustomText";
 import {
   Alert,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
   Image,
@@ -72,9 +71,9 @@ export default function AdjNickScreen({ navigation }) {
             <BackIcon source={backIcon} />
           </BackToHome>
           <FormContainer>
-            <Title>닉네임 수정하기</Title>
-            <View style={{ height: 200 }} />
-            <SubTitle>닉네임</SubTitle>
+            <Text style={styles.title}>닉네임 수정하기</Text>
+            <View style={{ height: 60 }} />
+            <Text style={styles.subtitle}>닉네임</Text>
             <View style={{ height: 18 }} />
             <InputWrapper>
               <InputTxt
@@ -82,6 +81,7 @@ export default function AdjNickScreen({ navigation }) {
                   //position: "absolute",
                   borderBottomColor: values.nickname ? "#6100FF" : "#CCCCCC",
                   borderBottomWidth: values.nickname ? 2 : 1,
+                  fontFamily: 'Pretendard'
                 }}
                 placeholder="1~8자 이하 한글, 영문, 숫자, 특수문자"
                 autoCapitalize={false}
@@ -95,7 +95,7 @@ export default function AdjNickScreen({ navigation }) {
                 keyboardType="email-address"
               />
               {touched.nickname && errors.nickname && (
-                <ErrorTxt>{errors.nickname}</ErrorTxt>
+                <Text style={styles.error}>{errors.nickname}</Text>
               )}
             </InputWrapper>
           </FormContainer>
@@ -111,13 +111,36 @@ export default function AdjNickScreen({ navigation }) {
             onPress={() => handleNickname(values)}
             disabled={!isValid}
           >
-            <SubmitTxt>완료</SubmitTxt>
+            <Text style={styles.submit}>완료</Text>
           </SubmitBtn>
         </Wrapper>
       )}
     </Formik>
   );
 }
+
+const styles = StyleSheet.create({
+  title: {
+    color: '#202020',
+    fontSize: 24,
+    fontWeight: '600',
+  },
+  subtitle: {
+    color: '#606060',
+    fontSize: 14
+  },
+  submit: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: 'white',
+    fontWeight: '600'
+  },
+  error: {
+    paddingTop: 5,
+    fontSize: 10,
+    color: '#FF2626'
+  },
+})
 
 const Wrapper = styled.View`
   background-color: white;
@@ -140,25 +163,6 @@ const BackIcon = styled.Image`
   width: 40px;
   height: 40px;
 `;
-const Title = styled.Text`
-  position: absolute;
-  left: 5.13%;
-  top: 140px;
-  font-family: "PretendardVariable";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 29px;
-  display: flex;
-  align-items: center;
-  color: #202020;
-`;
-
-const SubTitle = styled.Text`
-  color: #606060;
-  font-size: 14px;
-  font-weight: 400;
-`;
 
 const InputWrapper = styled.View`
   margin-bottom: 15px;
@@ -166,11 +170,6 @@ const InputWrapper = styled.View`
 
 const InputTxt = styled.TextInput`
   padding-bottom: 8px;
-`;
-const ErrorTxt = styled.Text`
-  padding-top: 5px;
-  font-size: 10px;
-  color: #ff2626;
 `;
 
 const SubmitBtn = styled.TouchableOpacity`
@@ -181,27 +180,4 @@ const SubmitBtn = styled.TouchableOpacity`
   border-radius: 100px;
   justify-content: center;
   align-items: center;
-`;
-
-const SubmitTxt = styled.Text`
-  color: #fff;
-  text-align: center;
-  font-size: 16px;
-  font-weight: 600;
-`;
-
-const CheckBtn = styled.TouchableOpacity`
-  position: absolute;
-  left: 270px;
-  background-color: #cccccc;
-  width: 81px;
-  height: 33px;
-  padding: 10px;
-  border-radius: 100px;
-`;
-
-const CheckTxt = styled.Text`
-  text-align: center;
-  font-size: 14px;
-  font-weight: 400;
 `;

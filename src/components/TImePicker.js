@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {
-  Text,
   View,
   StyleSheet,
   ScrollView,
@@ -23,6 +22,7 @@ import {
   BUTTON_HEIGHT,
   GAP,
 } from './values';
+import { TextPretendard as Text } from '../static/CustomText';
 
 const isPM = (date) => date.getHours() >= 12;
 const ITEMS = [
@@ -225,6 +225,7 @@ const Button = ({ style, label, onPress, color }) => {
   const [focused, setFocused] = React.useState(false)
   const animatedTextStyle = {
     color: color, // 초기 색상 설정
+    fontFamily: 'Pretendard'
   };
 
   return (
@@ -285,7 +286,8 @@ const styles = StyleSheet.create({
   buttonLabel: {
     fontWeight: Platform.select({ android: 'bold', default: '900' }),
     fontSize: 16,
-    color: 'purple'
+    color: 'purple',
+    fontFamily: 'Pretendard'
   },
   overlay: {
     alignItems: 'center',

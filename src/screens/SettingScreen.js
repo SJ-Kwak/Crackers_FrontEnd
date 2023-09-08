@@ -1,10 +1,9 @@
 import React from "react-native";
 import styled from "styled-components/native";
-
+import { TextPretendard as Text } from "../static/CustomText";
 import {
   Alert,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
   Image,
@@ -76,23 +75,43 @@ export default function SettingScreen({ navigation }) {
         <BackToHome onPress={() => navigation.goBack()}>
           <Image source={backIcon} />
         </BackToHome>
-        <Title>설정</Title>
+        <Text style={styles.title}>설정</Text>
       </View>
-      <Menu
+      <Text style={styles.menu}
         onPress={() => {
           navigation.navigate("AdjNickname");
         }}
       >
         닉네임 수정하기
-      </Menu>
-      <Menu onPress={link2}>개인정보처리방침</Menu>
-      <Menu onPress={link1}>서비스 이용약관</Menu>
-      <Menu onPress={() => {}}>오픈 소스 라이선스</Menu>
-      <Menu onPress={() => navigation.navigate("Withdraw")}>회원 탈퇴하기</Menu>
-      <Menu onPress={logout}>로그아웃</Menu>
+      </Text>
+      <Text style={styles.menu} onPress={link2}>개인정보처리방침</Text>
+      <Text style={styles.menu} onPress={link1}>서비스 이용약관</Text>
+      <Text style={styles.menu} onPress={() => {}}>오픈 소스 라이선스</Text>
+      <Text style={styles.menu} onPress={() => navigation.navigate("Withdraw")}>회원 탈퇴하기</Text>
+      <Text style={styles.menu} onPress={logout}>로그아웃</Text>
     </Wrapper>
   );
 }
+
+const styles = StyleSheet.create({
+  title: {
+    fontWeight: '700',
+    fontSize: 18,
+    textAlign: 'center',
+    flex: 1,
+    marginVertical: 20,
+  },
+  menu: {
+    width: '100%',
+    padding: 15,
+    borderBottomColor: '#F5F5F5',
+    borderBottomWidth: 1,
+    fontSize: 16,
+    lineHeight: 19,
+    alignItems: 'center',
+    color: '#1c1c1c'
+  }
+})
 
 const Wrapper = styled.View`
   background-color: white;

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Image, Text, TouchableOpacity, View, Modal, Pressable } from "react-native";
+import { Image, TouchableOpacity, View, Modal, Pressable, StyleSheet } from "react-native";
 import styled from "styled-components/native";
 import { Display2 } from "../static/text.js";
 import DatePicker from "react-native-datepicker";
 import { Dimensions } from "react-native";
-
+import { TextPretendard as Text } from "../static/CustomText.js";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -84,7 +84,7 @@ export default function ChooseTime({ navigation }) {
       isTouched={isTouched.includes(index)}
       onPress={() => onPressDay(index)}
     >
-      <DayContainer isTouched={isTouched.includes(index)}>{day}</DayContainer>
+      <Text style={styles(isTouched.includes(index)).daycontainer}>{day}</Text>
     </Days>
   ));
 
@@ -169,6 +169,15 @@ export default function ChooseTime({ navigation }) {
     </Container>
   );
 }
+
+const styles = (isTouched) => StyleSheet.create({
+  daycontainer: {
+    fontSize: 14,
+    fontWeight: '500',
+    lineHeight: 16.71,
+    color: isTouched ? 'white' : 'black'
+  }
+})
 
 const Days = styled.TouchableOpacity`
   display: flex;

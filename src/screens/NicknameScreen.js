@@ -92,9 +92,9 @@ export default function NicknameScreen({ navigation, route }) {
             <BackIcon source={backIcon} />
           </BackToHome>
           <FormContainer>
-            <Title>닉네임 짓기</Title>
+          <Text style={styles.title}>닉네임 짓기</Text>
             <View style={{ marginTop: 50 }} />
-            <SubTitle>닉네임</SubTitle>
+            <Text style={styles.subtitle}>닉네임</Text>
             <View style={{ marginTop: 10 }} />
             <InputWrapper>
               <InputTxt
@@ -106,6 +106,7 @@ export default function NicknameScreen({ navigation, route }) {
                       : "#FF2626"
                     : "#CCCCCC",
                   borderBottomWidth: values.nickname ? 2 : 1,
+                  fontFamily: 'Pretendard'
                 }}
                 placeholder="1~8자 이하 한글, 영문, 숫자, 특수문자"
                 autoCapitalize={false}
@@ -144,13 +145,33 @@ export default function NicknameScreen({ navigation, route }) {
             onPress={handleSignUp}
             disabled={!isValid}
           >
-            <SubmitTxt>크래커 시작하기</SubmitTxt>
+            <Text style={styles.submit}>크래커 시작하기</Text>
           </SubmitBtn>
         </Wrapper>
       )}
     </Formik>
   );
 }
+
+const styles = StyleSheet.create({
+  title: {
+    color: '#202020',
+    fontSize: 24,
+    fontWeight: '600',
+    lineHeight: 29,
+  },
+  subtitle: {
+    color: '#606060',
+    fontSize: 14,
+    fontWeight: '400'
+  },
+  submit: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: 'white',
+    fontWeight: '600'
+  },
+})
 
 const Wrapper = styled.View`
   background-color: white;

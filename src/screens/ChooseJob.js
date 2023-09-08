@@ -1,9 +1,9 @@
-import React, { View, Text, Image, TouchableOpacity } from "react-native";
+import React, { View, Image, TouchableOpacity } from "react-native";
 import styled from "styled-components";
 import { Display2 } from "../static/text.js";
 import { useState } from "react";
 import { Dimensions } from "react-native";
-
+import { TextPretendard as Text } from "../static/CustomText.js";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";

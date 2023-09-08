@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { View, Image, TouchableOpacity, Text, ImageBackground } from "react-native";
-
+import { View, Image, TouchableOpacity, ImageBackground } from "react-native";
+import { TextPretendard as Text } from "../static/CustomText";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Request } from "../api/request";
 
@@ -58,7 +58,6 @@ export default function CardPickScreen({ navigation, route }) {
 
   useEffect(() => {
     getCard()
-    console.error(selectedPhoto);
   }, [])
 
   const handleRandomPhoto = () => {
@@ -66,8 +65,6 @@ export default function CardPickScreen({ navigation, route }) {
     const randomPhoto = cards[randomIndex].source;
     setSelectedPhoto(randomPhoto);
     setIndex(randomIndex);
-    console.log(index);
-    //handleHowManyTimes(index);
   };
 
   const handleHowManyTimes = (index) => {
@@ -109,7 +106,7 @@ export default function CardPickScreen({ navigation, route }) {
       <Text
         style={{
           fontSize: 24,
-          fontWeight: 600,
+          fontWeight: '600',
           marginLeft: "5%",
           marginTop: "10%",
         }}
@@ -124,7 +121,7 @@ export default function CardPickScreen({ navigation, route }) {
             top: 140,
             left: "20%",
             fontSize: 24,
-            fontWeight: 600,
+            fontWeight: '600',
             color: "#6100FF",
           }}
         >
