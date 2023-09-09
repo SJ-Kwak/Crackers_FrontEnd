@@ -294,20 +294,26 @@ export default function MainDemo({ navigation }) {
 
   const [workHistoryId, setWorkHistoryId] = useState(0);
   const [totalTime, setTotalTime] = useState(0);
+
   const createWorkHistory = async () => {
     const startMinutes = convertToMinutes(startTime);
     const endMinutes = convertToMinutes(getTime());
 
+    const _start = convertToMinutes(convertTime(time1).substr(0, 2).concat(convertTime(time1).substr(2, 2)))
+    const _end = convertToMinutes(convertTime(time2).substr(0, 2).concat(convertTime(time2).substr(2, 2)))
+
     // 임금 계산
     const totalHours = (endMinutes - startMinutes) / 60;
-    setTotalTime(totalHours);
+    const _totalHours = (_end - _start) / 60;
+    setTotalTime(totalHours !== _totalHours ? totalHours : _totalHours);
     const totalWage = totalHours * workSpace.wage;
+    const _totalWage = _totalHours * workSpace.wage;
     const response = await request.post("/history", {
       workspaceId: workSpace.workspaceId,
       workDt: workDt,
-      startTime: parseInt(startTime),
-      endTime: parseInt(getTime()),
-      totalWage: parseInt(totalWage),
+      startTime: parseInt(startTime) !== parseInt(time1) ? parseInt(startTime) : parseInt(time1),
+      endTime: parseInt(getTime()) !== parseInt(time2) ? parseInt(getTime()) : parseInt(time2),
+      totalWage: totalWage <= _totalWage ? totalWage : _totalWage,
     });
     const response_get = await request.get("/history");
     setWorkHistoryId(
@@ -316,18 +322,21 @@ export default function MainDemo({ navigation }) {
   };
 
   const showAlert = () => {
-    // setEndTime(getTime())
     Alert.alert(
       "퇴근하기\n",
       "오늘 근무를\n여기서 마칠까요?",
       [
-        { text: "취소", onPress: () => console.log("cnlth") },
+        { text: "취소", onPress: () => {
+          setRunning1(true);
+          setRunning2(true);
+        } },
         {
           text: "퇴근",
           onPress: () => {
             setMainColor("#FFAF15");
             setStartBtnTxt("카드받기");
             setStartTxt("오늘의 \n알바 완료!");
+            // setEndTime(getTime());
             createWorkHistory();
           },
           color: "#6100FF",
@@ -529,7 +538,7 @@ export default function MainDemo({ navigation }) {
             }}
             //disabled={circleTouched}
           >
-            {("0" + Math.floor((time / 60000) % 60)) * 160.167 + "원"}
+            {(((time/3600000)%60) * workSpace.wage).toFixed(0) + "원"}
           </Text>
         )}
       </View>
@@ -568,7 +577,6 @@ export default function MainDemo({ navigation }) {
           startBtnTxt == "시작하기" && setStartTime(getTime());
           startBtnTxt == "시작하기" && changeTxt();
           setStart(true);
-          startBtnTxt == "퇴근하기" && setEndTime(getTime());
           startBtnTxt == "퇴근하기" && showAlert();
           startBtnTxt == "카드받기" && createCard();
         }}
