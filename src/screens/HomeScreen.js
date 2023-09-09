@@ -1,10 +1,9 @@
 import React from "react-native";
 import styled from "styled-components/native";
-
+import { TextPretendard as Text } from "../static/CustomText";
 import {
   Alert,
   StyleSheet,
-  Text,
   View,
   Image,
   Button,
@@ -13,6 +12,7 @@ import {
   Dimensions
 } from "react-native";
 import { createStackNavigator } from '@react-navigation/stack';
+import { useFocusEffect } from "@react-navigation/native";
 import { useState, useEffect, useContext, useCallback } from "react";
 import { getItemFromAsync } from "../api/storage";
 
@@ -22,13 +22,13 @@ const { width, height } = Dimensions.get('window')
 
 export default function HomeScreen ({navigation}) {
   const [token, setToken] = useState(null)
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
     const checkLogin = async () => {
       setToken(await getItemFromAsync('accessToken'))
     }
     checkLogin();
     if(token) navigation.replace('Main')
-  })
+  }, [token]))
   return (
   <Container>
     <Image 
@@ -41,29 +41,44 @@ export default function HomeScreen ({navigation}) {
         top: 240,}}/>
     <SignUpbtn
       onPress={()=>{navigation.navigate('Signup');}}>
-      <SignUpTxt>회원가입</SignUpTxt>
+      <Text style={styles.signUp}>회원가입</Text>
     </SignUpbtn>
     <InnerContainer>
-      <AlreadyHas>이미 계정이 있나요? </AlreadyHas>
+      <Text style={styles.alreadyHas}>이미 계정이 있나요?</Text>
       <LoginBtn
         onPress={()=>{navigation.navigate('Login');}}>
-        로그인
-        </LoginBtn>
+        <Text style={styles.login}> 로그인</Text>
+      </LoginBtn>
     </InnerContainer>
     </Container>
     
   );
 }
 
+const styles = StyleSheet.create({
+  signUp: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: '600'
+  },
+  alreadyHas: {
+    alignSelf: 'flex-end',
+    fontSize: 12
+  },
+  login: {
+    color: '#6100FF',
+    fontSize: 12,
+    fontWeight: '600'
+  }
+})
+
 const Container = styled.View`
   flex: 1;
   width: 100%;
   align-items: center;
+  background-color: white;
 `;
-
-const Container2 = styled.View`
-  align-items: center;
-`
 
 const InnerContainer = styled.View`
   flex-direction: row;
@@ -75,32 +90,15 @@ const InnerContainer = styled.View`
 
 const SignUpbtn = styled.TouchableOpacity`
   position: absolute;
-  width: 342;
-  height: 44;
+  width: 342px;
+  height: 44px;
   bottom: 15%;
   background-color: #6100ff;
-  border-radius: 100;
+  border-radius: 100px;
   align-items: center;
   justify-content: center;
   z-index: 1;
 `;
 
-const SignUpTxt = styled.Text`
-  font-size: 16px;
-  font-Weight: 600;
-  color: white;
-  text-align: center;
-`
-
-const AlreadyHas = styled.Text`
-  align-self: flex-end;
-  color: black;
-  font-size: 12px;
-  font-weight: 400;
-`
-
-const LoginBtn = styled.Text`
-  color: #6100FF;
-  font-size: 12px;
-  font-Weight: 600;
+const LoginBtn = styled.TouchableOpacity`
 `

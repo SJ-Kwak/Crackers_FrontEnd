@@ -1,10 +1,9 @@
 import React from "react-native";
 import styled from "styled-components/native";
-
+import { TextPretendard as Text } from "../static/CustomText";
 import {
   Alert,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
   Image,
@@ -18,8 +17,11 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { TextInput } from "react-native-gesture-handler";
 import { Formik } from "formik";
 import * as yup from "yup";
-//import useKeyboardHeight from "react-native-use-keyboard-height";
-import { getItemFromAsync, removeItemFromAsync, clearItemsFromAsync } from "../api/storage";
+import {
+  getItemFromAsync,
+  removeItemFromAsync,
+  clearItemsFromAsync,
+} from "../api/storage";
 
 import { Request } from "../api/request";
 
@@ -27,56 +29,51 @@ const Stack = createStackNavigator();
 const backIcon = require("../assets/tch_btnBack.png");
 
 const signupSchema = yup.object().shape({
-//   password: yup
-//     .string()
-//     .required("비밀번호를 입력해 주세요")
-//     // .max(8, "8자 이내로 닉네임을 입력해주세요"),
-//   //.matches(/\d/, "영문과 숫자를 입력해주세요"),
-    password: yup
+  password: yup
     .string()
-    .oneOf([yup.ref("password")], "비밀번호가 일치하지 않습니다"),  
+    .oneOf([yup.ref("password")], "비밀번호가 일치하지 않습니다"),
 });
 
 export default function WithdrawScreen({ navigation }) {
   const [under, setUnder] = useState("#CCCCCC");
-  var password = ''
+  var password = "";
   const request = new Request();
   useEffect(() => {
     const getPassword = async () => {
-      password = await getItemFromAsync('password')
-    }
+      password = await getItemFromAsync("password");
+    };
     getPassword();
-  }, [])
-  
+  }, []);
+
   const withdraw = async () => {
-    const response = await request.patch('/accounts/withdraw')
+    const response = await request.patch("/accounts/withdraw");
     if (response.status === 200) {
-      Alert.alert(response.data)
+      Alert.alert(response.data);
       await clearItemsFromAsync();
-      navigation.navigate('Home');
+      navigation.navigate("Home");
     } else {
-      Alert.alert('회원 탈퇴에 실패하였습니다!')
+      Alert.alert("회원 탈퇴에 실패하였습니다!");
     }
-  }
+  };
 
   const withdrawConfirmAlert = async () => {
     Alert.alert(
-        "알림",
-        "정말로 탈퇴하시겠습니까?",
-        [
-            {
-                text: "예",
-                onPress: withdraw,
-                style: 'destructive',
-            },
-            {
-                text: "아니오",
-                style: "cancel"
-            },
-        ],
-        { cancelable: false }
+      "알림",
+      "정말로 탈퇴하시겠습니까?",
+      [
+        {
+          text: "예",
+          onPress: withdraw,
+          style: "destructive",
+        },
+        {
+          text: "아니오",
+          style: "cancel",
+        },
+      ],
+      { cancelable: false }
     );
-  }
+  };
 
   return (
     <Formik
@@ -101,9 +98,9 @@ export default function WithdrawScreen({ navigation }) {
             <BackIcon source={backIcon} />
           </BackToHome>
           <FormContainer>
-            <Title>회원 탈퇴하기</Title>
-            <View style={{ height: 200 }} />
-            <SubTitle>계정 비밀번호</SubTitle>
+            <Text style={styles.title}>회원 탈퇴하기</Text>
+            <View style={{ height: 60 }} />
+            <Text style={styles.subtitle}>계정 비밀번호</Text>
             <View style={{ height: 18 }} />
             <InputWrapper>
               <InputTxt
@@ -111,21 +108,18 @@ export default function WithdrawScreen({ navigation }) {
                   //position: "absolute",
                   borderBottomColor: values.nickname ? "#6100FF" : "#CCCCCC",
                   borderBottomWidth: values.nickname ? 2 : 1,
+                  fontFamily: 'Pretendard'
                 }}
                 placeholder="비밀번호 입력"
-                autoCapitalize={false}
+                autoCapitalize={"none"}
                 value={values.password}
-                onChangeText={
-                  handleChange("password")
-
-                  //setUnder("#6100FF")
-                }
+                onChangeText={handleChange("password")}
                 onBlur={() => setFieldTouched("password")}
                 secureTextEntry={true}
                 textContentType="password"
               />
               {values.password != password && (
-                <ErrorTxt>비밀번호가 일치하지 않습니다</ErrorTxt>
+                <Text style={styles.error}>비밀번호가 일치하지 않습니다</Text>
               )}
             </InputWrapper>
           </FormContainer>
@@ -135,13 +129,11 @@ export default function WithdrawScreen({ navigation }) {
                 values.password && values.password == password
                   ? "#6100FF"
                   : "white",
-              //flex: 1,
-              //justifyContent: "flex-end",
             }}
             onPress={withdrawConfirmAlert}
             disabled={values.password != password}
           >
-            <SubmitTxt>회원 탈퇴하기</SubmitTxt>
+            <Text style={styles.submit}>회원 탈퇴하기</Text>
           </SubmitBtn>
         </Wrapper>
       )}
@@ -149,49 +141,49 @@ export default function WithdrawScreen({ navigation }) {
   );
 }
 
+const styles = StyleSheet.create({
+  title: {
+    color: '#202020',
+    fontSize: 24,
+    fontWeight: '600',
+  },
+  subtitle: {
+    color: '#606060',
+    fontSize: 14
+  },
+  submit: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: 'white',
+    fontWeight: '600'
+  },
+  error: {
+    paddingTop: 5,
+    fontSize: 10,
+    color: '#FF2626'
+  },
+})
+
 const Wrapper = styled.View`
-  background: white;
+  background-color: white;
   flex: 1;
-  //paddingTop: 100,
   align-items: center;
-  //paddingHorizontal: 15,
 `;
 const FormContainer = styled.View`
   padding: 20px;
   width: 100%;
 `;
 const BackToHome = styled.TouchableOpacity`
-  width: 60;
-  height: 60;
+  width: 60px;
+  height: 60px;
   margin: 10px 0px;
   align-items: center;
   justify-content: center;
   align-self: flex-start;
 `;
 const BackIcon = styled.Image`
-  width: 40;
-  height: 40;
-`;
-const Title = styled.Text`
-  position: absolute;
-  left: 5.13%;
-  //right: 78.72%;
-  top: 140;
-  font-family: "Pretendard";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 29px;
-  display: flex;
-  align-items: center;
-  color: #202020;
-`;
-
-const SubTitle = styled.Text`
-  //position: absolute;
-  color: #606060;
-  font-size: 14;
-  font-weight: 400;
+  width: 40px;
+  height: 40px;
 `;
 
 const InputWrapper = styled.View`
@@ -200,53 +192,14 @@ const InputWrapper = styled.View`
 
 const InputTxt = styled.TextInput`
   padding-bottom: 8px;
-  /*
-    borderBottomColor: values.email ? "#6100FF" : "#CCCCCC",
-    borderBottomWidth: values.email ? 2 : 1,
-    border-bottom-color: values.password
-        ? #6100FF
-        : #CCCCCC;
-    border-bottom-width: values.password ? 2 : 1;*/
-`;
-const ErrorTxt = styled.Text`
-  padding-top: 5px;
-  font-size: 10;
-  color: #ff2626;
-  //right: "5.13%",
 `;
 
 const SubmitBtn = styled.TouchableOpacity`
   position: absolute;
-  //top: keyboardHeight;
-  //background-color: #395B64;
-  width: 350;
-  height: 44;
-  bottom: 52;
-  //padding: 10px;
-  border-radius: 100;
+  width: 350px;
+  height: 44px;
+  bottom: 52px;
+  border-radius: 100px;
   justify-content: center;
   align-items: center;
-`;
-
-const SubmitTxt = styled.Text`
-  color: #fff;
-  text-align: center;
-  font-size: 16;
-  font-weight: 600;
-`;
-
-const CheckBtn = styled.TouchableOpacity`
-  position: absolute;
-  left: 270;
-  background-color: #cccccc;
-  width: 81;
-  height: 33;
-  padding: 10px;
-  border-radius: 100;
-`;
-
-const CheckTxt = styled.Text`
-  text-align: center;
-  font-size: 14;
-  font-weight: 400;
 `;

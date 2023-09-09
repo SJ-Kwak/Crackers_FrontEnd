@@ -15,7 +15,7 @@ import {
   Keyboard,
   SafeAreaView,
   Pressable,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import { useState, useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -26,15 +26,13 @@ import * as yup from "yup";
 import axios from "axios";
 import { API_URL, signupRequest } from "../api/auth";
 import { Request } from "../api/request";
-import { setItemToAsync } from '../api/storage';
+import { setItemToAsync } from "../api/storage";
 
 const Stack = createStackNavigator();
 const backIcon = require("../assets/tch_btnBack.png");
 
 const signupSchema = yup.object().shape({
-  email: yup
-    .string()
-    .matches(/\d/, "영문, 숫자를 모두 포함하여 입력해주세요"),
+  email: yup.string().matches(/\d/, "영문, 숫자를 모두 포함하여 입력해주세요"),
   password: yup
     .string()
     .matches(/\d/, "영문, 숫자를 모두 포함하여 입력해주세요"),
@@ -43,7 +41,7 @@ const signupSchema = yup.object().shape({
     .oneOf([yup.ref("password")], "비밀번호가 일치하지 않습니다"),
 });
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 
 export default function SignupScreen({ navigation }) {
   const [under, setUnder] = useState("#CCCCCC");
@@ -66,24 +64,24 @@ export default function SignupScreen({ navigation }) {
 
   const handleCheckEmail = async () => {
     try {
-      const response = await request.get(`/accounts/check/${email}`, {}, {})
-      if(response.status==200){
-        setIsEmailTaken(false)
+      const response = await request.get(`/accounts/check/${email}`, {}, {});
+      if (response.status == 200) {
+        setIsEmailTaken(false);
       } else {
-        setIsEmailTaken(true)
+        setIsEmailTaken(true);
       }
       setCheck2("#CCCCCC");
       setSubmit(1);
     } catch (err) {
-      console.error('err', err)
+      console.error("err", err);
     }
   };
 
   const setSignupInfo = () => {
-    setItemToAsync('id', email)
-    setItemToAsync('password', password)
-    navigation.navigate("Tos")
-  }
+    setItemToAsync("id", email);
+    setItemToAsync("password", password);
+    navigation.navigate("Tos");
+  };
 
   return (
     <Formik
@@ -114,9 +112,9 @@ export default function SignupScreen({ navigation }) {
               <Image source={backIcon} />
             </BackToHome>
             <View style={{ marginTop: height * 0.1 }} />
-            <Title>회원가입</Title>
+            <Text style={styles.title}>회원가입</Text>
             <View style={{ marginTop: 50 }} />
-            <SubTitle>아이디</SubTitle>
+            <Text style={styles.subtitle}>아이디</Text>
             <View style={{ height: 18 }} />
             <InputWrapper>
               <View style={{ flexDirection: "row" }}>
@@ -130,6 +128,7 @@ export default function SignupScreen({ navigation }) {
                         : "#FF2626"
                       : "#CCCCCC",
                     borderBottomWidth: values.email ? 2 : 1,
+                    fontFamily: 'Pretendard'
                   }}
                   placeholder="아이디"
                   autoCapitalize={false}
@@ -171,27 +170,27 @@ export default function SignupScreen({ navigation }) {
                       : "#CCCCCC",
                   }}
                 >
-                  <CheckTxt
-                    style={{
+                  <Text
+                    style={[styles.check, {
                       color: values.email
                         ? !errors.email
                           ? "white"
                           : "#CCCCCC"
                         : "#CCCCCC",
-                    }}
+                    }]}
                   >
                     중복확인
-                  </CheckTxt>
+                  </Text>
                 </CheckBtn>
               </View>
-              {errors.email && <ErrorTxt>{errors.email}</ErrorTxt>}
-              {isEmailTaken && <ErrorTxt>사용할 수 없는 아이디입니다</ErrorTxt>}
+              {errors.email && <Text style={styles.error}>{errors.email}</Text>}
+              {isEmailTaken && <Text style={styles.error}>사용할 수 없는 아이디입니다</Text>}
               {submit == 1 && !isEmailTaken && (
-                <NoErrorTxt>사용 가능한 아이디입니다</NoErrorTxt>
+                <Text style={styles.noError}>사용 가능한 아이디입니다</Text>
               )}
             </InputWrapper>
             <View style={{ height: 30 }} />
-            <SubTitle>비밀번호</SubTitle>
+            <Text style={styles.subtitle}>비밀번호</Text>
             <View style={{ height: 18 }} />
             <InputWrapper>
               <InputTxt
@@ -202,6 +201,7 @@ export default function SignupScreen({ navigation }) {
                       : "#FF2626"
                     : "#CCCCCC",
                   borderBottomWidth: values.password ? 2 : 1,
+                  fontFamily: 'Pretendard'
                 }}
                 placeholder="비밀번호"
                 autoCapitalize={false}
@@ -215,7 +215,7 @@ export default function SignupScreen({ navigation }) {
                 }}
                 onBlur={() => setFieldTouched("password")}
               />
-              {errors.password && <ErrorTxt>{errors.password}</ErrorTxt>}
+              {errors.password && <Text style={styles.error}>{errors.password}</Text>}
               {values.password && !errors.password && (
                 <EraseAll2
                   disabled={!values.password}
@@ -230,7 +230,7 @@ export default function SignupScreen({ navigation }) {
               )}
             </InputWrapper>
             <View style={{ height: 24 }} />
-            <SubTitle>비밀번호 확인</SubTitle>
+            <Text style={styles.subtitle}>비밀번호 확인</Text>
             <View style={{ height: 18 }} />
             <InputWrapper>
               <InputTxt
@@ -241,6 +241,7 @@ export default function SignupScreen({ navigation }) {
                       : "#FF2626"
                     : "#CCCCCC",
                   borderBottomWidth: values.pwCheck ? 2 : 1,
+                  fontFamily: 'Pretendard'
                 }}
                 placeholder="비밀번호 확인"
                 autoCapitalize={false}
@@ -251,7 +252,7 @@ export default function SignupScreen({ navigation }) {
                 onChangeText={handleChange("pwCheck")}
                 onBlur={() => setFieldTouched("pwCheck")}
               />
-              {errors.pwCheck && <ErrorTxt>{errors.pwCheck}</ErrorTxt>}
+              {errors.pwCheck && <Text style={styles.error}>{errors.pwCheck}</Text>}
               {values.pwCheck && !errors.pwCheck && (
                 <EraseAll3
                   disabled={!values.pwCheck}
@@ -271,12 +272,12 @@ export default function SignupScreen({ navigation }) {
               backgroundColor:
                 isValid && values.email && values.password && values.pwCheck
                   ? "#6100FF"
-                  : "white",         
+                  : "transparent",
             }}
             onPress={setSignupInfo}
             disabled={!isValid}
           >
-            <SubmitTxt>다음</SubmitTxt>
+            <Text style={styles.submit}>다음</Text>
           </SubmitBtn>
         </Wrapper>
       )}
@@ -284,18 +285,50 @@ export default function SignupScreen({ navigation }) {
   );
 }
 
+const styles = StyleSheet.create({
+  title: {
+    color: '#202020',
+    fontSize: 24,
+    fontWeight: '600',
+    lineHeight: 29,
+  },
+  subtitle: {
+    color: '#606060',
+    fontSize: 14
+  },
+  submit: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: 'white',
+    fontWeight: '600'
+  },
+  error: {
+    paddingTop: '3%',
+    fontSize: 10,
+    color: '#FF2626'
+  },
+  noError: {
+    paddingTop: '3%',
+    fontSize: 10,
+    color: '#6100FF'
+  },
+  check: {
+    textAlign: 'center',
+    fontSize: 14,
+    lineHeight: 20
+  }
+})
+
 const Wrapper = styled.View`
-  background: white;
+  background-color: white;
   flex: 1;
   height: 100%;
-  //paddingTop: 100,
   align-items: center;
-  //paddingHorizontal: 15,
 `;
 const FormContainer = styled.View`
   padding: 20px;
   width: 100%;
-  flex: 1
+  flex: 1;
 `;
 const BackToHome = styled.TouchableOpacity`
   position: absolute;
@@ -304,23 +337,7 @@ const BackToHome = styled.TouchableOpacity`
   margin: 10px 0px;
   align-items: center;
   justify-content: center;
-  z-index: 1
-`;
-const Title = styled.Text`
-  font-family: "Pretendard";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 29px;
-  display: flex;
-  align-items: center;
-  color: #202020;
-`;
-
-const SubTitle = styled.Text`
-  color: #606060;
-  font-size: 14;
-  font-weight: 400;
+  z-index: 1;
 `;
 
 const InputWrapper = styled.View`
@@ -329,65 +346,26 @@ const InputWrapper = styled.View`
 
 const InputTxt = styled.TextInput`
   padding-bottom: 8px;
-  /*
-    borderBottomColor: values.email ? "#6100FF" : "#CCCCCC",
-    borderBottomWidth: values.email ? 2 : 1,
-    border-bottom-color: values.password
-        ? #6100FF
-        : #CCCCCC;
-    border-bottom-width: values.password ? 2 : 1;*/
-`;
-const ErrorTxt = styled.Text`
-  //position: absolute;
-  padding-top: 3%;
-  font-size: 10;
-  color: #ff2626;
-  //right: "5.13%",
-`;
-
-const NoErrorTxt = styled.Text`
-  //position: absolute;
-  padding-top: 3%;
-  font-size: 10;
-  color: #6100ff;
-  //right: "5.13%",
 `;
 
 const SubmitBtn = styled.TouchableOpacity`
-  //position: absolute;
-  //top: keyboardHeight;
-  //background-color: #395B64;
-  width: 350;
-  height: 44;
-  bottom: 52;
+  width: 350px;
+  height: 44px;
+  bottom: 52px;
   //padding: 10px;
-  border-radius: 100;
+  border-radius: 100px;
   justify-content: center;
   align-items: center;
-`;
-
-const SubmitTxt = styled.Text`
-  color: #fff;
-  text-align: center;
-  font-size: 16;
-  font-weight: 600;
 `;
 
 const CheckBtn = styled.TouchableOpacity`
   //position: absolute;
   left: 80%;
   background-color: #cccccc;
-  width: 81;
-  height: 33;
-  border-radius: 100;
+  width: 81px;
+  height: 33px;
+  border-radius: 100px;
   justify-content: center;
-`;
-
-const CheckTxt = styled.Text`
-  text-align: center;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 20px;
 `;
 
 const EraseAll = styled.TouchableOpacity`
@@ -400,14 +378,8 @@ const EraseAll = styled.TouchableOpacity`
 const EraseAll2 = styled.TouchableOpacity`
   position: absolute;
   left: 93.72%;
-  //right: 5.13%;
-  //top: 40.64%;
-  //bottom: 10.52%;
 `;
 const EraseAll3 = styled.TouchableOpacity`
   position: absolute;
   left: 93.72%;
-  //right: 5.13%;
-  //top: 50.83%;
-  //bottom: 10.52%;
 `;

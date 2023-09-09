@@ -3,7 +3,9 @@ import React, {
   View,
   Keyboard,
   TouchableWithoutFeedback,
+  StyleSheet
 } from "react-native";
+import { TextPretendard as Text } from "../static/CustomText.js";
 import { useState } from "react";
 import styled from "styled-components/native";
 import { Caption1, Display2 } from "../static/text.js";
@@ -111,9 +113,10 @@ export default function ChooseMoney({ navigation }) {
                       : "#FF2626"
                     : "#CCCCCC",
                   borderBottomWidth: values.money ? 2 : 1,
+                  fontFamily: 'Pretendard'
                 }}
               />
-              {errors.money && <ErrorTxt>{errors.money}</ErrorTxt>}
+              {errors.money && <Text style={styles.error}>{errors.money}</Text>}
               {values.money && !errors.money && (
                 <EraseAll
                   disabled={!values.money}
@@ -145,11 +148,18 @@ export default function ChooseMoney({ navigation }) {
   );
 }
 
+const styles = StyleSheet.create({
+  error: {
+    paddingTop: 5,
+    fontSize: 10,
+    color: '#FF2626'
+  },
+})
+
 const Container = styled.SafeAreaView`
   display: flex;
-  justify-content: center;
-  //padding-left: 20px;
-  //padding-right: 20px;
+  flex: 1;
+  background-color: white;
 `;
 
 const Headerimg = require("../assets/onBoarding/Header4.png");
@@ -171,16 +181,8 @@ const MoneyInputContainer = styled.View`
 `;
 
 const MoneyInput = styled.TextInput`
-  font-size: 16;
+  font-size: 16px;
   line-height: 19;
-  /*border-bottom: 5px;
-  :focus {
-    border-left-width: 0;
-    border-right-width: 0;
-    border-top-width: 0;
-    border-bottom-width: 2px;
-  }*/
-  //border-bottom-width: 2px;
   padding-bottom: 8px;
 `;
 
@@ -210,14 +212,6 @@ const BackBtnContainer = styled.TouchableOpacity`
   top: ${windowHeight * 0.9};
   width: 40px;
   height: 40px;
-`;
-
-const ErrorTxt = styled.Text`
-  position: absolute;
-  padding-top: 35px;
-  font-size: 10;
-  color: #ff2626;
-  //right: "5.13%",
 `;
 
 const EraseAll = styled.TouchableOpacity`

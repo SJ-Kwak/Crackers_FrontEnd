@@ -23,7 +23,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { updateAdditionalInfo } from "../api/auth";
 import axios from "axios";
 import { Request } from "../api/request";
-import { getItemFromAsync, removeItemFromAsync, setItemToAsync } from '../api/storage'
+import {
+  getItemFromAsync,
+  removeItemFromAsync,
+  setItemToAsync,
+} from "../api/storage";
 
 //import useKeyboardHeight from "react-native-use-keyboard-height";
 
@@ -44,27 +48,26 @@ export default function NicknameScreen({ navigation, route }) {
   const [nickname, setNickname] = useState("");
   const request = new Request();
 
-
   const handleSignUp = async () => {
-    const id = await getItemFromAsync('id')
-    const password = await getItemFromAsync('password')
-    console.log(id, password)
-    const response = await request.post('/accounts/signup', {
+    const id = await getItemFromAsync("id");
+    const password = await getItemFromAsync("password");
+    console.log(id, password);
+    const response = await request.post("/accounts/signup", {
       loginId: id,
       password: password,
-      nickname: nickname
-    })
-    console.error(response)
-    await removeItemFromAsync('id')
+      nickname: nickname,
+    });
+    console.error(response);
+    await removeItemFromAsync("id");
     // await removeItemFromAsync('password')
-    if(response.status !== 'CONFLICT'){
-      await setItemToAsync('accessToken', response.data.accessToken)
-      await setItemToAsync('refreshToken', response.data.refreshToken)
-      navigation.navigate('JobNickname')
+    if (response.status !== "CONFLICT") {
+      await setItemToAsync("accessToken", response.data.accessToken);
+      await setItemToAsync("refreshToken", response.data.refreshToken);
+      navigation.navigate("JobNickname");
     } else {
-      Alert.alert('회원 가입에 실패하였습니다')
+      Alert.alert("회원 가입에 실패하였습니다");
     }
-  }
+  };
 
   return (
     <Formik
@@ -89,10 +92,10 @@ export default function NicknameScreen({ navigation, route }) {
             <BackIcon source={backIcon} />
           </BackToHome>
           <FormContainer>
-            <Title>닉네임 짓기</Title>
+          <Text style={styles.title}>닉네임 짓기</Text>
             <View style={{ marginTop: 50 }} />
-            <SubTitle>닉네임</SubTitle>
-            <View style={{ marginTop: 10}} />
+            <Text style={styles.subtitle}>닉네임</Text>
+            <View style={{ marginTop: 10 }} />
             <InputWrapper>
               <InputTxt
                 style={{
@@ -103,6 +106,7 @@ export default function NicknameScreen({ navigation, route }) {
                       : "#FF2626"
                     : "#CCCCCC",
                   borderBottomWidth: values.nickname ? 2 : 1,
+                  fontFamily: 'Pretendard'
                 }}
                 placeholder="1~8자 이하 한글, 영문, 숫자, 특수문자"
                 autoCapitalize={false}
@@ -141,7 +145,7 @@ export default function NicknameScreen({ navigation, route }) {
             onPress={handleSignUp}
             disabled={!isValid}
           >
-            <SubmitTxt>크래커 시작하기</SubmitTxt>
+            <Text style={styles.submit}>크래커 시작하기</Text>
           </SubmitBtn>
         </Wrapper>
       )}
@@ -149,20 +153,38 @@ export default function NicknameScreen({ navigation, route }) {
   );
 }
 
+const styles = StyleSheet.create({
+  title: {
+    color: '#202020',
+    fontSize: 24,
+    fontWeight: '600',
+    lineHeight: 29,
+  },
+  subtitle: {
+    color: '#606060',
+    fontSize: 14,
+    fontWeight: '400'
+  },
+  submit: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: 'white',
+    fontWeight: '600'
+  },
+})
+
 const Wrapper = styled.View`
-  background: white;
+  background-color: white;
   flex: 1;
-  //paddingTop: 100,
   align-items: center;
-  //paddingHorizontal: 15,
 `;
 const FormContainer = styled.View`
   padding: 20px;
   width: 100%;
 `;
 const BackToHome = styled.TouchableOpacity`
-  width: 60;
-  height: 60;
+  width: 60px;
+  height: 60px;
   margin: 10px 0px;
   align-items: center;
   justify-content: center;
@@ -170,11 +192,11 @@ const BackToHome = styled.TouchableOpacity`
   z-index: 1;
 `;
 const BackIcon = styled.Image`
-  width: 40;
-  height: 40;
+  width: 40px;
+  height: 40px;
 `;
 const Title = styled.Text`
-  font-family: "Pretendard";
+  font-family: "PretendardVariable";
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -187,7 +209,7 @@ const Title = styled.Text`
 const SubTitle = styled.Text`
   //position: absolute;
   color: #606060;
-  font-size: 14;
+  font-size: 14px;
   font-weight: 400;
 `;
 
