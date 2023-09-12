@@ -131,7 +131,7 @@ export default function SignupScreen({ navigation }) {
                     fontFamily: 'Pretendard'
                   }}
                   placeholder="아이디"
-                  autoCapitalize={false}
+                  autoCapitalize={'none'}
                   value={values.email}
                   onChangeText={(text) => {
                     handleChange("email")(text);
@@ -204,7 +204,7 @@ export default function SignupScreen({ navigation }) {
                   fontFamily: 'Pretendard'
                 }}
                 placeholder="비밀번호"
-                autoCapitalize={false}
+                autoCapitalize={'none'}
                 autoCorrect={false}
                 secureTextEntry={true}
                 textContentType="password"
@@ -244,7 +244,7 @@ export default function SignupScreen({ navigation }) {
                   fontFamily: 'Pretendard'
                 }}
                 placeholder="비밀번호 확인"
-                autoCapitalize={false}
+                autoCapitalize={'none'}
                 value={values.pwCheck}
                 autoCorrect={false}
                 secureTextEntry={true}
