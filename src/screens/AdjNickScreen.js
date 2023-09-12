@@ -1,10 +1,9 @@
 import React from "react-native";
 import styled from "styled-components/native";
-
+import { TextPretendard as Text } from "../static/CustomText";
 import {
   Alert,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
   Image,
@@ -39,15 +38,15 @@ export default function AdjNickScreen({ navigation }) {
   const request = new Request();
 
   const handleNickname = async (values) => {
-    const response = await request.patch('/accounts/profile', {
-      nickname: values.nickname
-    })
+    const response = await request.patch("/accounts/profile", {
+      nickname: values.nickname,
+    });
     if (response.status === 200) {
       navigation.goBack();
     } else {
-      Alert.alert('닉네임 수정에 실패하였습니다!')
+      Alert.alert("닉네임 수정에 실패하였습니다!");
     }
-  }
+  };
 
   return (
     <Formik
@@ -72,9 +71,9 @@ export default function AdjNickScreen({ navigation }) {
             <BackIcon source={backIcon} />
           </BackToHome>
           <FormContainer>
-            <Title>닉네임 수정하기</Title>
-            <View style={{ height: 200 }} />
-            <SubTitle>닉네임</SubTitle>
+            <Text style={styles.title}>닉네임 수정하기</Text>
+            <View style={{ height: 60 }} />
+            <Text style={styles.subtitle}>닉네임</Text>
             <View style={{ height: 18 }} />
             <InputWrapper>
               <InputTxt
@@ -82,6 +81,7 @@ export default function AdjNickScreen({ navigation }) {
                   //position: "absolute",
                   borderBottomColor: values.nickname ? "#6100FF" : "#CCCCCC",
                   borderBottomWidth: values.nickname ? 2 : 1,
+                  fontFamily: 'Pretendard'
                 }}
                 placeholder="1~8자 이하 한글, 영문, 숫자, 특수문자"
                 autoCapitalize={false}
@@ -95,7 +95,7 @@ export default function AdjNickScreen({ navigation }) {
                 keyboardType="email-address"
               />
               {touched.nickname && errors.nickname && (
-                <ErrorTxt>{errors.nickname}</ErrorTxt>
+                <Text style={styles.error}>{errors.nickname}</Text>
               )}
             </InputWrapper>
           </FormContainer>
@@ -111,7 +111,7 @@ export default function AdjNickScreen({ navigation }) {
             onPress={() => handleNickname(values)}
             disabled={!isValid}
           >
-            <SubmitTxt>완료</SubmitTxt>
+            <Text style={styles.submit}>완료</Text>
           </SubmitBtn>
         </Wrapper>
       )}
@@ -119,49 +119,49 @@ export default function AdjNickScreen({ navigation }) {
   );
 }
 
+const styles = StyleSheet.create({
+  title: {
+    color: '#202020',
+    fontSize: 24,
+    fontWeight: '600',
+  },
+  subtitle: {
+    color: '#606060',
+    fontSize: 14
+  },
+  submit: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: 'white',
+    fontWeight: '600'
+  },
+  error: {
+    paddingTop: 5,
+    fontSize: 10,
+    color: '#FF2626'
+  },
+})
+
 const Wrapper = styled.View`
-  background: white;
+  background-color: white;
   flex: 1;
-  //paddingTop: 100,
   align-items: center;
-  //paddingHorizontal: 15,
 `;
 const FormContainer = styled.View`
   padding: 20px;
   width: 100%;
 `;
 const BackToHome = styled.TouchableOpacity`
-  width: 60;
-  height: 60;
+  width: 60px;
+  height: 60px;
   margin: 10px 0px;
   align-items: center;
   justify-content: center;
   align-self: flex-start;
 `;
 const BackIcon = styled.Image`
-  width: 40;
-  height: 40;
-`;
-const Title = styled.Text`
-  position: absolute;
-  left: 5.13%;
-  //right: 78.72%;
-  top: 140;
-  font-family: "Pretendard";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 29px;
-  display: flex;
-  align-items: center;
-  color: #202020;
-`;
-
-const SubTitle = styled.Text`
-  //position: absolute;
-  color: #606060;
-  font-size: 14;
-  font-weight: 400;
+  width: 40px;
+  height: 40px;
 `;
 
 const InputWrapper = styled.View`
@@ -170,53 +170,14 @@ const InputWrapper = styled.View`
 
 const InputTxt = styled.TextInput`
   padding-bottom: 8px;
-  /*
-    borderBottomColor: values.email ? "#6100FF" : "#CCCCCC",
-    borderBottomWidth: values.email ? 2 : 1,
-    border-bottom-color: values.password
-        ? #6100FF
-        : #CCCCCC;
-    border-bottom-width: values.password ? 2 : 1;*/
-`;
-const ErrorTxt = styled.Text`
-  padding-top: 5px;
-  font-size: 10;
-  color: #ff2626;
-  //right: "5.13%",
 `;
 
 const SubmitBtn = styled.TouchableOpacity`
   position: absolute;
-  //top: keyboardHeight;
-  //background-color: #395B64;
-  width: 350;
-  height: 44;
-  bottom: 52;
-  //padding: 10px;
-  border-radius: 100;
+  width: 350px;
+  height: 44px;
+  bottom: 52px;
+  border-radius: 100px;
   justify-content: center;
   align-items: center;
-`;
-
-const SubmitTxt = styled.Text`
-  color: #fff;
-  text-align: center;
-  font-size: 16;
-  font-weight: 600;
-`;
-
-const CheckBtn = styled.TouchableOpacity`
-  position: absolute;
-  left: 270;
-  background-color: #cccccc;
-  width: 81;
-  height: 33;
-  padding: 10px;
-  border-radius: 100;
-`;
-
-const CheckTxt = styled.Text`
-  text-align: center;
-  font-size: 14;
-  font-weight: 400;
 `;

@@ -18,23 +18,6 @@ const windowWidth = Dimensions.get('window').width;
 
 
 export default function JobNickname({ navigation }) {
-  //const [userdata, setUserData] = useState({ jobNickname: ""});
-
-  // const getUserData = async (values) => {
-  //   try {
-  //     const userData = await AsyncStorage.getItem("user");
-  //     //return userData ? JSON.parse(userData) : null;
-
-  //     if (userData) {
-  //       userData.jobNickname = values.jobNickname; // 새로운 닉네임 추가
-  //       await AsyncStorage.setItem("userData", JSON.stringify(userData)); // 업데이트된 정보 저장
-  //       console.log("일 종류가 저장되었습니다");
-  //     }
-  //   } catch (error) {
-  //     console.log("불러오기 실패:", error);
-  //     return null;
-  //   }
-  // };
 
   const setItem = async (values) => {
     await setItemToAsync('name', values.jobNickname)
@@ -84,6 +67,7 @@ export default function JobNickname({ navigation }) {
                 //position: "absolute",
                 borderBottomColor: values.jobNickname ? "#6100FF" : "#CCCCCC",
                 borderBottomWidth: values.jobNickname ? 2 : 1,
+                fontFamily: 'Pretendard'
               }}
             />
           </NicknameInputContainer>
@@ -105,9 +89,8 @@ export default function JobNickname({ navigation }) {
 
 const Container = styled.SafeAreaView`
   display: flex;
-  justify-content: center;
-  //margin-left: 20px;
-  //margin-right: 20px;
+  background-color: white;
+  flex: 1;
 `;
 
 const Headerimg = require("../assets/onBoarding/Header1.png");
@@ -132,15 +115,7 @@ const NicknameInputContainer = styled.View`
 const NicknameInput = styled.TextInput`
   font-size: 16;
   line-height: 20px;
-  //border-bottom: 5px;
-  //border-color: black;
-  /*:focus {
-    border-left-width: 0;
-    border-right-width: 0;
-    border-top-width: 0;
-    border-bottom-width: 50px;
-  }*/
-   padding-bottom: 8px;
+  padding-bottom: 8px;
 `;
 const NextBtn = require("../assets/onBoarding/Nextbtn.png");
 const NextBtnGray = require("../assets/onBoarding/NextbtnGray.png");

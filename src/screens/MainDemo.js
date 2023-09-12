@@ -2,16 +2,16 @@ import React from "react-native";
 import { useEffect, useRef } from "react";
 import styled from "styled-components/native";
 import Carousel from "react-native-carousel-control";
-import LiquidProgress from "react-native-liquid-progress";
 import Swiper from "react-native-swiper";
 import { Display2 } from "../static/text.js";
-import DatePicker from "react-native-datepicker";
-// import DateTimePicker from '@react-native-community/datetimepicker';
-
+import { asPickerFormat } from "../components/utils.js";
+import { BUTTON_HEIGHT, VIEW_WIDTH } from "../components/values.js";
+import TimePicker from "../components/TImePicker.js";
+import { randomTxt } from "../components/randomTxt.js";
+import { TextPretendard as Text } from "../static/CustomText.js";
 import {
   Alert,
   StyleSheet,
-  Text,
   TextInput,
   View,
   Image,
@@ -23,7 +23,7 @@ import {
   Animated,
   ScrollView,
   Modal,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import { useState, useContext, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
@@ -33,10 +33,19 @@ import { getItemFromAsync } from "../api/storage.js";
 
 const Stack = createStackNavigator();
 const settingBtn = require("../assets/tch_btnSettings.png");
-const { width, height } = Dimensions.get('window')
+const { width, height } = Dimensions.get("window");
 
 const days = ["월", "화", "수", "목", "금", "토", "일"];
-const categories = ['카페∙베이커리', '편의점', '레스토랑', '학원∙과외', '배달', '물류∙포장', '공연∙전시스탭', '기타']
+const categories = [
+  "카페∙베이커리",
+  "편의점",
+  "레스토랑",
+  "학원∙과외",
+  "배달",
+  "물류∙포장",
+  "공연∙전시스탭",
+  "기타",
+];
 
 export default function MainDemo({ navigation }) {
   const [start, setStart] = useState(false);
@@ -49,17 +58,16 @@ export default function MainDemo({ navigation }) {
   const [mainColor, setMainColor] = useState("#6100FF");
   const [duringTime, setDuringTime] = useState(10); // 소요시간
   const [startTxt, setStartTxt] = useState("");
-  const [workSpace, setWorkSpace] = useState([])
-  const [schedule, setSchedule] = useState([])
-  // const [isTouched, setIsTouched] = useState([])
-  const [selectedTime1, setSelectedTime1] = useState('');
-  const [selectedTime2, setSelectedTime2] = useState('');
-  const [wage, setWage] = useState('')
+  const [workSpace, setWorkSpace] = useState([]);
+  const [schedule, setSchedule] = useState([]);
+  const [wage, setWage] = useState("");
   const [isTouched, setIsTouched] = useState(Array(days.length).fill(false));
   const [selectedDayIndex, setSelectedDayIndex] = useState([]);
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const [selectedBusiness, setSelectedBusiness] = useState(0);
   const [workSpaceId, setWorkSpaceId] = useState(0);
+  const [time1, setTime1] = useState(null);
+  const [time2, setTime2] = useState(null);
 
   const request = new Request();
 
@@ -71,15 +79,20 @@ export default function MainDemo({ navigation }) {
   const rightBtn = require("../assets/btnRight.png");
 
   const getUserInfo = async () => {
-    const response = await request.get('/accounts/profile')
-    setStartTxt(response.data.nickname + '님, \n오늘의 근무를 \n시작하세요')
-  }
+    const response = await request.get("/accounts/profile");
+    setStartTxt(response.data.nickname + "님, \n오늘의 근무를 \n시작하세요");
+  };
 
   const getWorkSpace = async () => {
-    const response = await request.get('/workspaces');
-    setWorkSpace(response.data[0])
-    setDuringTime(((response.data[0].schedules[0].endTime - response.data[0].schedules[0].startTime) / 100) * 60);
-    let _schedule = response.data[0].schedules.map(schedule => schedule.day)
+    const response = await request.get("/workspaces");
+    setWorkSpace(response.data[0]);
+    setDuringTime(
+      ((response.data[0].schedules[0].endTime -
+        response.data[0].schedules[0].startTime) /
+        100) *
+        60
+    );
+    let _schedule = response.data[0].schedules.map((schedule) => schedule.day);
     const defaultSelectedDays = days.reduce((acc, day, index) => {
       if (_schedule.includes(day)) {
         acc.push(index);
@@ -87,43 +100,81 @@ export default function MainDemo({ navigation }) {
       return acc;
     }, []);
     setSelectedDayIndex(defaultSelectedDays);
-    setIsTouched(isTouched.map((value, index) =>
-      defaultSelectedDays.includes(index) ? true : value
-    ));
-    setName(response.data[0].name)
-    setSelectedBusiness(response.data[0].categoryId)
-    setSelectedTime1(response.data[0].schedules[0].startTime)
-    setSelectedTime2(response.data[0].schedules[0].endTime)
-    setWage(response.data[0].wage)
-    setSchedule(response.data[0].schedules)
-  }
+    setIsTouched(
+      isTouched.map((value, index) =>
+        defaultSelectedDays.includes(index) ? true : value
+      )
+    );
+    setName(response.data[0].name);
+    setSelectedBusiness(response.data[0].categoryId);
+    setWage(response.data[0].wage);
+    setSchedule(response.data[0].schedules);
+    setTime1(
+      asPickerFormat(
+        new Date(
+          2023,
+          10,
+          11,
+          response.data[0].schedules[0].startTime / 100,
+          response.data[0].schedules[0].startTime % 100,
+          0
+        )
+      )
+    );
+    setTime2(
+      asPickerFormat(
+        new Date(
+          2023,
+          10,
+          11,
+          response.data[0].schedules[0].endTime / 100,
+          response.data[0].schedules[0].endTime % 100,
+          0
+        )
+      )
+    );
+  };
 
   useEffect(() => {
-    getUserInfo(); 
+    getUserInfo();
     getWorkSpace();
-    console.error(duringTime)
-  }, [modalVisible])
+  }, [modalVisible]);
 
-  const [workDt, setWorkDt] = useState('')
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
+  const [workDt, setWorkDt] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
 
   const getTime = () => {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
-    const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더함
-    const day = String(currentDate.getDate()).padStart(2, '0');
-    const hours = String(currentDate.getHours()).padStart(2, '0');
-    const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+    const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // 월은 0부터 시작하므로 1을 더함
+    const day = String(currentDate.getDate()).padStart(2, "0");
+    const hours = String(currentDate.getHours()).padStart(2, "0");
+    const minutes = String(currentDate.getMinutes()).padStart(2, "0");
 
     const formattedDate = `${year}-${month}-${day}`;
     const formattedTime = `${hours}${minutes}`;
     setWorkDt(formattedDate);
     return formattedTime;
-  }
+  };
+
+  const convertTime = (time) => {
+    const dateTimeString = time;
+    const dateObject = new Date(dateTimeString);
+
+    const hours = dateObject.getHours(); // 시간 추출
+    const minutes = dateObject.getMinutes(); // 분 추출
+
+    // 시간과 분을 두 자리 숫자로 포맷팅
+    const formattedHours = String(hours).padStart(2, "0");
+    const formattedMinutes = String(minutes).padStart(2, "0");
+
+    // 시간 문자열 생성
+    return formattedHours + formattedMinutes;
+  };
 
   const convertToMinutes = (time) => {
-    const hours = parseInt(time.slice(0,2), 10);
+    const hours = parseInt(time.slice(0, 2), 10);
     const minutes = parseInt(time.slice(2), 10);
     return hours * 60 + minutes;
   };
@@ -221,21 +272,14 @@ export default function MainDemo({ navigation }) {
     const updatedIsTouched = [...isTouched];
     updatedIsTouched[index] = !updatedIsTouched[index];
     setIsTouched(updatedIsTouched);
-  
+
     if (updatedIsTouched[index]) {
       setSelectedDayIndex([...selectedDayIndex, index]);
     } else {
-      setSelectedDayIndex(selectedDayIndex.filter((selectedDay) => selectedDay !== index));
+      setSelectedDayIndex(
+        selectedDayIndex.filter((selectedDay) => selectedDay !== index)
+      );
     }
-  };
-  
-
-  const onTimeChange1 = (time) => {
-    setSelectedTime1(time);
-  };
-
-  const onTimeChange2 = (time) => {
-    setSelectedTime2(time);
   };
 
   const daysList = days.map((day, index) => (
@@ -244,54 +288,55 @@ export default function MainDemo({ navigation }) {
       isTouched={isTouched[index]}
       onPress={() => onPressDay(index)}
     >
-      <DayContainer isTouched={isTouched[index]}>{day}</DayContainer>
+      <Text style={dayStyles(isTouched[index]).day}>{day}</Text>
     </Days>
   ));
-  // const daysList = days.map((day, index) => (
-  //   <Days
-  //     key={index}
-  //     isSelected={selectedDayIndex.includes(index)}
-  //     onPress={() => onPressDay(index)}
-  //   >
-  //     <DayContainer isSelected={selectedDayIndex.includes(index)}>{day}</DayContainer>
-  //   </Days>
-  // ));
 
   const [workHistoryId, setWorkHistoryId] = useState(0);
   const [totalTime, setTotalTime] = useState(0);
-  const createWorkHistory = async () => {
 
+  const createWorkHistory = async () => {
     const startMinutes = convertToMinutes(startTime);
     const endMinutes = convertToMinutes(getTime());
 
+    const _start = convertToMinutes(convertTime(time1).substr(0, 2).concat(convertTime(time1).substr(2, 2)))
+    const _end = convertToMinutes(convertTime(time2).substr(0, 2).concat(convertTime(time2).substr(2, 2)))
+
     // 임금 계산
     const totalHours = (endMinutes - startMinutes) / 60;
-    setTotalTime(totalHours);
+    const _totalHours = (_end - _start) / 60;
+    setTotalTime(totalHours !== _totalHours ? totalHours : _totalHours);
     const totalWage = totalHours * workSpace.wage;
-    const response = await request.post('/history', {
+    const _totalWage = _totalHours * workSpace.wage;
+    const response = await request.post("/history", {
       workspaceId: workSpace.workspaceId,
       workDt: workDt,
-      startTime: parseInt(startTime),
-      endTime: parseInt(getTime()),
-      totalWage: parseInt(totalWage)
-    })
-    const response_get = await request.get('/history')
-    setWorkHistoryId(response_get.data[response_get.data.length-1].workHistoryId)
-  }
+      startTime: parseInt(startTime) !== parseInt(time1) ? parseInt(startTime) : parseInt(time1),
+      endTime: parseInt(getTime()) !== parseInt(time2) ? parseInt(getTime()) : parseInt(time2),
+      totalWage: totalWage <= _totalWage ? totalWage : _totalWage,
+    });
+    const response_get = await request.get("/history");
+    setWorkHistoryId(
+      response_get.data[response_get.data.length - 1].workHistoryId
+    );
+  };
 
   const showAlert = () => {
-    // setEndTime(getTime())
     Alert.alert(
       "퇴근하기\n",
-      "오늘 근무를\n 여기서 마칠까요?",
+      "오늘 근무를\n여기서 마칠까요?",
       [
-        { text: "취소", onPress: () => console.log("cnlth") },
+        { text: "취소", onPress: () => {
+          setRunning1(true);
+          setRunning2(true);
+        } },
         {
           text: "퇴근",
           onPress: () => {
             setMainColor("#FFAF15");
             setStartBtnTxt("카드받기");
             setStartTxt("오늘의 \n알바 완료!");
+            // setEndTime(getTime());
             createWorkHistory();
           },
           color: "#6100FF",
@@ -302,32 +347,40 @@ export default function MainDemo({ navigation }) {
   };
 
   const createCard = async () => {
-    const response = await request.post('/card', {
+    const response = await request.post("/card", {
       workHistoryId: workHistoryId,
-      randNum: Math.floor(Math.random() * 9) + 1
-    })
-    if(response.status === 200) {
-      navigation.navigate('Card', { hours: totalTime })
+      randNum: Math.floor(Math.random() * 9) + 1,
+    });
+    if (response.status === 200) {
+      navigation.navigate("Card", { hours: totalTime });
     }
-  }
+  };
 
   const changeTxt = () => {
     setStartBtnTxt("퇴근하기");
-    setStartTxt("오늘 \n하루도 \n화이팅!");
+    setStartTxt(randomTxt(selectedBusiness)._j);
   };
 
-
   const handleBusinessSelection = (business) => {
-    setSelectedBusiness(categories.indexOf(business))
+    setSelectedBusiness(categories.indexOf(business));
   };
 
   const handleTime = async () => {
-    if (selectedDayIndex.length > 0 && selectedTime1 && selectedTime2) {
-      console.log(selectedDayIndex)
+    if (selectedDayIndex.length > 0 && time1 && time2) {
       const newScheduleList = selectedDayIndex.map((day) => ({
         day: days[day],
-        startTime: selectedTime1.replace(":", ""),
-        endTime: selectedTime2.replace(":", ""),
+        startTime: time1
+          .getHours()
+          .toString()
+          .concat(
+            time1.getMinutes() === 0 ? "00" : time1.getMinutes().toString()
+          ),
+        endTime: time2
+          .getHours()
+          .toString()
+          .concat(
+            time2.getMinutes() === 0 ? "00" : time2.getMinutes().toString()
+          ),
       }));
       // scheduleList와 newSchedule 배열 비교
       for (const newSched of newScheduleList) {
@@ -336,8 +389,8 @@ export default function MainDemo({ navigation }) {
         for (const sched of workSpace.schedules) {
           if (
             newSched.day === sched.day &&
-            newSched.startTime === sched.startTime &&
-            newSched.endTime === sched.endTime
+            newSched.startTime === sched.startTime.toString() &&
+            newSched.endTime === sched.endTime.toString()
           ) {
             isMatch = true;
             break;
@@ -345,30 +398,35 @@ export default function MainDemo({ navigation }) {
         }
 
         if (!isMatch) {
-          setSchedule(newScheduleList)
+          return newScheduleList;
+        } else {
+          return schedule;
         }
       }
     }
   };
 
-  const [update, setUpdated] = useState(false)
+  const [update, setUpdated] = useState(false);
 
   const handleSchedule = async () => {
-    await handleTime();
-    const response = await request.patch('/workspaces/update', {
-      workspaceId: (workSpace.workspaceId).toString(),
+    console.log(schedule);
+    const response = await request.patch("/workspaces/update", {
+      workspaceId: workSpace.workspaceId.toString(),
       name: (name !== workSpace.name ? name : workSpace.name).toString(),
       wage: (wage !== workSpace.wage ? wage : workSpace.wage).toString(),
-      categoryId: (selectedBusiness !== workSpace.categoryId ? selectedBusiness : workSpace.categoryId).toString(),
-      scheduleList: schedule
-    })
-    if(response.status === 200 ){
+      categoryId: (selectedBusiness !== workSpace.categoryId
+        ? selectedBusiness
+        : workSpace.categoryId
+      ).toString(),
+      scheduleList: await handleTime(),
+    });
+    if (response.status === 200) {
       closeModal();
     }
-  }
+  };
 
-  const CategoryItem = ({item}) => {
-    const category = categories.indexOf(item)
+  const CategoryItem = ({ item }) => {
+    const category = categories.indexOf(item);
     return (
       <View
         style={{
@@ -384,7 +442,7 @@ export default function MainDemo({ navigation }) {
             fontWeight: 300,
             marginBottom: 17,
             marginTop: 17,
-            flex: 1
+            flex: 1,
           }}
         >
           {item}
@@ -400,9 +458,7 @@ export default function MainDemo({ navigation }) {
               alignItems: "center",
               //paddingHorizontal: 10,
               borderColor:
-                category === selectedBusiness
-                  ? "#6100FF"
-                  : "#D9D9D9",
+                category === selectedBusiness ? "#6100FF" : "#D9D9D9",
             }}
             onPress={() => handleBusinessSelection(item)}
           >
@@ -412,25 +468,28 @@ export default function MainDemo({ navigation }) {
                 height: 9,
                 borderRadius: 30,
                 backgroundColor:
-                  category === selectedBusiness
-                    ? "#6100FF"
-                    : "white",
+                  category === selectedBusiness ? "#6100FF" : "white",
               }}
             />
           </TouchableOpacity>
         </View>
       </View>
-    )
-  }
+    );
+  };
 
+  const [startOpen, setStartOpen] = useState(false);
+  const [endOpen, setEndOpen] = useState(false);
   return (
     <View style={styles.container}>
       <AlbaFrame>
         <Text>{workSpace.name}</Text>
       </AlbaFrame>
-      <StartTxt>{startTxt}</StartTxt>
+      <Text style={styles.start}>{startTxt}</Text>
       <TouchableOpacity
-        style={[styles.circle2, { left: circlePo, borderColor: mainColor, top: "37%" }]}
+        style={[
+          styles.circle2,
+          { left: circlePo, borderColor: mainColor, top: "37%" },
+        ]}
         //onPress={()=>{scrollPosition.x>-100 ? scrollToRight : scrollToLeft}}
         onPress={() => {
           circlePo == -50 ? setCirclePo(200) : setCirclePo(-50);
@@ -479,7 +538,7 @@ export default function MainDemo({ navigation }) {
             }}
             //disabled={circleTouched}
           >
-            {("0" + Math.floor((time / 60000) % 60)) * 160.167 + "원"}
+            {(((time/3600000)%60) * workSpace.wage).toFixed(0) + "원"}
           </Text>
         )}
       </View>
@@ -511,25 +570,18 @@ export default function MainDemo({ navigation }) {
       <StartBtn
         style={{
           backgroundColor: mainColor,
-          //flex: 1,
-          //justifyContent: "flex-end",
         }}
         onPress={() => {
           startBtnTxt == "시작하기" ? setRunning1(true) : setRunning1(false);
           startBtnTxt == "시작하기" ? setRunning2(true) : setRunning2(false);
-          startBtnTxt == "시작하기" && setStartTime(getTime())
+          startBtnTxt == "시작하기" && setStartTime(getTime());
           startBtnTxt == "시작하기" && changeTxt();
-          setStart(true)
-          startBtnTxt == "퇴근하기" && setEndTime(getTime())
+          setStart(true);
           startBtnTxt == "퇴근하기" && showAlert();
           startBtnTxt == "카드받기" && createCard();
-
-          //Alert.alert(scrollPosition)
-          //setRunning(true)
         }}
-        //disabled={startBtnTxt=="퇴근하기"}
       >
-        <SubmitTxt>{startBtnTxt}</SubmitTxt>
+        <Text style={styles.submit}>{startBtnTxt}</Text>
       </StartBtn>
       <SettingBtn
         onPress={() => {
@@ -561,12 +613,18 @@ export default function MainDemo({ navigation }) {
               <View
                 style={{
                   backgroundColor: "white",
-                  width: 390,
+                  width: "100%",
                   height: 700,
                   borderRadius: 10,
                 }}
               >
-                <View style={{ flexDirection: "row", marginBottom: 20, padding: 15 }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginBottom: 20,
+                    padding: 15,
+                  }}
+                >
                   <TouchableOpacity onPressOut={closeModal}>
                     <Image source={erase} />
                   </TouchableOpacity>
@@ -581,18 +639,25 @@ export default function MainDemo({ navigation }) {
                   style={{
                     fontSize: 24,
                     marginLeft: 20,
-                    fontWeight: '600',
+                    fontWeight: "600",
                     marginBottom: 20,
+                    fontFamily: 'Pretendard'
                   }}
                   value={name}
                   onChangeText={setName}
                 />
-                <View style={{borderBottomWidth: 1, borderBottomColor: '#f5f5f5', width: width}} />
+                <View
+                  style={{
+                    borderBottomWidth: 1,
+                    borderBottomColor: "#f5f5f5",
+                    width: width,
+                  }}
+                />
                 <View
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
-                    padding: 15
+                    padding: 15,
                   }}
                 >
                   <Image
@@ -600,7 +665,7 @@ export default function MainDemo({ navigation }) {
                     style={{
                       width: 20,
                       height: 20,
-                      marginTop: 3
+                      marginTop: 3,
                     }}
                   />
                   <Text
@@ -614,88 +679,181 @@ export default function MainDemo({ navigation }) {
                 </View>
                 <DayListContainer>{daysList}</DayListContainer>
                 <TimePick>
-                {selectedDayIndex.length > 0 && <Text style={{ top: 10 }}>시작</Text>}
+                  {selectedDayIndex.length > 0 && (
+                    <Text style={{ top: 10, color: "#858585" }}>시작</Text>
+                  )}
                   {selectedDayIndex.length > 0 && (
                     <DatePickerContainer>
-                      <DatePicker
-                        style={{ width: 90 }}
-                        date={selectedTime1 || "9:30"}
-                        mode="time"
-                        format="HH:mm"
-                        minuteInterval={1}
-                        onDateChange={onTimeChange1}
-                        showIcon={false}
-                        locale="ko"
-                        confirmBtnText="확인"
-                        cancelBtnText="취소"
-                        customStyles={{
-                          dateInput: {
-                            display: "flex",
-                            borderWidth: 0,
-                            width: 265,
-                            height: 40,
-                            borderRadius: 10,
-                            backgroundColor: "#f5f5f5",
-                            alignItems: "center",
-                            padding: 0,
-                            margin: 0,
-                          },
-                          btnTextConfirm: {
-                            color: "#6100FF",
-                          },
-                          btnTextCancel: {
-                            color: "#cccccc",
-                          },
-                          Text: {
-                            color: "#ffffff",
-                          },
+                      <TouchableOpacity
+                        style={{
+                          backgroundColor: "#f5f5f5",
+                          height: 40,
+                          width: 90,
+                          borderRadius: 8,
+                          justifyContent: "center",
+                          alignItems: "center",
                         }}
-                        showTime={true}
-                      />
+                        onPress={() => setStartOpen(true)}
+                      >
+                        <Text style={{ color: "#1C1C1C" }}>
+                          {convertTime(time1).substr(0, 2)}:
+                          {convertTime(time1).substr(2, 2)}
+                        </Text>
+                      </TouchableOpacity>
+                      <Modal
+                        transparent={true}
+                        visible={startOpen}
+                        animationType="slide"
+                        onRequestClose={() => setStartOpen(false)}
+                      >
+                        <View
+                          style={{
+                            backgroundColor: "white",
+                            position: "absolute",
+                            top: height * 0.5,
+                            left: (width - VIEW_WIDTH) / 2,
+                            width: VIEW_WIDTH,
+                          }}
+                        >
+                          <TimePicker
+                            value={time1}
+                            onChange={setTime1}
+                            width={VIEW_WIDTH}
+                            buttonHeight={BUTTON_HEIGHT}
+                            visibleCount={3}
+                          />
+                          <View style={{ flexDirection: "row" }}>
+                            <Pressable
+                              style={{
+                                width: "50%",
+                                borderWidth: 1,
+                                borderColor: "black",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                paddingVertical: 10,
+                              }}
+                              onPress={() => setStartOpen(false)}
+                            >
+                              <Text>취소</Text>
+                            </Pressable>
+                            <Pressable
+                              style={{
+                                width: "50%",
+                                borderWidth: 1,
+                                borderColor: "black",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                paddingVertical: 10,
+                              }}
+                              onPress={() => {
+                                setStartOpen(false);
+                              }}
+                            >
+                              <Text>확인</Text>
+                            </Pressable>
+                          </View>
+                        </View>
+                      </Modal>
                     </DatePickerContainer>
                   )}
-                  <View style={{ width: 10 }} />
-                  {selectedDayIndex.length > 0 && <Text style={{ top: 10 }}>종료</Text>}
+                  <View
+                    style={{
+                      width: 10,
+                      marginHorizontal: 20,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: 40,
+                      marginTop: 20,
+                    }}
+                  >
+                    <Text style={{ color: "#858585" }}>~</Text>
+                  </View>
+                  {selectedDayIndex.length > 0 && (
+                    <Text style={{ top: 10, color: "#858585" }}>종료</Text>
+                  )}
                   {selectedDayIndex.length > 0 && (
                     <DatePickerContainer>
-                      <DatePicker
-                        style={{ width: 90 }}
-                        date={selectedTime2 || "15:00"}
-                        mode="time"
-                        format="HH:mm"
-                        minuteInterval={1}
-                        onDateChange={onTimeChange2}
-                        showIcon={false}
-                        locale="ko"
-                        confirmBtnText="확인"
-                        cancelBtnText="취소"
-                        customStyles={{
-                          dateInput: {
-                            display: "flex",
-                            borderWidth: 0,
-                            borderRadius: 10,
-                            height: 40,
-                            backgroundColor: "#f5f5f5",
-                            alignItems: "center",
-                            padding: 0,
-                            margin: 0,
-                          },
-                          btnTextConfirm: {
-                            color: "#6100FF",
-                          },
-                          btnTextCancel: {
-                            color: "#cccccc",
-                          },
-                          Text: {
-                            color: "#ffffff",
-                          },
+                      <TouchableOpacity
+                        style={{
+                          backgroundColor: "#f5f5f5",
+                          height: 40,
+                          width: 90,
+                          borderRadius: 8,
+                          justifyContent: "center",
+                          alignItems: "center",
                         }}
-                        showTime={true}
-                      />
+                        onPress={() => setEndOpen(true)}
+                      >
+                        <Text style={{ color: "#1C1C1C" }}>
+                          {convertTime(time2).substr(0, 2)}:
+                          {convertTime(time2).substr(2, 2)}
+                        </Text>
+                      </TouchableOpacity>
+                      <Modal
+                        transparent={true}
+                        visible={endOpen}
+                        animationType="slide"
+                        onRequestClose={() => setEndOpen(false)}
+                      >
+                        <View
+                          style={{
+                            backgroundColor: "white",
+                            position: "absolute",
+                            top: height * 0.5,
+                            left: (width - VIEW_WIDTH) / 2,
+                            width: VIEW_WIDTH,
+                          }}
+                        >
+                          <TimePicker
+                            value={time2}
+                            onChange={setTime2}
+                            width={VIEW_WIDTH}
+                            buttonHeight={BUTTON_HEIGHT}
+                            visibleCount={3}
+                          />
+                          <View style={{ flexDirection: "row" }}>
+                            <Pressable
+                              style={{
+                                width: "50%",
+                                borderWidth: 1,
+                                borderColor: "black",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                paddingVertical: 10,
+                              }}
+                              onPress={() => setEndOpen(false)}
+                            >
+                              <Text>취소</Text>
+                            </Pressable>
+                            <Pressable
+                              style={{
+                                width: "50%",
+                                borderWidth: 1,
+                                borderColor: "black",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                paddingVertical: 10,
+                              }}
+                              onPress={() => {
+                                setEndOpen(false);
+                              }}
+                            >
+                              <Text>확인</Text>
+                            </Pressable>
+                          </View>
+                        </View>
+                      </Modal>
                     </DatePickerContainer>
                   )}
                 </TimePick>
-                <View style={{borderBottomWidth: 1, borderBottomColor: '#f5f5f5', width: width, marginTop: 20}} />
+                <View
+                  style={{
+                    borderBottomWidth: 1,
+                    borderBottomColor: "#f5f5f5",
+                    width: width,
+                    marginTop: 20,
+                  }}
+                />
                 <View
                   style={{
                     flexDirection: "row",
@@ -710,7 +868,7 @@ export default function MainDemo({ navigation }) {
                     style={{
                       width: 20,
                       height: 20,
-                      marginTop: 3
+                      marginTop: 3,
                     }}
                   />
                   <Text
@@ -726,7 +884,7 @@ export default function MainDemo({ navigation }) {
                       fontSize: 16,
                       color: "gray",
                       marginLeft: 10,
-                      flex: 1
+                      flex: 1,
                     }}
                   >
                     {categories[selectedBusiness]}
@@ -742,13 +900,19 @@ export default function MainDemo({ navigation }) {
                     />
                   </TouchableOpacity>
                 </View>
-                <View style={{borderBottomWidth: 1, borderBottomColor: '#f5f5f5', width: width}} />
+                <View
+                  style={{
+                    borderBottomWidth: 1,
+                    borderBottomColor: "#f5f5f5",
+                    width: width,
+                  }}
+                />
                 <View
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
                     height: 55,
-                    paddingHorizontal: 15
+                    paddingHorizontal: 15,
                   }}
                 >
                   <Image
@@ -756,7 +920,7 @@ export default function MainDemo({ navigation }) {
                     style={{
                       width: 20,
                       height: 20,
-                      marginTop: 3
+                      marginTop: 3,
                     }}
                   />
                   <Text
@@ -772,13 +936,19 @@ export default function MainDemo({ navigation }) {
                       fontSize: 16,
                       color: "gray",
                       marginLeft: 10,
-                      marginTop: 3
+                      marginTop: 3,
                     }}
                     value={wage.toString()}
                     onChangeText={setWage}
                   />
                 </View>
-                <View style={{borderBottomWidth: 1, borderBottomColor: '#f5f5f5', width: width}} />
+                <View
+                  style={{
+                    borderBottomWidth: 1,
+                    borderBottomColor: "#f5f5f5",
+                    width: width,
+                  }}
+                />
               </View>
             </View>
           </View>
@@ -835,9 +1005,12 @@ export default function MainDemo({ navigation }) {
                       알바 업종 리스트
                     </Text>
                   </View>
-                  <FlatList data={categories} renderItem={({item}) => { return (
-                    <CategoryItem item={item} />
-                  )}} />
+                  <FlatList
+                    data={categories}
+                    renderItem={({ item }) => {
+                      return <CategoryItem item={item} />;
+                    }}
+                  />
                 </View>
               </View>
             </View>
@@ -947,14 +1120,34 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  start: {
+    width: '100%',
+    height: 108,
+    left: '5%',
+    top: '-3%',
+    fontWeight: '600',
+    fontSize: 24,
+    lineHeight: 36
+  },
+  submit: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center'
+  },
 });
 
+const dayStyles = (isTouched) => StyleSheet.create({
+  day: {
+    fontSize: 14,
+    fontWeight: '500',
+    lineHeight: 16.71,
+    color: isTouched ? 'white' : 'black'
+  }
+})
+
 const AlbaFrame = styled.View`
-  //position: absolute;
-  // width: fit-content;
   height: 38px;
   top: -7%;
-  //background: #FFFFFF;
   border: 1px solid #b0b0b0;
   border-radius: 30px;
   padding: 5px;
@@ -964,59 +1157,24 @@ const AlbaFrame = styled.View`
   justify-content: center;
 `;
 
-const AlbaTxt = styled.Text`
-  //position: absolute;
-  //width: 42px;
-  //height: 19px;
-  //top: 88px;
-  //font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  // line-height: 19px;
-  //display: flex;
-  //align-items: center;
-  //text-align: center;
-  color: #1c1c1c;
-`;
-const StartTxt = styled.Text`
-  //position: absolute;
-  width: 100%;
-  height: 108px;
-  left: 5%;
-  top:-3%;
-  font-family: "Pretendard";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 36px;
-`;
 const StartBtn = styled.TouchableOpacity`
   background-color: #6100ff;
-  //position: absolute;
-  width: 290;
-  height: 52;
+  width: 290px;
+  height: 52px;
   top: 15%;
   padding: 10px;
   border-radius: 100px;
   justify-content: center;
 `;
 const AdjustBtn = styled.TouchableOpacity`
-  //background-color: #395B64;
-  //position: absolute;
-  width: 290;
-  height: 52;
+  width: 290px;
+  height: 52px;
   top: 14%;
   padding: 10px;
   border-radius: 100px;
   justify-content: center;
 `;
-const SubmitTxt = styled.Text`
-  color: #fff;
-  text-align: center;
-  font-size: 16;
-  font-weight: 400;
-`;
+
 const SettingBtn = styled.TouchableOpacity`
   position: absolute;
   top: 30px;
@@ -1038,21 +1196,14 @@ const Days = styled.TouchableOpacity`
   background-color: ${(props) => (props.isTouched ? "#6100FF" : "#f5f5f5")};
 `;
 
-const DayContainer = styled.Text`
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 16.71px;
-  color: ${(props) => (props.isTouched ? "white" : "black")};
-`;
-
 const DayListContainer = styled.View`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin-top: 20px;
   margin-bottom: 10px;
-  margin-left: 20;
-  margin-right: 20;
+  margin-left: 20px;
+  margin-right: 20px;
 `;
 
 const DatePickerContainer = styled(View)`
@@ -1063,8 +1214,6 @@ const DatePickerContainer = styled(View)`
 const Container = styled.SafeAreaView`
   display: flex;
   justify-content: center;
-  //margin-left: 20px;
-  //margin-right: 20px;
 `;
 
 const MainContainer = styled.View`
@@ -1076,7 +1225,6 @@ const HeaderWrapper = styled.View`
   display: flex;
   justify-content: center;
   align-items: center;
-  //margin-top: 5%;
   margin-top: 24px;
   margin-bottom: 48px;
 `;
