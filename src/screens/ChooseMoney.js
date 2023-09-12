@@ -1,10 +1,11 @@
-import React, {
+import {
   Image,
   View,
   Keyboard,
   TouchableWithoutFeedback,
   StyleSheet
 } from "react-native";
+import React from "react";
 import { TextPretendard as Text } from "../static/CustomText.js";
 import { useState } from "react";
 import styled from "styled-components/native";
@@ -18,7 +19,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 
 import { Request } from "../api/request.js";
-import { getItemFromAsync, removeItemFromAsync } from "../api/storage.js";
+import { getItemFromAsync, removeItemFromAsync, setItemToAsync } from "../api/storage.js";
 import axios from "axios";
 
 import { updateAdditionalInfo } from "../api/auth";
@@ -57,10 +58,11 @@ export default function ChooseMoney({ navigation }) {
       name: name,
       wage: values.money,
       scheduleList: scheduleList,
-      categoryId: categoryId
+      categoryId: categoryId + 1
     }, 
     )
     if(response.status == 200){
+      await setItemToAsync('workspaceId', response.data.workspaceId)
       navigation.navigate('Main')
     }
   }
@@ -182,7 +184,7 @@ const MoneyInputContainer = styled.View`
 
 const MoneyInput = styled.TextInput`
   font-size: 16px;
-  line-height: 19;
+  line-height: 19px;
   padding-bottom: 8px;
 `;
 
@@ -195,8 +197,8 @@ const NextBtnContainer = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: flex-end;
   align-items: flex-end;
-  left: ${windowWidth * 0.85};
-  top: ${windowHeight * 0.9};
+  left: ${windowWidth * 0.85}px;
+  top: ${windowHeight * 0.9}px;
   width: 40px;
   height: 40px;
 `;
@@ -208,8 +210,8 @@ const BackBtnContainer = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: flex-end;
   align-items: flex-end;
-  left: ${windowWidth * 0.72};
-  top: ${windowHeight * 0.9};
+  left: ${windowWidth * 0.72}px;
+  top: ${windowHeight * 0.9}px;
   width: 40px;
   height: 40px;
 `;

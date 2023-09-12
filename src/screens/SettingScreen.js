@@ -1,4 +1,4 @@
-import React from "react-native";
+import React from "react";
 import styled from "styled-components/native";
 import { TextPretendard as Text } from "../static/CustomText";
 import {
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const Wrapper = styled.View`
+const Wrapper = styled.SafeAreaView`
   background-color: white;
   flex: 1;
   align-items: center;

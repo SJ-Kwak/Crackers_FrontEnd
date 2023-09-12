@@ -1,4 +1,4 @@
-import React from "react-native";
+import React from "react";
 import styled from "styled-components/native";
 import { TextPretendard as Text } from "../static/CustomText";
 import {
@@ -22,13 +22,15 @@ const { width, height } = Dimensions.get('window')
 
 export default function HomeScreen ({navigation}) {
   const [token, setToken] = useState(null)
+  const [workSpaceId, setWorkSpaceId] = useState(null)
   useFocusEffect(useCallback(() => {
     const checkLogin = async () => {
       setToken(await getItemFromAsync('accessToken'))
+      setWorkSpaceId(await getItemFromAsync('workspaceId'))
     }
     checkLogin();
-    if(token) navigation.replace('Main')
-  }, [token]))
+    if(token && workSpaceId) navigation.replace('Main')
+  }, [token, workSpaceId]))
   return (
   <Container>
     <Image 
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const Container = styled.View`
+const Container = styled.SafeAreaView`
   flex: 1;
   width: 100%;
   align-items: center;

@@ -1,4 +1,4 @@
-import React from "react-native";
+import React from "react";
 import styled from "styled-components/native";
 import { TextPretendard as Text } from "../static/CustomText";
 import {
@@ -84,7 +84,6 @@ export default function AdjNickScreen({ navigation }) {
                   fontFamily: 'Pretendard'
                 }}
                 placeholder="1~8자 이하 한글, 영문, 숫자, 특수문자"
-                autoCapitalize={false}
                 value={values.nickname}
                 onChangeText={
                   handleChange("nickname")
@@ -142,7 +141,7 @@ const styles = StyleSheet.create({
   },
 })
 
-const Wrapper = styled.View`
+const Wrapper = styled.SafeAreaView`
   background-color: white;
   flex: 1;
   align-items: center;

@@ -1,4 +1,5 @@
-import React, { View, Image, TouchableOpacity } from "react-native";
+import React from "react";
+import { View, Image, TouchableOpacity, SafeAreaView } from "react-native";
 import styled from "styled-components";
 import { Display2 } from "../static/text.js";
 import { useState } from "react";
@@ -158,8 +159,8 @@ const NextBtnContainer = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: flex-end;
   align-items: flex-end;
-  left: ${windowWidth * 0.85};
-  top: ${windowHeight * 0.9};
+  left: ${windowWidth * 0.85}px;
+  top: ${windowHeight * 0.9}px;
   width: 40px;
   height: 40px;
 `;
@@ -171,8 +172,8 @@ const BackBtnContainer = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: flex-end;
   align-items: flex-end;
-  left: ${windowWidth * 0.72};
-  top: ${windowHeight * 0.9};
+  left: ${windowWidth * 0.72}px;
+  top: ${windowHeight * 0.9}px;
   width: 40px;
   height: 40px;
 `;

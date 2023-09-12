@@ -1,4 +1,4 @@
-import React from "react-native";
+import React from "react";
 import styled from "styled-components/native";
 import { TextPretendard as Text } from "../static/CustomText";
 import {
@@ -111,7 +111,6 @@ export default function WithdrawScreen({ navigation }) {
                   fontFamily: 'Pretendard'
                 }}
                 placeholder="비밀번호 입력"
-                autoCapitalize={"none"}
                 value={values.password}
                 onChangeText={handleChange("password")}
                 onBlur={() => setFieldTouched("password")}
@@ -164,7 +163,7 @@ const styles = StyleSheet.create({
   },
 })
 
-const Wrapper = styled.View`
+const Wrapper = styled.SafeAreaView`
   background-color: white;
   flex: 1;
   align-items: center;

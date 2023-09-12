@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Image, TouchableOpacity, ImageBackground } from "react-native";
+import { View, Image, TouchableOpacity, ImageBackground, SafeAreaView } from "react-native";
 import { TextPretendard as Text } from "../static/CustomText";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Request } from "../api/request";
@@ -92,7 +92,7 @@ export default function CardPickScreen({ navigation, route }) {
   };
 
   return (
-    <View style={{ marginTop: "15%" }}>
+    <SafeAreaView style={{ marginTop: "15%" }}>
       <TouchableOpacity
         style={{
           marginLeft: "89%",
@@ -131,6 +131,6 @@ export default function CardPickScreen({ navigation, route }) {
       <View>
         <Image />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

@@ -217,8 +217,6 @@ const Container = styled.SafeAreaView`
   display: flex;
   background-color: white;
   flex: 1;
-  //margin-left: 20px;
-  //margin-right: 20px;
 `;
 
 const MainContainer = styled.View`
@@ -230,7 +228,6 @@ const HeaderWrapper = styled.View`
   display: flex;
   justify-content: center;
   align-items: center;
-  //margin-top: 5%;
   margin-top: 24px;
   margin-bottom: 48px;
 `;
@@ -251,8 +248,8 @@ const NextBtnContainer = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: flex-end;
   align-items: flex-end;
-  left: ${windowWidth * 0.85};
-  top: ${windowHeight * 0.9};
+  left: ${windowWidth * 0.85}px;
+  top: ${windowHeight * 0.9}px;
   width: 40px;
   height: 40px;
 `;
@@ -264,8 +261,8 @@ const BackBtnContainer = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: flex-end;
   align-items: flex-end;
-  left: ${windowWidth * 0.72};
-  top: ${windowHeight * 0.9};
+  left: ${windowWidth * 0.72}px;
+  top: ${windowHeight * 0.9}px;
   width: 40px;
   height: 40px;
 `;

@@ -1,5 +1,4 @@
-import React from "react-native";
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components/native";
 import Carousel from "react-native-carousel-control";
 import Swiper from "react-native-swiper";
@@ -135,10 +134,10 @@ export default function MainDemo({ navigation }) {
     );
   };
 
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
     getUserInfo();
     getWorkSpace();
-  }, [modalVisible]);
+  }, [modalVisible]));
 
   const [workDt, setWorkDt] = useState("");
   const [startTime, setStartTime] = useState("");
@@ -362,7 +361,7 @@ export default function MainDemo({ navigation }) {
   };
 
   const handleBusinessSelection = (business) => {
-    setSelectedBusiness(categories.indexOf(business));
+    setSelectedBusiness(categories.indexOf(business)+1);
   };
 
   const handleTime = async () => {
@@ -426,7 +425,7 @@ export default function MainDemo({ navigation }) {
   };
 
   const CategoryItem = ({ item }) => {
-    const category = categories.indexOf(item);
+    const category = categories.indexOf(item)+1;
     return (
       <View
         style={{
@@ -480,7 +479,7 @@ export default function MainDemo({ navigation }) {
   const [startOpen, setStartOpen] = useState(false);
   const [endOpen, setEndOpen] = useState(false);
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <AlbaFrame>
         <Text>{workSpace.name}</Text>
       </AlbaFrame>
@@ -887,7 +886,7 @@ export default function MainDemo({ navigation }) {
                       flex: 1,
                     }}
                   >
-                    {categories[selectedBusiness]}
+                    {categories[selectedBusiness-1]}
                   </Text>
                   <TouchableOpacity
                     onPress={() => {
@@ -1017,7 +1016,7 @@ export default function MainDemo({ navigation }) {
           </TouchableOpacity>
         </Modal>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 }
 
