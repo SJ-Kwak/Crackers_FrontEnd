@@ -3,3 +3,4 @@ GoogleService-info.plist
 .expo/
 firebase.js
 .env
+.DS_Store
