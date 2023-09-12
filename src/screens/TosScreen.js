@@ -1,4 +1,4 @@
-import React from "react-native";
+import React from "react";
 import styled from "styled-components/native";
 
 import {
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const Wrapper = styled.View`
+const Wrapper = styled.SafeAreaView`
   background-color: white;
   flex: 1;
   align-items: center;
@@ -213,8 +213,8 @@ const BackToHome = styled.TouchableOpacity`
   z-index: 1;
 `;
 const BackIcon = styled.Image`
-  width: 40;
-  height: 40;
+  width: 40px;
+  height: 40px;
 `;
 
 const InputWrapper = styled.View`
@@ -223,24 +223,14 @@ const InputWrapper = styled.View`
 
 const InputTxt = styled.TextInput`
   padding-bottom: 8px;
-  /*
-    borderBottomColor: values.email ? "#6100FF" : "#CCCCCC",
-    borderBottomWidth: values.email ? 2 : 1,
-    border-bottom-color: values.password
-        ? #6100FF
-        : #CCCCCC;
-    border-bottom-width: values.password ? 2 : 1;*/
 `;
 
 const SubmitBtn = styled.TouchableOpacity`
   position: absolute;
-  //top: keyboardHeight;
-  //background-color: #395B64;
-  width: 350;
-  height: 44;
-  bottom: 52;
-  //padding: 10px;
-  border-radius: 100;
+  width: 350px;
+  height: 44px;
+  bottom: 52px;
+  border-radius: 100px;
   justify-content: center;
   align-items: center;
 `;

@@ -1,7 +1,7 @@
-import React, { Component } from "react-native";
+import React, { Component } from "react";
 import styled from "styled-components/native";
 
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, SafeAreaView } from "react-native";
 import { useState, useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -21,9 +21,9 @@ const CardScreen = ({ navigation, route }) => {
   }, []); // useEffect를 한 번만 실행하도록 빈 배열을 전달합니다.
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <Image source={CardView} style={{ width: "100%" }} />
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -1,6 +1,6 @@
 //loginscreen.js
 
-import React from "react-native";
+import React from "react";
 import styled from "styled-components/native";
 import { TextPretendard as Text } from "../static/CustomText";
 import {
@@ -95,7 +95,6 @@ export default function LoginScreen({ navigation }) {
                   fontFamily: 'Pretendard'
                 }}
                 placeholder="아이디"
-                autoCapitalize={'none'}
                 value={values.email}
                 onChangeText={handleChange("email")}
                 onBlur={() => setFieldTouched("email")}
@@ -116,7 +115,6 @@ export default function LoginScreen({ navigation }) {
                   fontFamily: 'Pretendard'
                 }}
                 placeholder="비밀번호"
-                autoCapitalize={'none'}
                 value={values.password}
                 autoCorrect={false}
                 secureTextEntry={true}
@@ -170,7 +168,7 @@ const styles = StyleSheet.create({
   },
 })
 
-const Wrapper = styled.View`
+const Wrapper = styled.SafeAreaView`
   background-color: white;
   flex: 1;
   align-items: center;

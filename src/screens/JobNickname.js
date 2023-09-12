@@ -1,4 +1,5 @@
-import React, { Image, View, useState } from "react-native";
+import React from "react";
+import { Image, View, useState } from "react-native";
 import styled from "styled-components/native";
 import { Display2, Caption1 } from "../static/text.js";
 import { Dimensions } from "react-native";
@@ -98,7 +99,6 @@ const HeaderWrapper = styled.View`
   display: flex;
   justify-content: center;
   align-items: center;
-  //margin-top: 5%;
   margin-top: 24px;
   margin-bottom: 48px;
 `;
@@ -113,7 +113,7 @@ const NicknameInputContainer = styled.View`
 `;
 
 const NicknameInput = styled.TextInput`
-  font-size: 16;
+  font-size: 16px;
   line-height: 20px;
   padding-bottom: 8px;
 `;
@@ -126,8 +126,8 @@ const NextBtnContainer = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: flex-end;
   align-items: flex-end;
-  left: ${windowWidth * 0.85};
-  top: ${windowHeight * 0.9};
+  left: ${windowWidth * 0.85}px;
+  top: ${windowHeight * 0.9}px;
   width: 40px;
   height: 40px;
 `;

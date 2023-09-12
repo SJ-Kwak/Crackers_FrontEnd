@@ -1,6 +1,6 @@
 //signupscreen.js
 
-import React from "react-native";
+import React from "react";
 import styled from "styled-components/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -131,7 +131,7 @@ export default function SignupScreen({ navigation }) {
                     fontFamily: 'Pretendard'
                   }}
                   placeholder="아이디"
-                  autoCapitalize={'none'}
+
                   value={values.email}
                   onChangeText={(text) => {
                     handleChange("email")(text);
@@ -204,7 +204,6 @@ export default function SignupScreen({ navigation }) {
                   fontFamily: 'Pretendard'
                 }}
                 placeholder="비밀번호"
-                autoCapitalize={'none'}
                 autoCorrect={false}
                 secureTextEntry={true}
                 textContentType="password"
@@ -244,7 +243,6 @@ export default function SignupScreen({ navigation }) {
                   fontFamily: 'Pretendard'
                 }}
                 placeholder="비밀번호 확인"
-                autoCapitalize={'none'}
                 value={values.pwCheck}
                 autoCorrect={false}
                 secureTextEntry={true}
@@ -319,7 +317,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const Wrapper = styled.View`
+const Wrapper = styled.SafeAreaView`
   background-color: white;
   flex: 1;
   height: 100%;
