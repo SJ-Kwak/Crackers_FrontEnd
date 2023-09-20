@@ -95,6 +95,7 @@ export default function LoginScreen({ navigation }) {
                   fontFamily: 'Pretendard'
                 }}
                 placeholder="아이디"
+                autoCapitalize="none"
                 value={values.email}
                 onChangeText={handleChange("email")}
                 onBlur={() => setFieldTouched("email")}
@@ -115,6 +116,7 @@ export default function LoginScreen({ navigation }) {
                   fontFamily: 'Pretendard'
                 }}
                 placeholder="비밀번호"
+                autoCapitalize="none"
                 value={values.password}
                 autoCorrect={false}
                 secureTextEntry={true}

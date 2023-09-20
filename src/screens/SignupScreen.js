@@ -120,8 +120,7 @@ export default function SignupScreen({ navigation }) {
               <View style={{ flexDirection: "row" }}>
                 <InputTxt
                   style={{
-                    //position: "absolute",
-                    width: "70%",
+                    flex: 1,
                     borderBottomColor: values.email
                       ? !errors.email
                         ? "#6100FF"
@@ -131,7 +130,7 @@ export default function SignupScreen({ navigation }) {
                     fontFamily: 'Pretendard'
                   }}
                   placeholder="아이디"
-
+                  autoCapitalize="none"
                   value={values.email}
                   onChangeText={(text) => {
                     handleChange("email")(text);
@@ -142,19 +141,19 @@ export default function SignupScreen({ navigation }) {
                 />
                 {values.email && !errors.email && (
                   <EraseAll
-                    disabled={!values.email}
+                    disabled={!!values.email}
                     //onPress={}
                   >
                     <Image
                       source={checked}
-                      disabled={!values.email}
+                      disabled={!!values.email}
                       style={{ width: 24, height: 24 }}
                     />
                   </EraseAll>
                 )}
                 <CheckBtn
                   onPress={handleCheckEmail}
-                  disabled={errors.email}
+                  disabled={!!errors.email}
                   style={{
                     backgroundColor:
                       !errors.email && values.email
@@ -204,6 +203,7 @@ export default function SignupScreen({ navigation }) {
                   fontFamily: 'Pretendard'
                 }}
                 placeholder="비밀번호"
+                autoCapitalize="none"
                 autoCorrect={false}
                 secureTextEntry={true}
                 textContentType="password"
@@ -217,12 +217,12 @@ export default function SignupScreen({ navigation }) {
               {errors.password && <Text style={styles.error}>{errors.password}</Text>}
               {values.password && !errors.password && (
                 <EraseAll2
-                  disabled={!values.password}
+                  disabled={!!values.password}
                   //onPress={}
                 >
                   <Image
                     source={checked}
-                    disabled={!values.password}
+                    disabled={!!values.password}
                     style={{ width: 24, height: 24 }}
                   />
                 </EraseAll2>
@@ -243,6 +243,7 @@ export default function SignupScreen({ navigation }) {
                   fontFamily: 'Pretendard'
                 }}
                 placeholder="비밀번호 확인"
+                autoCapitalize="none"
                 value={values.pwCheck}
                 autoCorrect={false}
                 secureTextEntry={true}
@@ -253,12 +254,12 @@ export default function SignupScreen({ navigation }) {
               {errors.pwCheck && <Text style={styles.error}>{errors.pwCheck}</Text>}
               {values.pwCheck && !errors.pwCheck && (
                 <EraseAll3
-                  disabled={!values.pwCheck}
+                  disabled={!!values.pwCheck}
                   //onPress={}
                 >
                   <Image
                     source={checked}
-                    disabled={!values.pwCheck}
+                    disabled={!!values.pwCheck}
                     style={{ width: 24, height: 24 }}
                   />
                 </EraseAll3>
@@ -357,8 +358,6 @@ const SubmitBtn = styled.TouchableOpacity`
 `;
 
 const CheckBtn = styled.TouchableOpacity`
-  //position: absolute;
-  left: 80%;
   background-color: #cccccc;
   width: 81px;
   height: 33px;
@@ -368,8 +367,7 @@ const CheckBtn = styled.TouchableOpacity`
 
 const EraseAll = styled.TouchableOpacity`
   position: absolute;
-  left: 64.87%;
-  right: 28.97%;
+  right: 15%;
   //top: 26.55%;
   bottom: 10.6%;
 `;
