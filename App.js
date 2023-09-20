@@ -21,8 +21,6 @@ import ChooseMoney from "./src/screens/ChooseMoney";
 import CardScreen from "./src/screens/CardScreen";
 import CardPickScreen from "./src/screens/CardPickScreen";
 
-import { AuthProvider } from "./AuthContext";
-
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -32,7 +30,6 @@ export default function App() {
   
   if (!fontsLoaded) return null;
   return(
-    <AuthProvider>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Home" component={HomeScreen} />
@@ -52,6 +49,5 @@ export default function App() {
             <Stack.Screen name="CardPick" component={CardPickScreen}/>                        
           </Stack.Navigator>
         </NavigationContainer>
-    </AuthProvider>
   );
 }

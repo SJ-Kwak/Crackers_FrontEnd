@@ -32,7 +32,9 @@ const Stack = createStackNavigator();
 const backIcon = require("../assets/tch_btnBack.png");
 
 const signupSchema = yup.object().shape({
-  email: yup.string().matches(/\d/, "영문, 숫자를 모두 포함하여 입력해주세요"),
+  email: yup
+    .string()
+    .matches(/\d/, "영문, 숫자를 모두 포함하여 입력해주세요"),
   password: yup
     .string()
     .matches(/\d/, "영문, 숫자를 모두 포함하여 입력해주세요"),
@@ -57,12 +59,12 @@ export default function SignupScreen({ navigation }) {
 
   const [isEmailTaken, setIsEmailTaken] = useState(false);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
 
   const request = new Request();
 
-  const handleCheckEmail = async () => {
+  const handleCheckEmail = async (email) => {
     try {
       const response = await request.get(`/accounts/check/${email}`, {}, {});
       if (response.status == 200) {
@@ -77,9 +79,9 @@ export default function SignupScreen({ navigation }) {
     }
   };
 
-  const setSignupInfo = () => {
-    setItemToAsync("id", email);
-    setItemToAsync("password", password);
+  const setSignupInfo = (values) => {
+    setItemToAsync("id", values.email);
+    setItemToAsync("password", values.password);
     navigation.navigate("Tos");
   };
 
@@ -120,25 +122,29 @@ export default function SignupScreen({ navigation }) {
               <View style={{ flexDirection: "row" }}>
                 <InputTxt
                   style={{
-                    //position: "absolute",
-                    width: "70%",
+                    flex: 1,
                     borderBottomColor: values.email
                       ? !errors.email
                         ? "#6100FF"
                         : "#FF2626"
                       : "#CCCCCC",
                     borderBottomWidth: values.email ? 2 : 1,
-                    fontFamily: 'Pretendard'
+                    fontFamily: 'Pretendard',
+                    marginRight: 10
                   }}
                   placeholder="아이디"
-
                   value={values.email}
-                  onChangeText={(text) => {
-                    handleChange("email")(text);
-                    setEmail(text); // formik 외부의 email 변수 갱신
-                  }}
+                  // onChangeText={(text) => {
+                  //   handleChange("email")(text);
+                  //   setEmail(text); // formik 외부의 email 변수 갱신
+                  // }}
+                  onChangeText={handleChange("email")}
                   onBlur={() => setFieldTouched("email")}
                   keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  secureTextEntry={false}
+                  textContentType="none"
                 />
                 {values.email && !errors.email && (
                   <EraseAll
@@ -153,7 +159,7 @@ export default function SignupScreen({ navigation }) {
                   </EraseAll>
                 )}
                 <CheckBtn
-                  onPress={handleCheckEmail}
+                  onPress={() => handleCheckEmail(values.email)}
                   disabled={errors.email}
                   style={{
                     backgroundColor:
@@ -208,17 +214,17 @@ export default function SignupScreen({ navigation }) {
                 secureTextEntry={true}
                 textContentType="password"
                 value={values.password}
-                onChangeText={(text) => {
-                  handleChange("password")(text);
-                  setPassword(text); // formik 외부의 password 변수 갱신
-                }}
+                // onChangeText={(text) => {
+                //   handleChange("password")(text);
+                //   setPassword(text); // formik 외부의 password 변수 갱신
+                // }}
+                onChangeText={handleChange("password")}
                 onBlur={() => setFieldTouched("password")}
               />
               {errors.password && <Text style={styles.error}>{errors.password}</Text>}
               {values.password && !errors.password && (
                 <EraseAll2
                   disabled={!values.password}
-                  //onPress={}
                 >
                   <Image
                     source={checked}
@@ -254,7 +260,6 @@ export default function SignupScreen({ navigation }) {
               {values.pwCheck && !errors.pwCheck && (
                 <EraseAll3
                   disabled={!values.pwCheck}
-                  //onPress={}
                 >
                   <Image
                     source={checked}
@@ -272,7 +277,7 @@ export default function SignupScreen({ navigation }) {
                   ? "#6100FF"
                   : "transparent",
             }}
-            onPress={setSignupInfo}
+            onPress={() => setSignupInfo(values)}
             disabled={!isValid}
           >
             <Text style={styles.submit}>다음</Text>
@@ -358,7 +363,7 @@ const SubmitBtn = styled.TouchableOpacity`
 
 const CheckBtn = styled.TouchableOpacity`
   //position: absolute;
-  left: 80%;
+  // left: 80%;
   background-color: #cccccc;
   width: 81px;
   height: 33px;
