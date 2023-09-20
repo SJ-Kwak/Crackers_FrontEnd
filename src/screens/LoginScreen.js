@@ -22,7 +22,6 @@ import * as yup from "yup";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { AuthContext } from "../../AuthContext";
-import { loginRequest } from "../api/auth";
 import { Request } from "../api/request";
 import { setItemToAsync } from "../api/storage";
 

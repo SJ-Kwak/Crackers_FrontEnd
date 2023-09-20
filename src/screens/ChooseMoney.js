@@ -22,8 +22,6 @@ import { Request } from "../api/request.js";
 import { getItemFromAsync, removeItemFromAsync, setItemToAsync } from "../api/storage.js";
 import axios from "axios";
 
-import { updateAdditionalInfo } from "../api/auth";
-
 const Stack = createStackNavigator();
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;

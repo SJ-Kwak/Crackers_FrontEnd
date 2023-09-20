@@ -24,7 +24,6 @@ import { Formik } from "formik";
 import * as yup from "yup";
 
 import axios from "axios";
-import { API_URL, signupRequest } from "../api/auth";
 import { Request } from "../api/request";
 import { setItemToAsync } from "../api/storage";
 
@@ -274,7 +273,7 @@ export default function SignupScreen({ navigation }) {
                   : "transparent",
             }}
             onPress={setSignupInfo}
-            disabled={!isValid}
+            disabled={!isValid || !!values.email || !!values.password || !!values.pwCheck}
           >
             <Text style={styles.submit}>다음</Text>
           </SubmitBtn>

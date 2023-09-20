@@ -20,7 +20,6 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { updateAdditionalInfo } from "../api/auth";
 import axios from "axios";
 import { Request } from "../api/request";
 import {
