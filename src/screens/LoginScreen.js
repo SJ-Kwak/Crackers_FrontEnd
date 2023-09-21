@@ -21,7 +21,6 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { AuthContext } from "../../AuthContext";
 import { Request } from "../api/request";
 import { setItemToAsync } from "../api/storage";
 
@@ -36,7 +35,6 @@ const loginSchema = yup.object().shape({
 export default function LoginScreen({ navigation }) {
   const [under, setUnder] = useState("#CCCCCC");
 
-  const { login } = useContext(AuthContext);
   const [error, setError] = useState("");
   const request = new Request();
 

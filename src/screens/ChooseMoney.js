@@ -54,7 +54,7 @@ export default function ChooseMoney({ navigation }) {
     const response = await request.post('/workspaces', 
     {
       name: name,
-      wage: values.money,
+      wage: Number(values.money),
       scheduleList: scheduleList,
       categoryId: categoryId + 1
     }, 

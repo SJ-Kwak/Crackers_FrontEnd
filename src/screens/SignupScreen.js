@@ -273,7 +273,7 @@ export default function SignupScreen({ navigation }) {
                   : "transparent",
             }}
             onPress={setSignupInfo}
-            disabled={!isValid || !!values.email || !!values.password || !!values.pwCheck}
+            disabled={!isValid || !values.email || !values.password || !values.pwCheck}
           >
             <Text style={styles.submit}>다음</Text>
           </SubmitBtn>
