@@ -10,8 +10,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import axios from "axios";
-import { API_URL, updateAdditionalInfo } from "../api/auth";
-
 import { setItemToAsync } from "../api/storage.js";
 
 const Stack = createStackNavigator();

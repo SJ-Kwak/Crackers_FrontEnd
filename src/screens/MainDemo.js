@@ -628,12 +628,12 @@ export default function MainDemo({ navigation }) {
                     padding: 15,
                   }}
                 >
-                  <TouchableOpacity onPressOut={closeModal}>
+                  <TouchableOpacity style={{flex: 1}} onPressOut={closeModal}>
                     <Image source={erase} />
                   </TouchableOpacity>
                   <TouchableOpacity onPressOut={handleSchedule}>
                     <Image
-                      style={{ width: 25, height: 25, marginLeft: 310 }}
+                      style={{ width: 25, height: 25 }}
                       source={checked}
                     />
                   </TouchableOpacity>
@@ -939,7 +939,7 @@ export default function MainDemo({ navigation }) {
                       fontSize: 16,
                       color: "gray",
                       marginLeft: 10,
-                      marginTop: 3,
+                      fontFamily: 'Pretendard'
                     }}
                     value={wage.toString()}
                     onChangeText={setWage}
@@ -980,7 +980,7 @@ export default function MainDemo({ navigation }) {
                   style={{
                     backgroundColor: "white",
                     padding: 15,
-                    width: 390,
+                    width: width,
                     height: 520,
                     borderRadius: 10,
                   }}

@@ -20,7 +20,6 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { updateAdditionalInfo } from "../api/auth";
 import axios from "axios";
 import { Request } from "../api/request";
 import {
@@ -28,8 +27,6 @@ import {
   removeItemFromAsync,
   setItemToAsync,
 } from "../api/storage";
-
-//import useKeyboardHeight from "react-native-use-keyboard-height";
 
 const Stack = createStackNavigator();
 const backIcon = require("../assets/tch_btnBack.png");
@@ -241,7 +238,7 @@ const SubmitBtn = styled.TouchableOpacity`
   height: 44;
   bottom: 52;
   //padding: 10px;
-  border-radius: 100;
+  border-radius: 100px;
   justify-content: center;
   align-items: center;
 `;
@@ -249,7 +246,7 @@ const SubmitBtn = styled.TouchableOpacity`
 const SubmitTxt = styled.Text`
   color: #fff;
   text-align: center;
-  font-size: 16;
+  font-size: 16px;
   font-weight: 600;
 `;
 
@@ -257,15 +254,15 @@ const CheckBtn = styled.TouchableOpacity`
   position: absolute;
   left: 270;
   background-color: #cccccc;
-  width: 81;
-  height: 33;
+  width: 81px;
+  height: 33px;
   padding: 10px;
   border-radius: 100;
 `;
 
 const CheckTxt = styled.Text`
   text-align: center;
-  font-size: 14;
+  font-size: 14px;
   font-weight: 400;
 `;
 

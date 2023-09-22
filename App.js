@@ -21,8 +21,6 @@ import ChooseMoney from "./src/screens/ChooseMoney";
 import CardScreen from "./src/screens/CardScreen";
 import CardPickScreen from "./src/screens/CardPickScreen";
 
-import { AuthProvider } from "./AuthContext";
-
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -32,26 +30,24 @@ export default function App() {
   
   if (!fontsLoaded) return null;
   return(
-    <AuthProvider>
-        <NavigationContainer>
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Signup" component={SignupScreen} />
-            <Stack.Screen name="Tos" component={TosScreen} />
-            <Stack.Screen name="Nickname" component={NicknameScreen} />
-            <Stack.Screen name="Main" component={MainDemo} />
-            <Stack.Screen name="Setting" component={SettingScreen} />   
-            <Stack.Screen name="AdjNickname" component={AdjNickScreen} />
-            <Stack.Screen name="Withdraw" component={WithdrawScreen} />
-            <Stack.Screen name="JobNickname" component={JobNickname} />              
-            <Stack.Screen name="ChooseJob" component={ChooseJob} />
-            <Stack.Screen name="ChooseTime" component={ChooseTime} />              
-            <Stack.Screen name="ChooseMoney" component={ChooseMoney} />  
-            <Stack.Screen name="Card" component={CardScreen}/>
-            <Stack.Screen name="CardPick" component={CardPickScreen}/>                        
-          </Stack.Navigator>
-        </NavigationContainer>
-    </AuthProvider>
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Signup" component={SignupScreen} />
+        <Stack.Screen name="Tos" component={TosScreen} />
+        <Stack.Screen name="Nickname" component={NicknameScreen} />
+        <Stack.Screen name="Main" component={MainDemo} />
+        <Stack.Screen name="Setting" component={SettingScreen} />   
+        <Stack.Screen name="AdjNickname" component={AdjNickScreen} />
+        <Stack.Screen name="Withdraw" component={WithdrawScreen} />
+        <Stack.Screen name="JobNickname" component={JobNickname} />              
+        <Stack.Screen name="ChooseJob" component={ChooseJob} />
+        <Stack.Screen name="ChooseTime" component={ChooseTime} />              
+        <Stack.Screen name="ChooseMoney" component={ChooseMoney} />  
+        <Stack.Screen name="Card" component={CardScreen}/>
+        <Stack.Screen name="CardPick" component={CardPickScreen}/>                        
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }

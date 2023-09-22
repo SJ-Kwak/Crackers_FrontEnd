@@ -22,8 +22,6 @@ import { Request } from "../api/request.js";
 import { getItemFromAsync, removeItemFromAsync, setItemToAsync } from "../api/storage.js";
 import axios from "axios";
 
-import { updateAdditionalInfo } from "../api/auth";
-
 const Stack = createStackNavigator();
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
@@ -56,7 +54,7 @@ export default function ChooseMoney({ navigation }) {
     const response = await request.post('/workspaces', 
     {
       name: name,
-      wage: values.money,
+      wage: Number(values.money),
       scheduleList: scheduleList,
       categoryId: categoryId + 1
     }, 
