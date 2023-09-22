@@ -86,7 +86,7 @@ export default function NicknameScreen({ navigation, route }) {
       }) => (
         <Wrapper>
           <BackToHome onPress={() => navigation.goBack()}>
-            <BackIcon source={backIcon} />
+            <BackIcon source={backIcon} style={{width: 40, height: 40}} />
           </BackToHome>
           <FormContainer>
           <Text style={styles.title}>닉네임 짓기</Text>

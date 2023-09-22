@@ -31,7 +31,7 @@ import { Request } from "../api/request";
 import { createStackNavigator } from "@react-navigation/stack";
 import { getItemFromAsync } from "../api/storage.js";
 
-import { BlurView } from 'expo-blur';
+// import { BlurView } from 'expo-blur';
 
 const Stack = createStackNavigator();
 const settingBtn = require("../assets/tch_btnSettings.png");
@@ -85,7 +85,6 @@ export default function MainDemo({ navigation }) {
   const job = require("../assets/icnCategory.png");
   const money = require("../assets/icnWage.png");
   const rightBtn = require("../assets/btnRight.png");
-  const blurBack = require("../assets/blurBackground.png");
 
   const getUserInfo = async () => {
     const response = await request.get("/accounts/profile");
@@ -511,10 +510,10 @@ export default function MainDemo({ navigation }) {
       </TouchableOpacity>
       <View style={styles.circle1}>
         <View style={[styles.circleFill1, { height: "100%"}]} />
-        <BlurView
+        {/* <BlurView
           intensity={3}
           tint="dark"
-        />
+        /> */}
         {circlePo == -50 ?  
         (
           <View>
@@ -632,7 +631,7 @@ export default function MainDemo({ navigation }) {
           navigation.navigate("Setting");
         }}
       >
-        <Image source={settingBtn} />
+        <Image source={settingBtn} style={{width: 40, height: 40}} />
       </SettingBtn>
 
       <Modal
@@ -1099,8 +1098,8 @@ const styles = StyleSheet.create({
     //shadowColor: "#BDBDBD",
     //shadowRadius: 7,
     elevation: 5,
-    //backgroundColor: "#FFFFFF",
-    //opacity: 0.5,
+    backgroundColor: "#FFFFFF",
+    opacity: 0.9,
     borderColor: "white",
     borderWidth: 1
     
@@ -1131,10 +1130,10 @@ const styles = StyleSheet.create({
     //bottom: 292,
   },
   circleFill1: {
-    backgroundColor: "white",
-    width: 288,
-    height: 288,
-    borderRadius: 288 / 2,
+    // backgroundColor: "white",
+    // width: 288,
+    // height: 288,
+    // borderRadius: 288 / 2,
     bottom: 0,
     position: "absolute",
     opacity: 0.5

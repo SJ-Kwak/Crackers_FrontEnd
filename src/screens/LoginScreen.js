@@ -75,7 +75,7 @@ export default function LoginScreen({ navigation }) {
       }) => (
         <Wrapper>
           <BackToHome onPress={() => navigation.goBack()}>
-            <BackIcon source={backIcon} />
+            <BackIcon source={backIcon} style={{width: 40, height: 40}} />
           </BackToHome>
           <FormContainer>
             <View style={{ height: 40 }} />

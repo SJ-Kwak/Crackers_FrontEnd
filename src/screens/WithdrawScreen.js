@@ -95,7 +95,7 @@ export default function WithdrawScreen({ navigation }) {
       }) => (
         <Wrapper>
           <BackToHome onPress={() => navigation.goBack()}>
-            <BackIcon source={backIcon} />
+            <BackIcon source={backIcon} style={{width: 40, height: 40}} />
           </BackToHome>
           <FormContainer>
             <Text style={styles.title}>회원 탈퇴하기</Text>

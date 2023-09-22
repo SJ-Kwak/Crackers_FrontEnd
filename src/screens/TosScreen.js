@@ -89,7 +89,7 @@ export default function TosScreen({ navigation, route }) {
           navigation.goBack();
         }}
       >
-        <Image source={backIcon} />
+        <Image source={backIcon} style={{width: 40, height: 40}}/>
       </BackToHome>
       <FormContainer>
       <Text style={styles.title}>약관동의</Text>

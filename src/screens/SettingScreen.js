@@ -73,7 +73,7 @@ export default function SettingScreen({ navigation }) {
         }}
       >
         <BackToHome onPress={() => navigation.goBack()}>
-          <Image source={backIcon} />
+          <Image source={backIcon} style={{width: 40, height: 40}} />
         </BackToHome>
         <Text style={styles.title}>설정</Text>
       </View>

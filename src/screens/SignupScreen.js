@@ -108,7 +108,7 @@ export default function SignupScreen({ navigation }) {
                 navigation.goBack();
               }}
             >
-              <Image source={backIcon} />
+              <Image source={backIcon} style={{width: 40, height: 40}} />
             </BackToHome>
             <View style={{ marginTop: height * 0.1 }} />
             <Text style={styles.title}>회원가입</Text>
