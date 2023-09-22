@@ -33,6 +33,8 @@ import { getItemFromAsync } from "../api/storage.js";
 const Stack = createStackNavigator();
 const settingBtn = require("../assets/tch_btnSettings.png");
 const { width, height } = Dimensions.get("window");
+const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
 
 const days = ["월", "화", "수", "목", "금", "토", "일"];
 const categories = [
@@ -48,6 +50,7 @@ const categories = [
 
 export default function MainDemo({ navigation }) {
   const [start, setStart] = useState(false);
+  const [adjBtn, setAdjBtn] = useState(true);
   const [charge, setCharge] = useState(0);
   const [startBtnTxt, setStartBtnTxt] = useState("시작하기");
   const [value, setValue] = useState(30);
@@ -68,6 +71,9 @@ export default function MainDemo({ navigation }) {
   const [time1, setTime1] = useState(null);
   const [time2, setTime2] = useState(null);
 
+  const [afterCard, setAfterCard] = useState(false);
+  const [nick, setNick] = useState(null);
+
   const request = new Request();
 
   const erase = require("../assets/tch_btnTxtX.png");
@@ -80,6 +86,7 @@ export default function MainDemo({ navigation }) {
   const getUserInfo = async () => {
     const response = await request.get("/accounts/profile");
     setStartTxt(response.data.nickname + "님, \n오늘의 근무를 \n시작하세요");
+    setNick(response.data.nickname);
   };
 
   const getWorkSpace = async () => {
@@ -189,17 +196,9 @@ export default function MainDemo({ navigation }) {
     setModalVisible2(false);
   };
 
-  const [modalTrigger, setModalTrigger] = useState(false);
-
   const [time, setTime] = useState(0);
   const [running1, setRunning1] = useState(false);
   const [running2, setRunning2] = useState(false);
-
-  const updatePercentage = () => {
-    setTimeout(() => {
-      setCharge(charge + 1);
-    }, 5);
-  };
 
   useEffect(() => {
     //if (running) updatePercentage()
@@ -249,23 +248,7 @@ export default function MainDemo({ navigation }) {
     return () => clearInterval(interval);
   }, [running1, running2, time, duringTime]);
 
-  const handleScroll = (event) => {
-    const { x, y } = event.nativeEvent.contentOffset;
-    console.log(event.nativeEvent.contentOffset.x);
-    setScrollPosition({ x, y });
-  };
-
   const scrollViewRef = useRef(null);
-
-  const scrollToRight = () => {
-    // ScrollView를 맨 위로 스크롤합니다.
-    scrollViewRef.current.scrollTo({ x: -300, animated: true });
-  };
-
-  const scrollToLeft = () => {
-    // ScrollView를 맨 아래로 스크롤합니다.
-    scrollViewRef.current.scrollTo({ x: -15, animated: true });
-  };
 
   const onPressDay = (index) => {
     const updatedIsTouched = [...isTouched];
@@ -352,6 +335,7 @@ export default function MainDemo({ navigation }) {
     });
     if (response.status === 200) {
       navigation.navigate("Card", { hours: totalTime });
+      setAfterCard(true);
     }
   };
 
@@ -476,6 +460,24 @@ export default function MainDemo({ navigation }) {
     );
   };
 
+  const resetStatus = () => {
+    /*const [start, setStart] = useState(false);
+    const [adjBtn, setAdjBtn] = useState(true);
+    const [charge, setCharge] = useState(0);*/
+    setStart(false);  
+    setAdjBtn(true);
+    setCharge(0);
+    setRunning1(true);
+    setRunning2(true);
+
+    setMainColor("#6100FF");
+    setStartBtnTxt("시작하기");
+    setStartTxt(nick + "님, \n오늘의 근무를 \n시작하세요");
+
+    setAfterCard(true);
+  }
+
+
   const [startOpen, setStartOpen] = useState(false);
   const [endOpen, setEndOpen] = useState(false);
   return (
@@ -487,7 +489,7 @@ export default function MainDemo({ navigation }) {
       <TouchableOpacity
         style={[
           styles.circle2,
-          { left: circlePo, borderColor: mainColor, top: "37%" },
+          { left: circlePo, borderColor: mainColor },
         ]}
         //onPress={()=>{scrollPosition.x>-100 ? scrollToRight : scrollToLeft}}
         onPress={() => {
@@ -502,7 +504,7 @@ export default function MainDemo({ navigation }) {
           ]}
         />
       </TouchableOpacity>
-      <View style={[styles.circle1, { top: "1%" }]}>
+      <View style={styles.circle1}>
         <View style={[styles.circleFill1, { height: "100%" }]} />
 
         {circlePo == -50 ? (
@@ -544,7 +546,7 @@ export default function MainDemo({ navigation }) {
       <AdjustBtn
         style={{
           backgroundColor: "white",
-          borderColor: !start ? "white" : mainColor,
+          borderColor: !adjBtn ? "white" : mainColor,
           borderWidth: 1,
           //flex: 1,
           //justifyContent: "flex-end",
@@ -553,11 +555,11 @@ export default function MainDemo({ navigation }) {
         onPress={() => {
           setModalVisible(true);
         }}
-        disabled={!start}
+        disabled={!adjBtn}
       >
         <Text
           style={{
-            color: !start ? "white" : "#858585",
+            color: !adjBtn ? "white" : "#858585",
             textAlign: "center",
             fontSize: 16,
             fontWeight: 400,
@@ -576,8 +578,10 @@ export default function MainDemo({ navigation }) {
           startBtnTxt == "시작하기" && setStartTime(getTime());
           startBtnTxt == "시작하기" && changeTxt();
           setStart(true);
+          setAdjBtn(false);
           startBtnTxt == "퇴근하기" && showAlert();
           startBtnTxt == "카드받기" && createCard();
+          startBtnTxt == "카드받기" && afterCard==false && resetStatus();
         }}
       >
         <Text style={styles.submit}>{startBtnTxt}</Text>
@@ -1038,6 +1042,7 @@ const styles = StyleSheet.create({
     flexDirection: "row", // 가로 방향으로 정렬
   },
   circle1: {
+    position: "absolute",
     width: 288,
     height: 288,
     borderRadius: 288 / 2,
@@ -1046,16 +1051,21 @@ const styles = StyleSheet.create({
     //overflow: "hidden",
     //position: "absolute",
     //left: -200,s
-    //top: 278,
+    top: windowHeight * 0.29,
     //bottom: 278,
     //shadowOffset: { width: 1, height: 1 },
     //shadowOpacity: 1,
     //shadowColor: "#BDBDBD",
     //shadowRadius: 7,
     elevation: 5,
-    backgroundColor: "white",
+    backgroundColor: "#FFFFFF",
+    opacity: 0.9,
+    borderColor: "white",
+    borderWidth: 1
+    
   },
   circle2: {
+    position: "absolute",
     width: 260,
     height: 260,
     borderRadius: 260 / 2,
@@ -1064,7 +1074,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     //left: -81,
     //left: circlePo,
-    //top: 292,
+    top: windowHeight * 0.31,
     //bottom: 320,
   },
   circle3: {
@@ -1120,10 +1130,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   start: {
+    position: "absolute",
     width: '100%',
     height: 108,
     left: '5%',
-    top: '-3%',
+    top: windowHeight * 0.13,
     fontWeight: '600',
     fontSize: 24,
     lineHeight: 36
@@ -1145,8 +1156,9 @@ const dayStyles = (isTouched) => StyleSheet.create({
 })
 
 const AlbaFrame = styled.View`
+  position: absolute;
   height: 38px;
-  top: -7%;
+  top: ${windowHeight * 0.05}px;
   border: 1px solid #b0b0b0;
   border-radius: 30px;
   padding: 5px;
@@ -1157,18 +1169,21 @@ const AlbaFrame = styled.View`
 `;
 
 const StartBtn = styled.TouchableOpacity`
+  position: absolute;
   background-color: #6100ff;
   width: 290px;
   height: 52px;
-  top: 15%;
+  //top: 15%;
+  bottom: ${windowHeight * 0.025}px;
   padding: 10px;
   border-radius: 100px;
   justify-content: center;
 `;
 const AdjustBtn = styled.TouchableOpacity`
+  position: absolute;
   width: 290px;
   height: 52px;
-  top: 14%;
+  bottom: ${windowHeight * 0.115}px;
   padding: 10px;
   border-radius: 100px;
   justify-content: center;
@@ -1176,7 +1191,7 @@ const AdjustBtn = styled.TouchableOpacity`
 
 const SettingBtn = styled.TouchableOpacity`
   position: absolute;
-  top: 30px;
+  top: ${windowHeight * 0.05}px;
   right: 10px;
   width: 40px;
   height: 40px;
