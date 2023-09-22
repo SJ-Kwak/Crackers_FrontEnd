@@ -23,12 +23,15 @@ import {
   ScrollView,
   Modal,
   Dimensions,
+  ImageBackground
 } from "react-native";
 import { useState, useContext, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { Request } from "../api/request";
 import { createStackNavigator } from "@react-navigation/stack";
 import { getItemFromAsync } from "../api/storage.js";
+
+import { BlurView } from 'expo-blur';
 
 const Stack = createStackNavigator();
 const settingBtn = require("../assets/tch_btnSettings.png");
@@ -58,7 +61,7 @@ export default function MainDemo({ navigation }) {
   const [circlePo, setCirclePo] = useState(-50);
   const [circleTouched, setCircleTouched] = useState(false);
   const [mainColor, setMainColor] = useState("#6100FF");
-  const [duringTime, setDuringTime] = useState(10); // 소요시간
+  const [duringTime, setDuringTime] = useState(1); // 소요시간
   const [startTxt, setStartTxt] = useState("");
   const [workSpace, setWorkSpace] = useState([]);
   const [schedule, setSchedule] = useState([]);
@@ -82,6 +85,7 @@ export default function MainDemo({ navigation }) {
   const job = require("../assets/icnCategory.png");
   const money = require("../assets/icnWage.png");
   const rightBtn = require("../assets/btnRight.png");
+  const blurBack = require("../assets/blurBackground.png");
 
   const getUserInfo = async () => {
     const response = await request.get("/accounts/profile");
@@ -92,12 +96,12 @@ export default function MainDemo({ navigation }) {
   const getWorkSpace = async () => {
     const response = await request.get("/workspaces");
     setWorkSpace(response.data[0]);
-    setDuringTime(
-      ((response.data[0].schedules[0].endTime -
-        response.data[0].schedules[0].startTime) /
-        100) *
-        60
-    );
+    // setDuringTime(
+    //   ((response.data[0].schedules[0].endTime -
+    //     response.data[0].schedules[0].startTime) /
+    //     100) *
+    //     60
+    // );
     let _schedule = response.data[0].schedules.map((schedule) => schedule.day);
     const defaultSelectedDays = days.reduce((acc, day, index) => {
       if (_schedule.includes(day)) {
@@ -467,13 +471,14 @@ export default function MainDemo({ navigation }) {
     setStart(false);  
     setAdjBtn(true);
     setCharge(0);
-    setRunning1(true);
-    setRunning2(true);
+    //setRunning1(true);
+    //setRunning2(true);
 
     setMainColor("#6100FF");
     setStartBtnTxt("시작하기");
     setStartTxt(nick + "님, \n오늘의 근무를 \n시작하세요");
 
+    setTime(0);
     setAfterCard(true);
   }
 
@@ -505,13 +510,16 @@ export default function MainDemo({ navigation }) {
         />
       </TouchableOpacity>
       <View style={styles.circle1}>
-        <View style={[styles.circleFill1, { height: "100%" }]} />
-
-        {circlePo == -50 ? (
+        <View style={[styles.circleFill1, { height: "100%"}]} />
+        <BlurView
+          intensity={3}
+          tint="dark"
+        />
+        {circlePo == -50 ?  
+        (
+          <View>
           <Text
             style={{
-              position: "absolute",
-              //width: 109,
               height: 33,
               //left: 82,
               top: 130,
@@ -521,17 +529,32 @@ export default function MainDemo({ navigation }) {
             }}
             //disabled={circleTouched}
           >
-            {("0" + Math.floor((time / 3600000) % 60)).slice(-2)}:
-            {("0" + Math.floor((time / 60000) % 60)).slice(-2)}:
-            {("0" + Math.floor((time / 1000) % 60)).slice(-2)}
+            {(((time/3600000)%60) * workSpace.wage).toFixed(0) + "원"}
           </Text>
-        ) : (
+            <Text
+              style={{
+                color: "#B5B5B5",
+                height: 33,
+                //left: 82,
+                top: 180,
+                fontWeight: 500,
+                fontSize: 14,
+                alignSelf: "center",
+              }}
+              //disabled={circleTouched}
+            >
+              {("0" + Math.floor((time / 3600000) % 60)).slice(-2)}시
+              {("0" + Math.floor((time / 60000) % 60)).slice(-2)}분
+              {("0" + Math.floor((time / 1000) % 60)).slice(-2)}초
+            </Text>
+            </View>
+        )
+        : (
+          <View>
           <Text
             style={{
-              position: "absolute",
-              //width: 109,
               height: 33,
-              //left: 87,
+              //left: 82,
               top: 130,
               fontWeight: 500,
               fontSize: 28,
@@ -539,9 +562,27 @@ export default function MainDemo({ navigation }) {
             }}
             //disabled={circleTouched}
           >
+              {("0" + Math.floor((time / 3600000) % 60)).slice(-2)}시
+              {("0" + Math.floor((time / 60000) % 60)).slice(-2)}분
+              {("0" + Math.floor((time / 1000) % 60)).slice(-2)}초            
+            </Text>
+            <Text
+              style={{
+                color: "#B5B5B5",
+                height: 33,
+                //left: 82,
+                top: 180,
+                fontWeight: 500,
+                fontSize: 14,
+                alignSelf: "center",
+              }}
+              //disabled={circleTouched}
+            >
             {(((time/3600000)%60) * workSpace.wage).toFixed(0) + "원"}
-          </Text>
+            </Text>
+            </View>
         )}
+        
       </View>
       <AdjustBtn
         style={{
@@ -617,7 +658,7 @@ export default function MainDemo({ navigation }) {
                 style={{
                   backgroundColor: "white",
                   width: "100%",
-                  height: 700,
+                  height: "80%",
                   borderRadius: 10,
                 }}
               >
@@ -1058,8 +1099,8 @@ const styles = StyleSheet.create({
     //shadowColor: "#BDBDBD",
     //shadowRadius: 7,
     elevation: 5,
-    backgroundColor: "#FFFFFF",
-    opacity: 0.9,
+    //backgroundColor: "#FFFFFF",
+    //opacity: 0.5,
     borderColor: "white",
     borderWidth: 1
     
@@ -1090,10 +1131,13 @@ const styles = StyleSheet.create({
     //bottom: 292,
   },
   circleFill1: {
-    //backgroundColor: "white",
-    width: "100%",
+    backgroundColor: "white",
+    width: 288,
+    height: 288,
+    borderRadius: 288 / 2,
     bottom: 0,
     position: "absolute",
+    opacity: 0.5
   },
   circleFill2: {
     width: "100%",
