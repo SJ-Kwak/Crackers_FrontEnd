@@ -13,6 +13,7 @@ import {
   Keyboard,
   SafeAreaView,
   Pressable,
+  ScrollView
 } from "react-native";
 import { useState, useEffect, useContext } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -43,7 +44,6 @@ export default function LoginScreen({ navigation }) {
       loginId: values.email,
       password: values.password,
     });
-    console.error(response);
     if (response.status === 200) {
       setItemToAsync("accessToken", response.data.accessToken);
       setItemToAsync("refreshToken", response.data.refreshToken);
@@ -73,7 +73,7 @@ export default function LoginScreen({ navigation }) {
         isValid,
         isSubmitting,
       }) => (
-        <Wrapper>
+        <Wrapper contentContainerStyle={{alignItems: 'center'}}>
           <BackToHome onPress={() => navigation.goBack()}>
             <BackIcon source={backIcon} style={{width: 40, height: 40}} />
           </BackToHome>
@@ -131,7 +131,7 @@ export default function LoginScreen({ navigation }) {
               backgroundColor:
                 isValid && values.email && values.password
                   ? "#6100FF"
-                  : "white",
+                  : "transparent",
             }}
             onPress={() => handleSubmit(values)}
             disabled={!isValid}
@@ -167,10 +167,10 @@ const styles = StyleSheet.create({
   },
 })
 
-const Wrapper = styled.SafeAreaView`
+const Wrapper = styled.ScrollView`
   background-color: white;
   flex: 1;
-  align-items: center;
+  // align-items: center;
 `;
 const FormContainer = styled.View`
   padding: 20px;

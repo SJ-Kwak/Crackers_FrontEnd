@@ -22,15 +22,13 @@ const { width, height } = Dimensions.get('window')
 
 export default function HomeScreen ({navigation}) {
   const [token, setToken] = useState(null)
-  const [workSpaceId, setWorkSpaceId] = useState(null)
   useFocusEffect(useCallback(() => {
     const checkLogin = async () => {
       setToken(await getItemFromAsync('accessToken'))
-      setWorkSpaceId(await getItemFromAsync('workspaceId'))
     }
     checkLogin();
-    if(token && workSpaceId) navigation.replace('Main')
-  }, [token, workSpaceId]))
+    if(token) navigation.replace('Main')
+  }, [token]))
   return (
   <Container>
     <Image 

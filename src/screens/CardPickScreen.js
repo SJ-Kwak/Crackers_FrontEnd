@@ -30,17 +30,15 @@ export default function CardPickScreen({ navigation, route }) {
   const [firstWord, setFirstWord] = useState('')
 
   function extractNumberWithUnit(sentence) {
-    // 정규 표현식을 사용하여 실수와 단위 명사를 추출합니다.
+    // 정규 표현식. 실수, 단위 명사 추출
     const match = sentence.match(/(\d+(?:\.\d+)?)\s*(.+)/);
   
-    // match가 null이면 실수와 단위 명사를 찾지 못한 경우입니다.
     if (match) {
-      // 추출한 실수와 단위 명사를 하나의 문자열로 합쳐서 반환합니다.
+      // 문자열로 병합
       const number = match[1];
       const unit = match[2].charAt(0);
       return `${number}${unit}`;
     } else {
-      // 실수와 단위 명사를 찾지 못한 경우에는 null 또는 다른 기본값을 반환할 수 있습니다.
       return null;
     }
   }
@@ -51,7 +49,7 @@ export default function CardPickScreen({ navigation, route }) {
     for (const card of cards) {
       if (response.data[response.data.length-1].includes(card.name)) {
         setSelectedPhoto(card.source);
-        return; // 일치하는 카드를 찾으면 함수를 종료합니다.
+        return;
       }
     }
   }
@@ -65,30 +63,6 @@ export default function CardPickScreen({ navigation, route }) {
     const randomPhoto = cards[randomIndex].source;
     setSelectedPhoto(randomPhoto);
     setIndex(randomIndex);
-  };
-
-  const handleHowManyTimes = (index) => {
-    if (index == 0) {
-      setTimes("1번");
-    } else if (index == 1) {
-      setTimes("2번");
-    } else if (index == 2) {
-      setTimes("13번");
-    } else if (index == 3) {
-      setTimes("14번");
-    } else if (index == 4) {
-      setTimes("16번");
-    } else if (index == 5) {
-      setTimes("17번");
-    } else if (index == 6) {
-      setTimes("18번");
-    } else if (index == 7) {
-      setTimes("19번");
-    } else if (index == 8) {
-      setTimes("20번");
-    } else if (index == 9) {
-      setTimes("21번");
-    }
   };
 
   return (
@@ -113,7 +87,7 @@ export default function CardPickScreen({ navigation, route }) {
       >
         {workTime + " 일하는 동안..."}
       </Text>
-      <View style={{ marginTop: "7%", flex: 1, width: "100%" }}>
+      <View style={{ marginTop: "7%", flex: 1, width: "100%", alignItems: 'center' }}>
         {selectedPhoto && <Image source={selectedPhoto} resizeMode="cover" />}
         <Text
           style={{

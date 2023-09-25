@@ -31,8 +31,6 @@ import { Request } from "../api/request";
 import { createStackNavigator } from "@react-navigation/stack";
 import { getItemFromAsync } from "../api/storage.js";
 
-// import { BlurView } from 'expo-blur';
-
 const Stack = createStackNavigator();
 const settingBtn = require("../assets/tch_btnSettings.png");
 const { width, height } = Dimensions.get("window");
@@ -61,7 +59,7 @@ export default function MainDemo({ navigation }) {
   const [circlePo, setCirclePo] = useState(-50);
   const [circleTouched, setCircleTouched] = useState(false);
   const [mainColor, setMainColor] = useState("#6100FF");
-  const [duringTime, setDuringTime] = useState(1); // 소요시간
+  const [duringTime, setDuringTime] = useState(0); // 소요시간
   const [startTxt, setStartTxt] = useState("");
   const [workSpace, setWorkSpace] = useState([]);
   const [schedule, setSchedule] = useState([]);
@@ -94,59 +92,64 @@ export default function MainDemo({ navigation }) {
 
   const getWorkSpace = async () => {
     const response = await request.get("/workspaces");
-    setWorkSpace(response.data[0]);
-    // setDuringTime(
-    //   ((response.data[0].schedules[0].endTime -
-    //     response.data[0].schedules[0].startTime) /
-    //     100) *
-    //     60
-    // );
-    let _schedule = response.data[0].schedules.map((schedule) => schedule.day);
-    const defaultSelectedDays = days.reduce((acc, day, index) => {
-      if (_schedule.includes(day)) {
-        acc.push(index);
-      }
-      return acc;
-    }, []);
-    setSelectedDayIndex(defaultSelectedDays);
-    setIsTouched(
-      isTouched.map((value, index) =>
-        defaultSelectedDays.includes(index) ? true : value
-      )
-    );
-    setName(response.data[0].name);
-    setSelectedBusiness(response.data[0].categoryId);
-    setWage(response.data[0].wage);
-    setSchedule(response.data[0].schedules);
-    setTime1(
-      asPickerFormat(
-        new Date(
-          2023,
-          10,
-          11,
-          response.data[0].schedules[0].startTime / 100,
-          response.data[0].schedules[0].startTime % 100,
-          0
+    if(!response.data[0]){
+      navigation.navigate('JobNickname')
+      return;
+    } else {
+      setWorkSpace(response.data[0]);
+      // setDuringTime(response.data[0].schedules[0].endTime-response.data[0].schedules[0].startTime)
+      setDuringTime(
+        (parseInt(response.data[0].schedules[0].endTime/100)-parseInt(response.data[0].schedules[0].startTime/100))*60
+        + (parseInt(response.data[0].schedules[0].endTime%100)-parseInt(response.data[0].schedules[0].startTime%100))
+      );
+      let _schedule = response.data[0].schedules.map((schedule) => schedule.day);
+      const defaultSelectedDays = days.reduce((acc, day, index) => {
+        if (_schedule.includes(day)) {
+          acc.push(index);
+        }
+        return acc;
+      }, []);
+      setSelectedDayIndex(defaultSelectedDays);
+      setIsTouched(
+        isTouched.map((value, index) =>
+          defaultSelectedDays.includes(index) ? true : value
         )
-      )
-    );
-    setTime2(
-      asPickerFormat(
-        new Date(
-          2023,
-          10,
-          11,
-          response.data[0].schedules[0].endTime / 100,
-          response.data[0].schedules[0].endTime % 100,
-          0
+      );
+      setName(response.data[0].name);
+      setSelectedBusiness(response.data[0].categoryId);
+      setWage(response.data[0].wage);
+      setSchedule(response.data[0].schedules);
+      setTime1(
+        asPickerFormat(
+          new Date(
+            2023,
+            10,
+            11,
+            response.data[0].schedules[0].startTime / 100,
+            response.data[0].schedules[0].startTime % 100,
+            0
+          )
         )
-      )
-    );
+      );
+      setTime2(
+        asPickerFormat(
+          new Date(
+            2023,
+            10,
+            11,
+            response.data[0].schedules[0].endTime / 100,
+            response.data[0].schedules[0].endTime % 100,
+            0
+          )
+        )
+      );
+    }
   };
 
   useFocusEffect(useCallback(() => {
     getUserInfo();
     getWorkSpace();
+    console.error('time', duringTime)
   }, [modalVisible]));
 
   const [workDt, setWorkDt] = useState("");
@@ -207,7 +210,7 @@ export default function MainDemo({ navigation }) {
     //if (running) updatePercentage()
     let interval;
 
-    const steps = duringTime * 60 - 1; // duringTime에 60을 곱해 총 단계 수를 계산합니다.
+    const steps = duringTime * 60; // duringTime에 60을 곱해 총 단계 수를 계산합니다.
     const stepSize = 260 / steps; // 각 단계별 증가량을 계산합니다.
 
     if (running1) {
@@ -225,6 +228,7 @@ export default function MainDemo({ navigation }) {
         setMainColor("#FFAF15");
         setStartBtnTxt("카드받기");
         setStartTxt(" 오늘의 \n 알바 완료!");
+        createWorkHistory();
       }
     } else {
       clearInterval(interval);
@@ -250,6 +254,7 @@ export default function MainDemo({ navigation }) {
     }
     return () => clearInterval(interval);
   }, [running1, running2, time, duringTime]);
+  
 
   const scrollViewRef = useRef(null);
 
@@ -281,6 +286,7 @@ export default function MainDemo({ navigation }) {
   const [totalTime, setTotalTime] = useState(0);
 
   const createWorkHistory = async () => {
+    // 시작 타임
     const startMinutes = convertToMinutes(startTime);
     const endMinutes = convertToMinutes(getTime());
 
@@ -355,18 +361,20 @@ export default function MainDemo({ navigation }) {
     if (selectedDayIndex.length > 0 && time1 && time2) {
       const newScheduleList = selectedDayIndex.map((day) => ({
         day: days[day],
-        startTime: time1
-          .getHours()
-          .toString()
-          .concat(
-            time1.getMinutes() === 0 ? "00" : time1.getMinutes().toString()
-          ),
-        endTime: time2
-          .getHours()
-          .toString()
-          .concat(
-            time2.getMinutes() === 0 ? "00" : time2.getMinutes().toString()
-          ),
+        // startTime: time1
+        //   .getHours()
+        //   .toString()
+        //   .concat(
+        //     time1.getMinutes() === 0 ? "00" : time1.getMinutes().toString()
+        //   ),
+        // endTime: time2
+        //   .getHours()
+        //   .toString()
+        //   .concat(
+        //     time2.getMinutes() === 0 ? "00" : time2.getMinutes().toString()
+        //   ),
+        startTime: convertTime(time1).toString(),
+        endTime: convertTime(time2).toString()
       }));
       // scheduleList와 newSchedule 배열 비교
       for (const newSched of newScheduleList) {
@@ -395,15 +403,16 @@ export default function MainDemo({ navigation }) {
   const [update, setUpdated] = useState(false);
 
   const handleSchedule = async () => {
-    console.log(schedule);
+    console.error(selectedBusiness);
     const response = await request.patch("/workspaces/update", {
       workspaceId: workSpace.workspaceId.toString(),
       name: (name !== workSpace.name ? name : workSpace.name).toString(),
       wage: (wage !== workSpace.wage ? wage : workSpace.wage).toString(),
-      categoryId: (selectedBusiness !== workSpace.categoryId
-        ? selectedBusiness
-        : workSpace.categoryId
-      ).toString(),
+      // categoryId: (selectedBusiness !== workSpace.categoryId
+      //   ? selectedBusiness
+      //   : workSpace.categoryId
+      // ).toString(),
+      categoryId: selectedBusiness,
       scheduleList: await handleTime(),
     });
     if (response.status === 200) {
@@ -414,13 +423,14 @@ export default function MainDemo({ navigation }) {
   const CategoryItem = ({ item }) => {
     const category = categories.indexOf(item)+1;
     return (
-      <View
+      <TouchableOpacity
         style={{
           flexDirection: "row",
           alignItems: "center",
           borderBottomWidth: 0.17,
           borderColor: "lightgray",
         }}
+        onPress={() => handleBusinessSelection(item)}
       >
         <Text
           style={{
@@ -434,7 +444,7 @@ export default function MainDemo({ navigation }) {
           {item}
         </Text>
         <View>
-          <TouchableOpacity
+          <View
             style={{
               width: 18,
               height: 18,
@@ -446,7 +456,7 @@ export default function MainDemo({ navigation }) {
               borderColor:
                 category === selectedBusiness ? "#6100FF" : "#D9D9D9",
             }}
-            onPress={() => handleBusinessSelection(item)}
+            // onPress={() => handleBusinessSelection(item)}
           >
             <View
               style={{
@@ -457,21 +467,18 @@ export default function MainDemo({ navigation }) {
                   category === selectedBusiness ? "#6100FF" : "white",
               }}
             />
-          </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
   const resetStatus = () => {
-    /*const [start, setStart] = useState(false);
-    const [adjBtn, setAdjBtn] = useState(true);
-    const [charge, setCharge] = useState(0);*/
     setStart(false);  
     setAdjBtn(true);
     setCharge(0);
-    //setRunning1(true);
-    //setRunning2(true);
+    setRunning1(false);
+    setRunning2(false);
 
     setMainColor("#6100FF");
     setStartBtnTxt("시작하기");
@@ -485,7 +492,7 @@ export default function MainDemo({ navigation }) {
   const [startOpen, setStartOpen] = useState(false);
   const [endOpen, setEndOpen] = useState(false);
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <AlbaFrame>
         <Text>{workSpace.name}</Text>
       </AlbaFrame>
@@ -495,7 +502,6 @@ export default function MainDemo({ navigation }) {
           styles.circle2,
           { left: circlePo, borderColor: mainColor },
         ]}
-        //onPress={()=>{scrollPosition.x>-100 ? scrollToRight : scrollToLeft}}
         onPress={() => {
           circlePo == -50 ? setCirclePo(200) : setCirclePo(-50);
           setCircleTouched(true);
@@ -508,12 +514,7 @@ export default function MainDemo({ navigation }) {
           ]}
         />
       </TouchableOpacity>
-      <View style={styles.circle1}>
-        <View style={[styles.circleFill1, { height: "100%"}]} />
-        {/* <BlurView
-          intensity={3}
-          tint="dark"
-        /> */}
+      <ImageBackground source={require('../assets/BlurCircle.png')} style={styles.circle1} imageStyle={{borderRadius: 280, backfaceVisibility: 'visible'}} blurRadius={60}>
         {circlePo == -50 ?  
         (
           <View>
@@ -581,12 +582,11 @@ export default function MainDemo({ navigation }) {
             </Text>
             </View>
         )}
-        
-      </View>
+      </ImageBackground>
       <AdjustBtn
         style={{
           backgroundColor: "white",
-          borderColor: !adjBtn ? "white" : mainColor,
+          borderColor: !adjBtn ? "transparent" : mainColor,
           borderWidth: 1,
           //flex: 1,
           //justifyContent: "flex-end",
@@ -1060,7 +1060,7 @@ export default function MainDemo({ navigation }) {
           </TouchableOpacity>
         </Modal>
       </Modal>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -1085,22 +1085,17 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: 288,
     height: 288,
-    borderRadius: 288 / 2,
-    //borderWidth: 2,
-    //borderColor: "#000000",
-    //overflow: "hidden",
-    //position: "absolute",
-    //left: -200,s
+    borderRadius: 288,
     top: windowHeight * 0.29,
-    //bottom: 278,
-    //shadowOffset: { width: 1, height: 1 },
-    //shadowOpacity: 1,
-    //shadowColor: "#BDBDBD",
-    //shadowRadius: 7,
+    // shadowOffset: { width: 1, height: 1 },
+    // shadowOpacity: 1,
+    shadowColor: "rgba(0, 0, 0, 0.5)",
+    // shadowRadius: 7,
     elevation: 5,
-    backgroundColor: "#FFFFFF",
-    opacity: 0.9,
-    borderColor: "white",
+    // backgroundColor: 'white',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    // backgroundColor: 'rgba(255, 255, 255)'
+    borderColor: "#F5F5F5",
     borderWidth: 1
     
   },
@@ -1117,23 +1112,7 @@ const styles = StyleSheet.create({
     top: windowHeight * 0.31,
     //bottom: 320,
   },
-  circle3: {
-    width: 260,
-    height: 260,
-    borderRadius: 260 / 2,
-    borderWidth: 1,
-    borderColor: "#8A15FF",
-    overflow: "hidden",
-    position: "absolute",
-    //left: -81,
-    //top: 292,
-    //bottom: 292,
-  },
   circleFill1: {
-    // backgroundColor: "white",
-    // width: 288,
-    // height: 288,
-    // borderRadius: 288 / 2,
     bottom: 0,
     position: "absolute",
     opacity: 0.5

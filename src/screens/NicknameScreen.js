@@ -12,6 +12,7 @@ import {
   Keyboard,
   SafeAreaView,
   Pressable,
+  ScrollView
 } from "react-native";
 import { useState, useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -84,7 +85,7 @@ export default function NicknameScreen({ navigation, route }) {
         isValid,
         isSubmitting,
       }) => (
-        <Wrapper>
+        <Wrapper contentContainerStyle={{alignItems: 'center'}}>
           <BackToHome onPress={() => navigation.goBack()}>
             <BackIcon source={backIcon} style={{width: 40, height: 40}} />
           </BackToHome>
@@ -132,14 +133,14 @@ export default function NicknameScreen({ navigation, route }) {
           <SubmitBtn
             style={{
               backgroundColor:
-                isValid && values.nickname && values.nickname
+                isValid && values.nickname
                   ? "#6100FF"
-                  : "white",
+                  : "transparent",
               //flex: 1,
               //justifyContent: "flex-end",
             }}
             onPress={handleSignUp}
-            disabled={!isValid}
+            disabled={!isValid || !values.nickname}
           >
             <Text style={styles.submit}>크래커 시작하기</Text>
           </SubmitBtn>
@@ -169,10 +170,10 @@ const styles = StyleSheet.create({
   },
 })
 
-const Wrapper = styled.SafeAreaView`
+const Wrapper = styled.ScrollView`
   background-color: white;
   flex: 1;
-  align-items: center;
+  // align-items: center;
 `;
 const FormContainer = styled.View`
   padding: 20px;
@@ -225,7 +226,7 @@ const InputTxt = styled.TextInput`
 `;
 const ErrorTxt = styled.Text`
   padding-top: 5px;
-  font-size: 10;
+  font-size: 10px;
   color: #ff2626;
   //right: "5.13%",
 `;
@@ -234,9 +235,9 @@ const SubmitBtn = styled.TouchableOpacity`
   position: absolute;
   //top: keyboardHeight;
   //background-color: #395B64;
-  width: 350;
-  height: 44;
-  bottom: 52;
+  width: 350px;
+  height: 44px;
+  bottom: 52px;
   //padding: 10px;
   border-radius: 100px;
   justify-content: center;
@@ -252,12 +253,12 @@ const SubmitTxt = styled.Text`
 
 const CheckBtn = styled.TouchableOpacity`
   position: absolute;
-  left: 270;
+  left: 270px;
   background-color: #cccccc;
   width: 81px;
   height: 33px;
   padding: 10px;
-  border-radius: 100;
+  border-radius: 100px;
 `;
 
 const CheckTxt = styled.Text`

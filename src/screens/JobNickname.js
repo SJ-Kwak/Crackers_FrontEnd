@@ -1,5 +1,5 @@
-import React from "react";
-import { Image, View, useState } from "react-native";
+import React, { useState } from "react";
+import { Image, View, ScrollView } from "react-native";
 import styled from "styled-components/native";
 import { Display2, Caption1 } from "../static/text.js";
 import { Dimensions } from "react-native";
@@ -74,8 +74,7 @@ export default function JobNickname({ navigation }) {
           </NicknameInputContainer>
           <NextBtnContainer
             onPress={() => 
-              {console.log(windowHeight)
-              setItem(values)}}
+              setItem(values)}
           >
             <Image
               style={{ height: 40, width: 40 }}

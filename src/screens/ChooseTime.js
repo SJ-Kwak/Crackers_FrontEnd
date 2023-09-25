@@ -70,8 +70,10 @@ export default function ChooseTime({ navigation }) {
     if (selectedDayIndex.length > 0 && selectedHour1 !== null && selectedHour2 !== null) {
       const newScheduleList = selectedDayIndex.map((day) => ({
         day,
-        startTime: selectedTime1.getHours().toString().concat(selectedTime1.getMinutes()===0?'00':selectedTime1.getMinutes().toString()),
-        endTime: selectedTime2.getHours().toString().concat(selectedTime2.getMinutes()===0?'00':selectedTime2.getMinutes().toString())
+        // startTime: selectedTime1.getHours().toString().concat(selectedTime1.getMinutes()===0?'00':selectedTime1.getMinutes().toString()),
+        // endTime: selectedTime2.getHours().toString().concat(selectedTime2.getMinutes()===0?'00':selectedTime2.getMinutes().toString())
+        startTime: convertTime(selectedTime1),
+        endTime: convertTime(selectedTime2)
       }));
 
       await saveScheduleList(newScheduleList);

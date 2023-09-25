@@ -16,6 +16,7 @@ import {
   SafeAreaView,
   Pressable,
   Dimensions,
+  ScrollView
 } from "react-native";
 import { useState, useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -101,7 +102,7 @@ export default function SignupScreen({ navigation }) {
         isValid,
         isSubmitting,
       }) => (
-        <Wrapper>
+        <Wrapper contentContainerStyle={{alignItems: 'center'}}>
           <FormContainer>
             <BackToHome
               onPress={() => {
@@ -317,11 +318,11 @@ const styles = StyleSheet.create({
   }
 })
 
-const Wrapper = styled.SafeAreaView`
+const Wrapper = styled.ScrollView`
   background-color: white;
   flex: 1;
   height: 100%;
-  align-items: center;
+  // align-items: center;
 `;
 const FormContainer = styled.View`
   padding: 20px;
