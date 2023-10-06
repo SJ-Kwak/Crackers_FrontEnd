@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   },
 })
 
-const Wrapper = styled.ScrollView`
+const Wrapper = styled.View`
   background-color: white;
   flex: 1;
   // align-items: center;
@@ -178,6 +178,7 @@ const Wrapper = styled.ScrollView`
 const FormContainer = styled.View`
   padding: 20px;
   width: 100%;
+  flex: 1;
 `;
 const BackToHome = styled.TouchableOpacity`
   width: 60px;
@@ -232,16 +233,13 @@ const ErrorTxt = styled.Text`
 `;
 
 const SubmitBtn = styled.TouchableOpacity`
-  position: absolute;
-  //top: keyboardHeight;
-  //background-color: #395B64;
   width: 350px;
   height: 44px;
-  bottom: 52px;
-  //padding: 10px;
   border-radius: 100px;
   justify-content: center;
   align-items: center;
+  align-self: center;
+  margin-bottom: 52px;
 `;
 
 const SubmitTxt = styled.Text`

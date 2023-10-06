@@ -30,6 +30,8 @@ import { useFocusEffect } from "@react-navigation/native";
 import { Request } from "../api/request";
 import { createStackNavigator } from "@react-navigation/stack";
 import { getItemFromAsync } from "../api/storage.js";
+import * as BackgroundFetch from 'expo-background-fetch';
+import * as TaskManager from 'expo-task-manager';
 
 const Stack = createStackNavigator();
 const settingBtn = require("../assets/tch_btnSettings.png");
@@ -48,6 +50,28 @@ const categories = [
   "공연∙전시스탭",
   "기타",
 ];
+
+const BACKGROUND_FETCH_TASK = 'background-fetch';
+TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
+  const now = Date.now();
+
+  console.log(`Got background fetch call at date: ${new Date(now).toISOString()}`);
+
+  // Be sure to return the successful result type!
+  return BackgroundFetch.BackgroundFetchResult.NewData;
+});
+
+async function registerBackgroundFetchAsync() {
+  return BackgroundFetch.registerTaskAsync(BACKGROUND_FETCH_TASK, {
+    minimumInterval: 60 * 0.001, // 15 minutes
+    stopOnTerminate: false, // android only,
+    startOnBoot: true, // android only
+  });
+}
+
+async function unregisterBackgroundFetchAsync() {
+  return BackgroundFetch.unregisterTaskAsync(BACKGROUND_FETCH_TASK);
+}
 
 export default function MainDemo({ navigation }) {
   const [start, setStart] = useState(false);
@@ -149,7 +173,6 @@ export default function MainDemo({ navigation }) {
   useFocusEffect(useCallback(() => {
     getUserInfo();
     getWorkSpace();
-    console.error('time', duringTime)
   }, [modalVisible]));
 
   const [workDt, setWorkDt] = useState("");
@@ -206,8 +229,16 @@ export default function MainDemo({ navigation }) {
   const [running1, setRunning1] = useState(false);
   const [running2, setRunning2] = useState(false);
 
+  async function startBackground() {
+    await registerBackgroundFetchAsync();
+  }
+
+  async function stopBackground() {
+    await unregisterBackgroundFetchAsync();
+  }
+
   useEffect(() => {
-    //if (running) updatePercentage()
+    startBackground();
     let interval;
 
     const steps = duringTime * 60; // duringTime에 60을 곱해 총 단계 수를 계산합니다.
@@ -224,6 +255,7 @@ export default function MainDemo({ navigation }) {
       if (charge >= 260) {
         setRunning1(false);
         setRunning2(false);
+        stopBackground();
 
         setMainColor("#FFAF15");
         setStartBtnTxt("카드받기");
@@ -237,6 +269,7 @@ export default function MainDemo({ navigation }) {
   }, [running1, running2, charge, duringTime]);
 
   useEffect(() => {
+    startBackground();
     let interval;
     if (running2) {
       interval = setInterval(() => {
@@ -245,6 +278,7 @@ export default function MainDemo({ navigation }) {
       if (time >= duringTime * 60 * 1000) {
         setRunning1(false);
         setRunning2(false);
+        stopBackground();
         setMainColor("#FFAF15");
         setStartBtnTxt("카드받기");
         setStartTxt(" 오늘의 \n 알바 완료!");
@@ -361,18 +395,6 @@ export default function MainDemo({ navigation }) {
     if (selectedDayIndex.length > 0 && time1 && time2) {
       const newScheduleList = selectedDayIndex.map((day) => ({
         day: days[day],
-        // startTime: time1
-        //   .getHours()
-        //   .toString()
-        //   .concat(
-        //     time1.getMinutes() === 0 ? "00" : time1.getMinutes().toString()
-        //   ),
-        // endTime: time2
-        //   .getHours()
-        //   .toString()
-        //   .concat(
-        //     time2.getMinutes() === 0 ? "00" : time2.getMinutes().toString()
-        //   ),
         startTime: convertTime(time1).toString(),
         endTime: convertTime(time2).toString()
       }));
@@ -408,10 +430,6 @@ export default function MainDemo({ navigation }) {
       workspaceId: workSpace.workspaceId.toString(),
       name: (name !== workSpace.name ? name : workSpace.name).toString(),
       wage: (wage !== workSpace.wage ? wage : workSpace.wage).toString(),
-      // categoryId: (selectedBusiness !== workSpace.categoryId
-      //   ? selectedBusiness
-      //   : workSpace.categoryId
-      // ).toString(),
       categoryId: selectedBusiness,
       scheduleList: await handleTime(),
     });

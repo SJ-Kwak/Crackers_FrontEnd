@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const Wrapper = styled.ScrollView`
+const Wrapper = styled.View`
   background-color: white;
   flex: 1;
   height: 100%;
@@ -350,11 +350,12 @@ const InputTxt = styled.TextInput`
 const SubmitBtn = styled.TouchableOpacity`
   width: 350px;
   height: 44px;
-  bottom: 52px;
+  margin-bottom: 52px;
   //padding: 10px;
   border-radius: 100px;
   justify-content: center;
   align-items: center;
+  align-self: center;
 `;
 
 const CheckBtn = styled.TouchableOpacity`

@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
   },
 })
 
-const Wrapper = styled.ScrollView`
+const Wrapper = styled.View`
   background-color: white;
   flex: 1;
   // align-items: center;
@@ -204,5 +204,6 @@ const SubmitBtn = styled.TouchableOpacity`
   border-radius: 100px;
   justify-content: center;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 52px;
+  align-self: center;
 `;
