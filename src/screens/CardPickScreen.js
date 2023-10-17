@@ -73,7 +73,7 @@ export default function CardPickScreen({ navigation, route }) {
           width: 30,
           height: 30,
         }}
-        onPress={() => navigation.navigate("Main")}
+        onPress={() => navigation.replace("Main")}
       >
         <Image source={xBtn} style={{ width: 30, height: 30 }} />
       </TouchableOpacity>

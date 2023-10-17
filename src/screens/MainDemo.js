@@ -110,18 +110,22 @@ export default function MainDemo({ navigation }) {
 
   const getUserInfo = async () => {
     const response = await request.get("/accounts/profile");
-    setStartTxt(response.data.nickname + "님, \n오늘의 근무를 \n시작하세요");
-    setNick(response.data.nickname);
+    if(response.status != 200) {
+      navigation.navigate('JobNickname');
+      return;   
+    } else {
+      setStartTxt(response.data.nickname + "님, \n오늘의 근무를 \n시작하세요");
+      setNick(response.data.nickname);
+    }
   };
 
   const getWorkSpace = async () => {
     const response = await request.get("/workspaces");
-    if(!response.data[0]){
+    if(response.status != 200){
       navigation.navigate('JobNickname')
       return;
     } else {
       setWorkSpace(response.data[0]);
-      // setDuringTime(response.data[0].schedules[0].endTime-response.data[0].schedules[0].startTime)
       setDuringTime(
         (parseInt(response.data[0].schedules[0].endTime/100)-parseInt(response.data[0].schedules[0].startTime/100))*60
         + (parseInt(response.data[0].schedules[0].endTime%100)-parseInt(response.data[0].schedules[0].startTime%100))
@@ -171,8 +175,15 @@ export default function MainDemo({ navigation }) {
   };
 
   useFocusEffect(useCallback(() => {
-    getUserInfo();
-    getWorkSpace();
+    const checkLogin = async () => {
+      if(await getItemFromAsync('accessToken')){
+        getUserInfo();
+        getWorkSpace();
+      } else {
+        navigation.replace('Home')
+      }
+    }
+    checkLogin();
   }, [modalVisible]));
 
   const [workDt, setWorkDt] = useState("");

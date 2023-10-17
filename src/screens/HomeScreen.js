@@ -21,14 +21,14 @@ const start_logo=require("../assets/logo.png");
 const { width, height } = Dimensions.get('window')
 
 export default function HomeScreen ({navigation}) {
-  const [token, setToken] = useState(null)
   useFocusEffect(useCallback(() => {
     const checkLogin = async () => {
-      setToken(await getItemFromAsync('accessToken'))
+      if (await getItemFromAsync('accessToken')){
+        navigation.replace('Main')
+      }
     }
     checkLogin();
-    if(token) navigation.replace('Main')
-  }, [token]))
+  }, []))
   return (
   <Container>
     <Image 
