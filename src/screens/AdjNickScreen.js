@@ -37,7 +37,7 @@ export default function AdjNickScreen({ navigation }) {
   //const keyboardHeight = useKeyboardHeight();
   const request = new Request();
 
-  const handleNickname = async (values) => {
+  const handleNickname = async values => {
     const response = await request.patch("/accounts/profile", {
       nickname: values.nickname,
     });
@@ -54,8 +54,7 @@ export default function AdjNickScreen({ navigation }) {
         nickname: "",
       }}
       validationSchema={signupSchema}
-      onSubmit={(values) => Alert.alert(JSON.stringify(values))}
-    >
+      onSubmit={values => Alert.alert(JSON.stringify(values))}>
       {({
         values,
         errors,
@@ -66,9 +65,9 @@ export default function AdjNickScreen({ navigation }) {
         isValid,
         isSubmitting,
       }) => (
-        <Wrapper>
+        <Wrapper contentContainerStyle={{ alignItems: "center" }}>
           <BackToHome onPress={() => navigation.goBack()}>
-            <BackIcon source={backIcon} style={{width: 40, height: 40}} />
+            <BackIcon source={backIcon} style={{ width: 40, height: 40 }} />
           </BackToHome>
           <FormContainer>
             <Text style={styles.title}>닉네임 수정하기</Text>
@@ -81,7 +80,7 @@ export default function AdjNickScreen({ navigation }) {
                   //position: "absolute",
                   borderBottomColor: values.nickname ? "#6100FF" : "#CCCCCC",
                   borderBottomWidth: values.nickname ? 2 : 1,
-                  fontFamily: 'Pretendard'
+                  fontFamily: "PretendardVariable",
                 }}
                 placeholder="1~8자 이하 한글, 영문, 숫자, 특수문자"
                 value={values.nickname}
@@ -103,13 +102,12 @@ export default function AdjNickScreen({ navigation }) {
               backgroundColor:
                 isValid && values.nickname && values.nickname
                   ? "#6100FF"
-                  : "white",
+                  : "transparent",
               //flex: 1,
               //justifyContent: "flex-end",
             }}
             onPress={() => handleNickname(values)}
-            disabled={!isValid}
-          >
+            disabled={!isValid}>
             <Text style={styles.submit}>완료</Text>
           </SubmitBtn>
         </Wrapper>
@@ -120,31 +118,30 @@ export default function AdjNickScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   title: {
-    color: '#202020',
+    color: "#202020",
     fontSize: 24,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   subtitle: {
-    color: '#606060',
-    fontSize: 14
+    color: "#606060",
+    fontSize: 14,
   },
   submit: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 16,
-    color: 'white',
-    fontWeight: '600'
+    color: "white",
+    fontWeight: "600",
   },
   error: {
     paddingTop: 5,
     fontSize: 10,
-    color: '#FF2626'
+    color: "#FF2626",
   },
-})
+});
 
-const Wrapper = styled.SafeAreaView`
+const Wrapper = styled.ScrollView`
   background-color: white;
   flex: 1;
-  align-items: center;
 `;
 const FormContainer = styled.View`
   padding: 20px;

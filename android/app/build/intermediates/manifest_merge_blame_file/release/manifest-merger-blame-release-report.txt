@@ -1,0 +1,153 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.cracker"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+8-->/Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/android/app/src/main/AndroidManifest.xml
+9        android:targetSdkVersion="33" />
+9-->/Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/android/app/src/main/AndroidManifest.xml
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->/Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/android/app/src/main/AndroidManifest.xml:3:5-67
+11-->/Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/android/app/src/main/AndroidManifest.xml:3:22-64
+12    <uses-permission android:name="android.permission.WAKE_LOCK" />
+12-->[:react-native-background-timer] /Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/node_modules/react-native-background-timer/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:7:5-68
+12-->[:react-native-background-timer] /Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/node_modules/react-native-background-timer/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:7:22-65
+13    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+13-->[com.transistorsoft:tsbackgroundfetch:1.0.2] /Users/seojinkwak/.gradle/caches/transforms-3/ead0b5492291b8ffcf8c0afd2f77836b/transformed/jetified-tsbackgroundfetch-1.0.2/AndroidManifest.xml:7:5-81
+13-->[com.transistorsoft:tsbackgroundfetch:1.0.2] /Users/seojinkwak/.gradle/caches/transforms-3/ead0b5492291b8ffcf8c0afd2f77836b/transformed/jetified-tsbackgroundfetch-1.0.2/AndroidManifest.xml:7:22-78
+14    <uses-permission
+14-->[com.transistorsoft:tsbackgroundfetch:1.0.2] /Users/seojinkwak/.gradle/caches/transforms-3/ead0b5492291b8ffcf8c0afd2f77836b/transformed/jetified-tsbackgroundfetch-1.0.2/AndroidManifest.xml:9:5-11:38
+15        android:name="android.permission.SCHEDULE_EXACT_ALARM"
+15-->[com.transistorsoft:tsbackgroundfetch:1.0.2] /Users/seojinkwak/.gradle/caches/transforms-3/ead0b5492291b8ffcf8c0afd2f77836b/transformed/jetified-tsbackgroundfetch-1.0.2/AndroidManifest.xml:10:9-63
+16        android:maxSdkVersion="33" />
+16-->[com.transistorsoft:tsbackgroundfetch:1.0.2] /Users/seojinkwak/.gradle/caches/transforms-3/ead0b5492291b8ffcf8c0afd2f77836b/transformed/jetified-tsbackgroundfetch-1.0.2/AndroidManifest.xml:11:9-35
+17
+18    <application
+18-->/Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/android/app/src/main/AndroidManifest.xml:5:5-26:19
+19        android:name="com.cracker.MainApplication"
+19-->/Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/android/app/src/main/AndroidManifest.xml:6:7-38
+20        android:allowBackup="false"
+20-->/Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/android/app/src/main/AndroidManifest.xml:10:7-34
+21        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+21-->[androidx.core:core:1.7.0] /Users/seojinkwak/.gradle/caches/transforms-3/75e4635b66fa4e4e84e71b52579837ce/transformed/core-1.7.0/AndroidManifest.xml:24:18-86
+22        android:icon="@mipmap/ic_launcher"
+22-->/Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/android/app/src/main/AndroidManifest.xml:8:7-41
+23        android:label="@string/app_name"
+23-->/Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/android/app/src/main/AndroidManifest.xml:7:7-39
+24        android:roundIcon="@mipmap/ic_launcher_round"
+24-->/Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/android/app/src/main/AndroidManifest.xml:9:7-52
+25        android:theme="@style/AppTheme"
+25-->/Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/android/app/src/main/AndroidManifest.xml:11:7-38
+26        android:usesCleartextTraffic="true" >
+26-->/Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/android/app/src/main/AndroidManifest.xml:12:7-42
+27        <activity
+27-->/Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/android/app/src/main/AndroidManifest.xml:14:7-25:18
+28            android:name="com.cracker.MainActivity"
+28-->/Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/android/app/src/main/AndroidManifest.xml:15:9-37
+29            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
+29-->/Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/android/app/src/main/AndroidManifest.xml:17:9-118
+30            android:exported="true"
+30-->/Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/android/app/src/main/AndroidManifest.xml:20:9-32
+31            android:label="@string/app_name"
+31-->/Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/android/app/src/main/AndroidManifest.xml:16:9-41
+32            android:launchMode="singleTask"
+32-->/Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/android/app/src/main/AndroidManifest.xml:18:9-40
+33            android:windowSoftInputMode="adjustResize" >
+33-->/Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/android/app/src/main/AndroidManifest.xml:19:9-51
+34            <intent-filter>
+34-->/Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/android/app/src/main/AndroidManifest.xml:21:9-24:25
+35                <action android:name="android.intent.action.MAIN" />
+35-->/Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/android/app/src/main/AndroidManifest.xml:22:13-65
+35-->/Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/android/app/src/main/AndroidManifest.xml:22:21-62
+36
+37                <category android:name="android.intent.category.LAUNCHER" />
+37-->/Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/android/app/src/main/AndroidManifest.xml:23:13-73
+37-->/Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/android/app/src/main/AndroidManifest.xml:23:23-70
+38            </intent-filter>
+39        </activity>
+40
+41        <provider
+41-->[:react-native-webview] /Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/node_modules/react-native-webview/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:8:9-16:20
+42            android:name="com.reactnativecommunity.webview.RNCWebViewFileProvider"
+42-->[:react-native-webview] /Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/node_modules/react-native-webview/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:9:13-83
+43            android:authorities="com.cracker.fileprovider"
+43-->[:react-native-webview] /Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/node_modules/react-native-webview/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:10:13-64
+44            android:exported="false"
+44-->[:react-native-webview] /Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/node_modules/react-native-webview/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:11:13-37
+45            android:grantUriPermissions="true" >
+45-->[:react-native-webview] /Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/node_modules/react-native-webview/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:12:13-47
+46            <meta-data
+46-->[:react-native-webview] /Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/node_modules/react-native-webview/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:13:13-15:63
+47                android:name="android.support.FILE_PROVIDER_PATHS"
+47-->[:react-native-webview] /Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/node_modules/react-native-webview/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:14:17-67
+48                android:resource="@xml/file_provider_paths" />
+48-->[:react-native-webview] /Users/seojinkwak/Desktop/Workspace/Cracker_Frontend/node_modules/react-native-webview/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:15:17-60
+49        </provider>
+50        <provider
+50-->[androidx.emoji2:emoji2:1.0.0] /Users/seojinkwak/.gradle/caches/transforms-3/223146ef33e3aa619e8b04649706e145/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:26:9-34:20
+51            android:name="androidx.startup.InitializationProvider"
+51-->[androidx.emoji2:emoji2:1.0.0] /Users/seojinkwak/.gradle/caches/transforms-3/223146ef33e3aa619e8b04649706e145/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:27:13-67
+52            android:authorities="com.cracker.androidx-startup"
+52-->[androidx.emoji2:emoji2:1.0.0] /Users/seojinkwak/.gradle/caches/transforms-3/223146ef33e3aa619e8b04649706e145/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:28:13-68
+53            android:exported="false" >
+53-->[androidx.emoji2:emoji2:1.0.0] /Users/seojinkwak/.gradle/caches/transforms-3/223146ef33e3aa619e8b04649706e145/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:29:13-37
+54            <meta-data
+54-->[androidx.emoji2:emoji2:1.0.0] /Users/seojinkwak/.gradle/caches/transforms-3/223146ef33e3aa619e8b04649706e145/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:31:13-33:52
+55                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+55-->[androidx.emoji2:emoji2:1.0.0] /Users/seojinkwak/.gradle/caches/transforms-3/223146ef33e3aa619e8b04649706e145/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:32:17-75
+56                android:value="androidx.startup" />
+56-->[androidx.emoji2:emoji2:1.0.0] /Users/seojinkwak/.gradle/caches/transforms-3/223146ef33e3aa619e8b04649706e145/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:33:17-49
+57            <meta-data
+57-->[androidx.lifecycle:lifecycle-process:2.4.0] /Users/seojinkwak/.gradle/caches/transforms-3/d5d05479173d466a6bd0989b3b3e5ef4/transformed/jetified-lifecycle-process-2.4.0/AndroidManifest.xml:31:13-33:52
+58                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+58-->[androidx.lifecycle:lifecycle-process:2.4.0] /Users/seojinkwak/.gradle/caches/transforms-3/d5d05479173d466a6bd0989b3b3e5ef4/transformed/jetified-lifecycle-process-2.4.0/AndroidManifest.xml:32:17-78
+59                android:value="androidx.startup" />
+59-->[androidx.lifecycle:lifecycle-process:2.4.0] /Users/seojinkwak/.gradle/caches/transforms-3/d5d05479173d466a6bd0989b3b3e5ef4/transformed/jetified-lifecycle-process-2.4.0/AndroidManifest.xml:33:17-49
+60        </provider>
+61
+62        <meta-data
+62-->[com.facebook.soloader:soloader:0.10.5] /Users/seojinkwak/.gradle/caches/transforms-3/ec3312a013bd7d8a70466a1977a1dba4/transformed/jetified-soloader-0.10.5/AndroidManifest.xml:12:9-14:37
+63            android:name="com.facebook.soloader.enabled"
+63-->[com.facebook.soloader:soloader:0.10.5] /Users/seojinkwak/.gradle/caches/transforms-3/ec3312a013bd7d8a70466a1977a1dba4/transformed/jetified-soloader-0.10.5/AndroidManifest.xml:13:13-57
+64            android:value="false" />
+64-->[com.facebook.soloader:soloader:0.10.5] /Users/seojinkwak/.gradle/caches/transforms-3/ec3312a013bd7d8a70466a1977a1dba4/transformed/jetified-soloader-0.10.5/AndroidManifest.xml:14:13-34
+65
+66        <receiver
+66-->[com.transistorsoft:tsbackgroundfetch:1.0.2] /Users/seojinkwak/.gradle/caches/transforms-3/ead0b5492291b8ffcf8c0afd2f77836b/transformed/jetified-tsbackgroundfetch-1.0.2/AndroidManifest.xml:14:9-16:40
+67            android:name="com.transistorsoft.tsbackgroundfetch.FetchAlarmReceiver"
+67-->[com.transistorsoft:tsbackgroundfetch:1.0.2] /Users/seojinkwak/.gradle/caches/transforms-3/ead0b5492291b8ffcf8c0afd2f77836b/transformed/jetified-tsbackgroundfetch-1.0.2/AndroidManifest.xml:15:13-83
+68            android:exported="false" />
+68-->[com.transistorsoft:tsbackgroundfetch:1.0.2] /Users/seojinkwak/.gradle/caches/transforms-3/ead0b5492291b8ffcf8c0afd2f77836b/transformed/jetified-tsbackgroundfetch-1.0.2/AndroidManifest.xml:16:13-37
+69
+70        <service
+70-->[com.transistorsoft:tsbackgroundfetch:1.0.2] /Users/seojinkwak/.gradle/caches/transforms-3/ead0b5492291b8ffcf8c0afd2f77836b/transformed/jetified-tsbackgroundfetch-1.0.2/AndroidManifest.xml:18:9-21:72
+71            android:name="com.transistorsoft.tsbackgroundfetch.FetchJobService"
+71-->[com.transistorsoft:tsbackgroundfetch:1.0.2] /Users/seojinkwak/.gradle/caches/transforms-3/ead0b5492291b8ffcf8c0afd2f77836b/transformed/jetified-tsbackgroundfetch-1.0.2/AndroidManifest.xml:19:13-80
+72            android:exported="true"
+72-->[com.transistorsoft:tsbackgroundfetch:1.0.2] /Users/seojinkwak/.gradle/caches/transforms-3/ead0b5492291b8ffcf8c0afd2f77836b/transformed/jetified-tsbackgroundfetch-1.0.2/AndroidManifest.xml:20:13-36
+73            android:permission="android.permission.BIND_JOB_SERVICE" />
+73-->[com.transistorsoft:tsbackgroundfetch:1.0.2] /Users/seojinkwak/.gradle/caches/transforms-3/ead0b5492291b8ffcf8c0afd2f77836b/transformed/jetified-tsbackgroundfetch-1.0.2/AndroidManifest.xml:21:13-69
+74
+75        <receiver
+75-->[com.transistorsoft:tsbackgroundfetch:1.0.2] /Users/seojinkwak/.gradle/caches/transforms-3/ead0b5492291b8ffcf8c0afd2f77836b/transformed/jetified-tsbackgroundfetch-1.0.2/AndroidManifest.xml:23:9-30:20
+76            android:name="com.transistorsoft.tsbackgroundfetch.BootReceiver"
+76-->[com.transistorsoft:tsbackgroundfetch:1.0.2] /Users/seojinkwak/.gradle/caches/transforms-3/ead0b5492291b8ffcf8c0afd2f77836b/transformed/jetified-tsbackgroundfetch-1.0.2/AndroidManifest.xml:24:13-77
+77            android:exported="false" >
+77-->[com.transistorsoft:tsbackgroundfetch:1.0.2] /Users/seojinkwak/.gradle/caches/transforms-3/ead0b5492291b8ffcf8c0afd2f77836b/transformed/jetified-tsbackgroundfetch-1.0.2/AndroidManifest.xml:25:13-37
+78            <intent-filter>
+78-->[com.transistorsoft:tsbackgroundfetch:1.0.2] /Users/seojinkwak/.gradle/caches/transforms-3/ead0b5492291b8ffcf8c0afd2f77836b/transformed/jetified-tsbackgroundfetch-1.0.2/AndroidManifest.xml:26:13-29:29
+79                <action android:name="android.intent.action.BOOT_COMPLETED" />
+79-->[com.transistorsoft:tsbackgroundfetch:1.0.2] /Users/seojinkwak/.gradle/caches/transforms-3/ead0b5492291b8ffcf8c0afd2f77836b/transformed/jetified-tsbackgroundfetch-1.0.2/AndroidManifest.xml:27:17-79
+79-->[com.transistorsoft:tsbackgroundfetch:1.0.2] /Users/seojinkwak/.gradle/caches/transforms-3/ead0b5492291b8ffcf8c0afd2f77836b/transformed/jetified-tsbackgroundfetch-1.0.2/AndroidManifest.xml:27:25-76
+80                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+80-->[com.transistorsoft:tsbackgroundfetch:1.0.2] /Users/seojinkwak/.gradle/caches/transforms-3/ead0b5492291b8ffcf8c0afd2f77836b/transformed/jetified-tsbackgroundfetch-1.0.2/AndroidManifest.xml:28:17-84
+80-->[com.transistorsoft:tsbackgroundfetch:1.0.2] /Users/seojinkwak/.gradle/caches/transforms-3/ead0b5492291b8ffcf8c0afd2f77836b/transformed/jetified-tsbackgroundfetch-1.0.2/AndroidManifest.xml:28:25-81
+81            </intent-filter>
+82        </receiver>
+83    </application>
+84
+85</manifest>

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   View,
   StyleSheet,
@@ -6,144 +6,150 @@ import {
   Pressable,
   Platform,
   Animated,
-} from 'react-native';
-import { debounce } from 'lodash';
+} from "react-native";
+import { debounce } from "lodash";
 import {
   getCenterPosition,
   getCenterPositionFromIndex,
   getIndexFromOffset,
   fillEmpty,
   asPickerFormat,
-} from './utils';
+} from "./utils";
 import {
   MERIDIEM_ITEMS,
   MINUTE_ITEMS,
   HOUR_ITEMS,
   BUTTON_HEIGHT,
   GAP,
-} from './values';
-import { TextPretendard as Text } from '../static/CustomText';
+} from "./values";
+import { TextPretendard as Text } from "../static/CustomText";
 
-const isPM = (date) => date.getHours() >= 12;
+const isPM = date => date.getHours() >= 12;
 const ITEMS = [
   {
-    key: 'meridiem',
+    key: "meridiem",
     items: MERIDIEM_ITEMS,
   },
   {
-    key: 'hour',
+    key: "hour",
     items: HOUR_ITEMS,
   },
   {
-    key: 'minute',
+    key: "minute",
     items: MINUTE_ITEMS,
   },
 ];
 
 const TimePicker = ({ value, onChange, width, buttonHeight, visibleCount }) => {
-  if (visibleCount % 2 === 0) throw new Error('visibleCount must be odd');
+  if (visibleCount % 2 === 0) {
+    throw new Error("visibleCount must be odd");
+  }
   const dateString = value.toTimeString();
 
   const refs = React.useRef(
-    Array.from({ length: 3 }).map(() => React.createRef())
+    Array.from({ length: 3 }).map(() => React.createRef()),
   );
   const animatedValues = React.useRef(
-    Array.from({ length: 3 }).map(() => new Animated.Value(0))
+    Array.from({ length: 3 }).map(() => new Animated.Value(0)),
   );
 
-  const getScrollProps = (index, key, items) => {
-    const onScrollStop = debounce(
-      (offsetY) => {
-        const date = new Date(value.getTime());
-        const itemIdx = getIndexFromOffset(offsetY);
+  const getScrollProps = React.useCallback(
+    (index, key, items) => {
+      const onScrollStop = debounce(
+        offsetY => {
+          const date = new Date(value.getTime());
+          const itemIdx = getIndexFromOffset(offsetY);
 
-        if (key === 'meridiem') {
-          const currValueIsPM = isPM(date);
-          const nextValueIsPM = MERIDIEM_ITEMS[itemIdx] === '오후';
-          if (currValueIsPM && !nextValueIsPM) {
-            date.setHours(date.getHours() - 12);
-          }
-          if (!currValueIsPM && nextValueIsPM) {
-            date.setHours(date.getHours() + 12);
-          }
-        }
-
-        if (key === 'hour') {
-          const hour = Number(HOUR_ITEMS[itemIdx]);
-
-          if (isPM(date)) {
-            const isNoon = hour === 12;
-            if (isNoon) {
-              
-            } else {
-              date.setHours(hour + 12);
+          if (key === "meridiem") {
+            const currValueIsPM = isPM(date);
+            const nextValueIsPM = MERIDIEM_ITEMS[itemIdx] === "오후";
+            if (currValueIsPM && !nextValueIsPM) {
+              date.setHours(date.getHours() - 12);
             }
-          } else {
-            const isMidnight = hour === 12;
-            if (isMidnight) {
-              date.setHours(0);
-            } else {
-              date.setHours(hour);
+            if (!currValueIsPM && nextValueIsPM) {
+              date.setHours(date.getHours() + 12);
             }
           }
-        }
 
-        if (key === 'minute') {
-          date.setMinutes(MINUTE_ITEMS[itemIdx]);
-        }
+          if (key === "hour") {
+            const hour = Number(HOUR_ITEMS[itemIdx]);
 
-        onChange(date);
-      },
-      200,
-      { leading: false, trailing: true }
-    );
+            if (isPM(date)) {
+              const isNoon = hour === 12;
+              if (isNoon) {
+              } else {
+                date.setHours(hour + 12);
+              }
+            } else {
+              const isMidnight = hour === 12;
+              if (isMidnight) {
+                date.setHours(0);
+              } else {
+                date.setHours(hour);
+              }
+            }
+          }
 
-    return {
-      key,
-      index,
-      items,
-      showsVerticalScrollIndicator: false,
-      contentContainerStyle: styles.scrollView,
-      ref: refs.current[index],
-      onScrollBeginDrag: () => {
-        onScrollStop.cancel();
-      },
-      onScrollEndDrag: (e) => {
-        onScrollStop.cancel();
-        onScrollStop(e.nativeEvent.contentOffset.y);
-      },
-      onMomentumScrollBegin: () => {
-        onScrollStop.cancel();
-      },
-      onMomentumScrollEnd: (e) => {
-        onScrollStop.cancel();
-        onScrollStop(e.nativeEvent.contentOffset.y);
-      },
-      getOnPress: (item) => () => {
-        const targetIdx = items.indexOf(item);
-        if (targetIdx === -1) return;
+          if (key === "minute") {
+            date.setMinutes(MINUTE_ITEMS[itemIdx]);
+          }
 
-        const CENTER_POSITION = getCenterPositionFromIndex(targetIdx);
-        onScrollStop(CENTER_POSITION);
-        onScrollStop.flush();
-      },
-      animatedValue: animatedValues.current[index],
-      scrollEventThrottle: 16,
-    };
-  };
+          onChange(date);
+        },
+        200,
+        { leading: false, trailing: true },
+      );
+
+      return {
+        key,
+        index,
+        items,
+        showsVerticalScrollIndicator: false,
+        contentContainerStyle: styles.scrollView,
+        ref: refs.current[index],
+        onScrollBeginDrag: () => {
+          onScrollStop.cancel();
+        },
+        onScrollEndDrag: e => {
+          onScrollStop.cancel();
+          onScrollStop(e.nativeEvent.contentOffset.y);
+        },
+        onMomentumScrollBegin: () => {
+          onScrollStop.cancel();
+        },
+        onMomentumScrollEnd: e => {
+          onScrollStop.cancel();
+          onScrollStop(e.nativeEvent.contentOffset.y);
+        },
+        getOnPress: item => () => {
+          const targetIdx = items.indexOf(item);
+          if (targetIdx === -1) {
+            return;
+          }
+
+          const CENTER_POSITION = getCenterPositionFromIndex(targetIdx);
+          onScrollStop(CENTER_POSITION);
+          onScrollStop.flush();
+        },
+        animatedValue: animatedValues.current[index],
+        scrollEventThrottle: 16,
+      };
+    },
+    [onChange, value],
+  );
 
   const scrollProps = React.useMemo(() => {
     return ITEMS.map(({ key, items }, index) =>
-      getScrollProps(index, key, items)
+      getScrollProps(index, key, items),
     );
-  }, [dateString]);
+  }, [getScrollProps]);
 
   React.useEffect(() => {
-    const meridiem = isPM(value) ? '오후' : '오전';
+    const meridiem = isPM(value) ? "오후" : "오전";
     const hour = String(
-      isPM(value) ? value.getHours() - 12 : value.getHours()
-    ).padStart(2, '0');
-    const minute = String(value.getMinutes()).padStart(2, '0');
+      isPM(value) ? value.getHours() - 12 : value.getHours(),
+    ).padStart(2, "0");
+    const minute = String(value.getMinutes()).padStart(2, "0");
 
     const matchIndex = [
       MERIDIEM_ITEMS.indexOf(meridiem),
@@ -156,13 +162,17 @@ const TimePicker = ({ value, onChange, width, buttonHeight, visibleCount }) => {
         y: getCenterPositionFromIndex(matchIndex[index]),
       });
     });
-  }, [dateString]);
+  }, [dateString, scrollProps, value]);
 
   return (
     <View
       style={[
         styles.container,
-        { width, height: visibleCount * buttonHeight, backgroundColor: 'transparent' },
+        {
+          width,
+          height: visibleCount * buttonHeight,
+          backgroundColor: "transparent",
+        },
       ]}>
       {scrollProps.map((props, scrollViewIndex) => {
         const renderItems = fillEmpty(visibleCount, props.items);
@@ -172,11 +182,11 @@ const TimePicker = ({ value, onChange, width, buttonHeight, visibleCount }) => {
             {...props}
             onScroll={Animated.event(
               [{ nativeEvent: { contentOffset: { y: props.animatedValue } } }],
-              { useNativeDriver: false }
+              { useNativeDriver: false },
             )}>
             {renderItems.map((item, index) => {
               const position = getCenterPositionFromIndex(
-                props.items.indexOf(item)
+                props.items.indexOf(item),
               );
 
               const opacity = props.animatedValue.interpolate({
@@ -188,7 +198,7 @@ const TimePicker = ({ value, onChange, width, buttonHeight, visibleCount }) => {
                   position + BUTTON_HEIGHT,
                 ],
                 outputRange: [0.2, 0.5, 1, 0.5, 0.2],
-                extrapolate: 'clamp',
+                extrapolate: "clamp",
               });
 
               const color = props.animatedValue.interpolate({
@@ -197,9 +207,9 @@ const TimePicker = ({ value, onChange, width, buttonHeight, visibleCount }) => {
                   position,
                   position + BUTTON_HEIGHT,
                 ],
-                outputRange: ['black', '#6100FF', 'black'],
-                extrapolate: 'clamp'
-              })
+                outputRange: ["black", "#6100FF", "black"],
+                extrapolate: "clamp",
+              });
 
               return (
                 <Button
@@ -222,16 +232,22 @@ const TimePicker = ({ value, onChange, width, buttonHeight, visibleCount }) => {
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 const Button = ({ style, label, onPress, color }) => {
-  const [focused, setFocused] = React.useState(false)
+  const [focused, setFocused] = React.useState(false);
   const animatedTextStyle = {
     color: color, // 초기 색상 설정
-    fontFamily: 'Pretendard'
+    fontFamily: "PretendardVariable",
   };
 
   return (
-    <AnimatedPressable style={style} onPress={onPress} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}>
+    <AnimatedPressable
+      style={style}
+      onPress={onPress}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}>
       <View style={styles.button}>
-        <Animated.Text style={[styles.buttonLabel, animatedTextStyle]}>{label}</Animated.Text>
+        <Animated.Text style={[styles.buttonLabel, animatedTextStyle]}>
+          {label}
+        </Animated.Text>
       </View>
     </AnimatedPressable>
   );
@@ -240,16 +256,15 @@ const Button = ({ style, label, onPress, color }) => {
 const OverlayView = () => {
   return (
     <View
-      pointerEvents={'none'}
-      style={[StyleSheet.absoluteFill, styles.overlay]}
-      >
+      pointerEvents={"none"}
+      style={[StyleSheet.absoluteFill, styles.overlay]}>
       <View style={styles.overlayVisibleView}>
         <View style={styles.overlayVisibleViewInner} />
         <GapView />
         <View style={styles.overlayVisibleViewInner} />
         <GapView>
-          <Text style={{ position: 'absolute', textAlign: 'center' }}>
-            {':'}
+          <Text style={{ position: "absolute", textAlign: "center" }}>
+            {":"}
           </Text>
         </GapView>
         <View style={styles.overlayVisibleViewInner} />
@@ -264,45 +279,45 @@ const GapView = ({ children }) => {
 
 const styles = StyleSheet.create({
   gap: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     width: GAP,
   },
   container: {
     borderWidth: 1,
-    alignSelf: 'center',
-    flexDirection: 'row',
+    alignSelf: "center",
+    flexDirection: "row",
   },
   scrollView: {
     left: 0,
     right: 0,
-    position: 'absolute',
+    position: "absolute",
   },
   button: {
     height: BUTTON_HEIGHT,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   buttonLabel: {
-    fontWeight: Platform.select({ android: 'bold', default: '900' }),
+    fontWeight: Platform.select({ android: "bold", default: "900" }),
     fontSize: 16,
-    color: 'purple',
-    fontFamily: 'Pretendard'
+    color: "purple",
+    fontFamily: "PretendardVariable",
   },
   overlay: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   overlayVisibleView: {
-    width: '100%',
+    width: "100%",
     height: BUTTON_HEIGHT,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   overlayVisibleViewInner: {
     flex: 1,
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderColor: '#c8c8c8',
+    borderColor: "#c8c8c8",
   },
 });
 

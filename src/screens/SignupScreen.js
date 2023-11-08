@@ -1,5 +1,3 @@
-//signupscreen.js
-
 import React from "react";
 import styled from "styled-components/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -117,7 +115,7 @@ export default function SignupScreen({ navigation }) {
             <Text style={styles.subtitle}>아이디</Text>
             <View style={{ height: 18 }} />
             <InputWrapper>
-              <View style={{ flexDirection: "row" }}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <InputTxt
                   style={{
                     flex: 1,
@@ -127,7 +125,7 @@ export default function SignupScreen({ navigation }) {
                         : "#FF2626"
                       : "#CCCCCC",
                     borderBottomWidth: values.email ? 2 : 1,
-                    fontFamily: 'Pretendard'
+                    fontFamily: "PretendardVariable"
                   }}
                   placeholder="아이디"
                   autoCapitalize="none"
@@ -200,7 +198,7 @@ export default function SignupScreen({ navigation }) {
                       : "#FF2626"
                     : "#CCCCCC",
                   borderBottomWidth: values.password ? 2 : 1,
-                  fontFamily: 'Pretendard'
+                  fontFamily: "PretendardVariable"
                 }}
                 placeholder="비밀번호"
                 autoCapitalize="none"
@@ -240,7 +238,7 @@ export default function SignupScreen({ navigation }) {
                       : "#FF2626"
                     : "#CCCCCC",
                   borderBottomWidth: values.pwCheck ? 2 : 1,
-                  fontFamily: 'Pretendard'
+                  fontFamily: "PretendardVariable"
                 }}
                 placeholder="비밀번호 확인"
                 autoCapitalize="none"
@@ -318,11 +316,10 @@ const styles = StyleSheet.create({
   }
 })
 
-const Wrapper = styled.View`
+const Wrapper = styled.ScrollView`
   background-color: white;
   flex: 1;
   height: 100%;
-  // align-items: center;
 `;
 const FormContainer = styled.View`
   padding: 20px;
@@ -368,9 +365,7 @@ const CheckBtn = styled.TouchableOpacity`
 
 const EraseAll = styled.TouchableOpacity`
   position: absolute;
-  right: 15%;
-  //top: 26.55%;
-  bottom: 10.6%;
+  right: 90px;
 `;
 const EraseAll2 = styled.TouchableOpacity`
   position: absolute;

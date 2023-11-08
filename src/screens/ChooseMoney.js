@@ -3,7 +3,7 @@ import {
   View,
   Keyboard,
   TouchableWithoutFeedback,
-  StyleSheet
+  StyleSheet,
 } from "react-native";
 import React from "react";
 import { TextPretendard as Text } from "../static/CustomText.js";
@@ -19,20 +19,24 @@ import { Formik } from "formik";
 import * as yup from "yup";
 
 import { Request } from "../api/request.js";
-import { getItemFromAsync, removeItemFromAsync, setItemToAsync } from "../api/storage.js";
+import {
+  getItemFromAsync,
+  removeItemFromAsync,
+  setItemToAsync,
+} from "../api/storage.js";
 import axios from "axios";
 
 const Stack = createStackNavigator();
-const windowHeight = Dimensions.get('window').height;
-const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get("window").height;
+const windowWidth = Dimensions.get("window").width;
 const checked = require("../assets/tch_icnTxtCheck.png");
 
 const signupSchema = yup.object().shape({
   money: yup
     .number("금액을 입력해주세요")
     .required("시급을 입력해주세요")
-    .max(500000, "500,000원 미만으로 입력해주세요")
-    //.matches(/\d/, "영문과 숫자를 입력해주세요"),
+    .max(500000, "500,000원 미만으로 입력해주세요"),
+  //.matches(/\d/, "영문과 숫자를 입력해주세요"),
 });
 
 const DismissKeyboard = ({ children }) => (
@@ -45,25 +49,23 @@ export default function ChooseMoney({ navigation }) {
   const [money, setMoney] = useState("");
   const request = new Request();
 
-  const handleJobInfo = async (values) => {
-    const name = await getItemFromAsync('name')
-    const categoryId = await getItemFromAsync('categoryId')
-    const scheduleList = await getItemFromAsync('scheduleList')
-    const accessToken = await getItemFromAsync('accessToken')
+  const handleJobInfo = async values => {
+    const name = await getItemFromAsync("name");
+    const categoryId = await getItemFromAsync("categoryId");
+    const scheduleList = await getItemFromAsync("scheduleList");
+    const accessToken = await getItemFromAsync("accessToken");
 
-    const response = await request.post('/workspaces', 
-    {
+    const response = await request.post("/workspaces", {
       name: name,
       wage: Number(values.money),
       scheduleList: scheduleList,
-      categoryId: categoryId + 1
-    }, 
-    )
-    if(response.status == 200){
-      await setItemToAsync('workspaceId', response.data.workspaceId)
-      navigation.navigate('Main')
+      categoryId: categoryId + 1,
+    });
+    if (response.status == 200) {
+      await setItemToAsync("workspaceId", response.data.workspaceId);
+      navigation.navigate("Main");
     }
-  }
+  };
 
   return (
     <Formik
@@ -71,8 +73,7 @@ export default function ChooseMoney({ navigation }) {
         money: "",
       }}
       validationSchema={signupSchema}
-      onSubmit={(values) => Alert.alert(JSON.stringify(values))}
-    >
+      onSubmit={values => Alert.alert(JSON.stringify(values))}>
       {({
         values,
         errors,
@@ -100,7 +101,7 @@ export default function ChooseMoney({ navigation }) {
                 placeholderTextColor="#CCCCCC"
                 keyboardType="number-pad"
                 value={values.money}
-                onChangeText={(text) => {
+                onChangeText={text => {
                   handleChange("money")(text);
                   setMoney(text); // formik 외부의 email 변수 갱신
                 }}
@@ -113,7 +114,7 @@ export default function ChooseMoney({ navigation }) {
                       : "#FF2626"
                     : "#CCCCCC",
                   borderBottomWidth: values.money ? 2 : 1,
-                  fontFamily: 'Pretendard'
+                  fontFamily: "PretendardVariable",
                 }}
               />
               {errors.money && <Text style={styles.error}>{errors.money}</Text>}
@@ -130,9 +131,7 @@ export default function ChooseMoney({ navigation }) {
                 </EraseAll>
               )}
             </MoneyInputContainer>
-            <NextBtnContainer
-              onPress={() => handleJobInfo(values)}
-            >
+            <NextBtnContainer onPress={() => handleJobInfo(values)}>
               <Image
                 style={{ height: 40, width: 40 }}
                 source={values.money ? NextBtn : NextBtnGray}
@@ -152,9 +151,9 @@ const styles = StyleSheet.create({
   error: {
     paddingTop: 5,
     fontSize: 10,
-    color: '#FF2626'
+    color: "#FF2626",
   },
-})
+});
 
 const Container = styled.SafeAreaView`
   display: flex;
@@ -169,7 +168,7 @@ const HeaderWrapper = styled.View`
   align-items: center;
   //margin-top: 5%;
   margin-top: 24px;
-  margin-bottom: 48px;
+  margin-bottom: 30px;
 `;
 
 const MainContainer = styled.View`

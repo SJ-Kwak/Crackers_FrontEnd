@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Image, TouchableOpacity, View, Modal, Pressable, StyleSheet } from "react-native";
 import styled from "styled-components/native";
 import { Display2 } from "../static/text.js";
-import DatePicker from "react-native-datepicker";
 import { Dimensions } from "react-native";
 import { TextPretendard as Text } from "../static/CustomText.js";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -11,7 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { setItemToAsync } from "../api/storage.js";
 import { asPickerFormat } from "../components/utils.js";
 import { BUTTON_HEIGHT, VIEW_WIDTH } from "../components/values.js";
-import TimePicker from "../components/TImePicker.js";
+import TimePicker from "../components/TimePicker.js";
 
 const Stack = createStackNavigator();
 const windowHeight = Dimensions.get('window').height;
@@ -231,7 +230,7 @@ const HeaderWrapper = styled.View`
   justify-content: center;
   align-items: center;
   margin-top: 24px;
-  margin-bottom: 48px;
+  margin-bottom: 30px;
 `;
 
 const TimePick = styled.View`

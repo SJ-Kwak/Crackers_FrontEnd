@@ -8,22 +8,19 @@ import { Formik } from "formik";
 import * as yup from "yup";
 
 import { createStackNavigator } from "@react-navigation/stack";
-//import { View } from "react-native-web";
 
 import { Request } from "../api/request.js";
 import { setItemToAsync } from "../api/storage.js";
 
 const Stack = createStackNavigator();
-const windowHeight = Dimensions.get('window').height;
-const windowWidth = Dimensions.get('window').width;
-
+const windowHeight = Dimensions.get("window").height;
+const windowWidth = Dimensions.get("window").width;
 
 export default function JobNickname({ navigation }) {
-
-  const setItem = async (values) => {
-    await setItemToAsync('name', values.jobNickname)
-    navigation.navigate('ChooseJob')
-  }
+  const setItem = async values => {
+    await setItemToAsync("name", values.jobNickname);
+    navigation.navigate("ChooseJob");
+  };
 
   return (
     <Formik
@@ -31,8 +28,7 @@ export default function JobNickname({ navigation }) {
         jobNickname: "",
       }}
       //validationSchema={signupSchema}
-      onSubmit={(values) => Alert.alert(JSON.stringify(values))}
-    >
+      onSubmit={values => Alert.alert(JSON.stringify(values))}>
       {({
         values,
         errors,
@@ -68,14 +64,11 @@ export default function JobNickname({ navigation }) {
                 //position: "absolute",
                 borderBottomColor: values.jobNickname ? "#6100FF" : "#CCCCCC",
                 borderBottomWidth: values.jobNickname ? 2 : 1,
-                fontFamily: 'Pretendard'
+                fontFamily: "PretendardVariable",
               }}
             />
           </NicknameInputContainer>
-          <NextBtnContainer
-            onPress={() => 
-              setItem(values)}
-          >
+          <NextBtnContainer onPress={() => setItem(values)}>
             <Image
               style={{ height: 40, width: 40 }}
               source={values.jobNickname ? NextBtn : NextBtnGray}
@@ -99,7 +92,7 @@ const HeaderWrapper = styled.View`
   justify-content: center;
   align-items: center;
   margin-top: 24px;
-  margin-bottom: 48px;
+  margin-bottom: 30px;
 `;
 
 const MainContainer = styled.View`

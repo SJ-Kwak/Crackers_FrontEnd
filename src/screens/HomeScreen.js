@@ -18,7 +18,7 @@ import { getItemFromAsync } from "../api/storage";
 
 const Stack = createStackNavigator();
 const start_logo=require("../assets/logo.png");
-const { width, height } = Dimensions.get('window')
+const { width, height } = Dimensions.get("window")
 
 export default function HomeScreen ({navigation}) {
   useFocusEffect(useCallback(() => {

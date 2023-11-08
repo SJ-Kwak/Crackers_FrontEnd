@@ -104,7 +104,7 @@ export default function NicknameScreen({ navigation, route }) {
                       : "#FF2626"
                     : "#CCCCCC",
                   borderBottomWidth: values.nickname ? 2 : 1,
-                  fontFamily: 'Pretendard'
+                  fontFamily: "PretendardVariable"
                 }}
                 placeholder="1~8자 이하 한글, 영문, 숫자, 특수문자"
                 value={values.nickname}
@@ -173,7 +173,6 @@ const styles = StyleSheet.create({
 const Wrapper = styled.View`
   background-color: white;
   flex: 1;
-  // align-items: center;
 `;
 const FormContainer = styled.View`
   padding: 20px;
@@ -205,7 +204,6 @@ const Title = styled.Text`
 `;
 
 const SubTitle = styled.Text`
-  //position: absolute;
   color: #606060;
   font-size: 14px;
   font-weight: 400;
@@ -217,19 +215,11 @@ const InputWrapper = styled.View`
 
 const InputTxt = styled.TextInput`
   padding-bottom: 8px;
-  /*
-    borderBottomColor: values.email ? "#6100FF" : "#CCCCCC",
-    borderBottomWidth: values.email ? 2 : 1,
-    border-bottom-color: values.password
-        ? #6100FF
-        : #CCCCCC;
-    border-bottom-width: values.password ? 2 : 1;*/
 `;
 const ErrorTxt = styled.Text`
   padding-top: 5px;
   font-size: 10px;
   color: #ff2626;
-  //right: "5.13%",
 `;
 
 const SubmitBtn = styled.TouchableOpacity`
@@ -269,6 +259,5 @@ const EraseAll = styled.TouchableOpacity`
   position: absolute;
   left: 93.72%;
   right: 28.97%;
-  //top: 26.55%;
   bottom: 10.6%;
 `;

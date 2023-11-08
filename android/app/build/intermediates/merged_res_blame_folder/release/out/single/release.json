@@ -1,0 +1,198 @@
+[
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_cards_star.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_cards_star.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_node_modules_reactnavigation_elements_src_assets_backiconmask.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/node_modules_reactnavigation_elements_src_assets_backiconmask.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable_launch_screen.png.flat",
+        "source": "com.cracker.app-main-32:/drawable/launch_screen.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_cards_abocado.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_cards_abocado.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_cards_ant.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_cards_ant.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-hdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-hdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_cards_neulbo.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_cards_neulbo.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_icncalendar.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_icncalendar.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_tch_btntxtx.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_tch_btntxtx.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-xhdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-xhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_icncategory.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_icncategory.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "com.cracker.app-main-32:/mipmap-xxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_onboarding_nextbtn.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_onboarding_nextbtn.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_onboarding_header4.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_onboarding_header4.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "com.cracker.app-main-32:/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_tch_icntxtcheck.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_tch_icntxtcheck.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_cards_haedal.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_cards_haedal.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.cracker.app-main-32:/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-xxxhdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-xxxhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_onboarding_nextbtngray.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_onboarding_nextbtngray.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_cards_dish.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_cards_dish.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_btnright.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_btnright.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_onboarding_header1.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_onboarding_header1.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_cards_ktx.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_cards_ktx.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_blurcircle.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_blurcircle.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_cards_bbang.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_cards_bbang.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "com.cracker.app-main-32:/mipmap-mdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_tch_btnx.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_tch_btnx.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "com.cracker.app-main-32:/mipmap-xhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "com.cracker.app-main-32:/mipmap-xxxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "com.cracker.app-main-32:/mipmap-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_cardview.gif.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_cardview.gif"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_tch_btnsettings.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_tch_btnsettings.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.cracker.app-main-32:/mipmap-xxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "com.cracker.app-main-32:/mipmap-xxxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-xxhdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-xxhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_onboarding_header2.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_onboarding_header2.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_cards_cat.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_cards_cat.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable_splashscreen.xml.flat",
+        "source": "com.cracker.app-main-32:/drawable/splashscreen.xml"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_logo.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_logo.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_icnwage.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_icnwage.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_tch_btnback.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_tch_btnback.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable_rn_edit_text_material.xml.flat",
+        "source": "com.cracker.app-main-32:/drawable/rn_edit_text_material.xml"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/layout_launch_screen.xml.flat",
+        "source": "com.cracker.app-main-32:/layout/launch_screen.xml"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_cards_chicken.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_cards_chicken.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_onboarding_header3.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_onboarding_header3.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/drawable-mdpi_src_assets_onboarding_backbtngray.png.flat",
+        "source": "com.cracker.app-res-25:/drawable-mdpi/src_assets_onboarding_backbtngray.png"
+    },
+    {
+        "merged": "com.cracker.app-merged_res-31:/mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "com.cracker.app-main-32:/mipmap-hdpi/ic_launcher_round.png"
+    }
+]

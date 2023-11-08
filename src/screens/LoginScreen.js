@@ -1,5 +1,3 @@
-//loginscreen.js
-
 import React from "react";
 import styled from "styled-components/native";
 import { TextPretendard as Text } from "../static/CustomText";
@@ -13,7 +11,7 @@ import {
   Keyboard,
   SafeAreaView,
   Pressable,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import { useState, useEffect, useContext } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -39,7 +37,7 @@ export default function LoginScreen({ navigation }) {
   const [error, setError] = useState("");
   const request = new Request();
 
-  const handleLogin = async (values) => {
+  const handleLogin = async values => {
     const response = await request.post("/accounts/signin", {
       loginId: values.email,
       password: values.password,
@@ -61,8 +59,7 @@ export default function LoginScreen({ navigation }) {
         password: "",
       }}
       validationSchema={loginSchema}
-      onSubmit={handleLogin}
-    >
+      onSubmit={handleLogin}>
       {({
         values,
         errors,
@@ -73,9 +70,9 @@ export default function LoginScreen({ navigation }) {
         isValid,
         isSubmitting,
       }) => (
-        <Wrapper contentContainerStyle={{alignItems: 'center'}}>
+        <Wrapper contentContainerStyle={{ alignItems: "center" }}>
           <BackToHome onPress={() => navigation.goBack()}>
-            <BackIcon source={backIcon} style={{width: 40, height: 40}} />
+            <BackIcon source={backIcon} style={{ width: 40, height: 40 }} />
           </BackToHome>
           <FormContainer>
             <View style={{ height: 40 }} />
@@ -89,7 +86,7 @@ export default function LoginScreen({ navigation }) {
                   //position: "absolute",
                   borderBottomColor: values.email ? "#6100FF" : "#CCCCCC",
                   borderBottomWidth: values.email ? 2 : 1,
-                  fontFamily: 'Pretendard'
+                  fontFamily: "PretendardVariable",
                 }}
                 placeholder="아이디"
                 autoCapitalize="none"
@@ -110,7 +107,7 @@ export default function LoginScreen({ navigation }) {
                 style={{
                   borderBottomColor: values.password ? "#6100FF" : "#CCCCCC",
                   borderBottomWidth: values.password ? 2 : 1,
-                  fontFamily: 'Pretendard'
+                  fontFamily: "PretendardVariable",
                 }}
                 placeholder="비밀번호"
                 autoCapitalize="none"
@@ -134,8 +131,7 @@ export default function LoginScreen({ navigation }) {
                   : "transparent",
             }}
             onPress={() => handleSubmit(values)}
-            disabled={!isValid}
-          >
+            disabled={!isValid}>
             <Text style={styles.submit}>로그인하기</Text>
           </SubmitBtn>
         </Wrapper>
@@ -146,31 +142,30 @@ export default function LoginScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   title: {
-    color: '#202020',
+    color: "#202020",
     fontSize: 20,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   subtitle: {
-    color: '#606060',
-    fontSize: 14
+    color: "#606060",
+    fontSize: 14,
   },
   submit: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 16,
-    color: 'white',
-    fontWeight: '600'
+    color: "white",
+    fontWeight: "600",
   },
   error: {
     paddingTop: 5,
     fontSize: 10,
-    color: '#FF2626'
+    color: "#FF2626",
   },
-})
+});
 
-const Wrapper = styled.View`
+const Wrapper = styled.ScrollView`
   background-color: white;
   flex: 1;
-  // align-items: center;
 `;
 const FormContainer = styled.View`
   padding: 20px;

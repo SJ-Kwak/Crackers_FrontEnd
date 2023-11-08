@@ -108,7 +108,7 @@ export default function WithdrawScreen({ navigation }) {
                   //position: "absolute",
                   borderBottomColor: values.nickname ? "#6100FF" : "#CCCCCC",
                   borderBottomWidth: values.nickname ? 2 : 1,
-                  fontFamily: 'Pretendard'
+                  fontFamily: "PretendardVariable"
                 }}
                 placeholder="비밀번호 입력"
                 value={values.password}
@@ -125,12 +125,12 @@ export default function WithdrawScreen({ navigation }) {
           <SubmitBtn
             style={{
               backgroundColor:
-                values.password && values.password == password
+                values.password && values.password === password
                   ? "#6100FF"
-                  : "white",
+                  : "transparent",
             }}
             onPress={withdrawConfirmAlert}
-            disabled={values.password != password}
+            disabled={!!values.password && values.password !== password}
           >
             <Text style={styles.submit}>회원 탈퇴하기</Text>
           </SubmitBtn>

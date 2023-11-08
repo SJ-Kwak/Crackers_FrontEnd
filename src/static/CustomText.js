@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
-import { Text } from 'react-native';
+import { Text } from "react-native";
 
-export function TextPretendard({children, style, ...rest}) {
+export function TextPretendard({ children, style, ...rest }) {
   return (
-    <Text style={[{fontFamily: 'Pretendard'}, style]} {...rest}>{children}</Text>
-  )
+    <Text style={[{ fontFamily: "PretendardVariable", color: 'black' }, style]} {...rest}>
+      {children}
+    </Text>
+  );
 }

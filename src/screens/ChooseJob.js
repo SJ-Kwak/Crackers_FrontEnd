@@ -83,7 +83,6 @@ export default function ChooseJob({ navigation }) {
       <MainContainer>
         <Display2>알바 종류 고르기</Display2>
       </MainContainer>
-      <View style={{ height: 20 }} />
       <JobListContainer>{jobList}</JobListContainer>
       <NextBtnContainer
         onPress={handleJob}
@@ -140,7 +139,7 @@ const HeaderWrapper = styled.View`
   align-items: center;
   //margin-top: 5%;
   margin-top: 24px;
-  margin-bottom: 48px;
+  margin-bottom: 30px;
 `;
 
 const JobListContainer = styled.View`

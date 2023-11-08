@@ -1,46 +1,4 @@
 {
-  "expo": {
-    "name": "cracker",
-    "slug": "cracker",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.crackers"
-    },
-    "web": {
-      "favicon": "./assets/icon.png"
-    },
-    "plugins": [
-      [
-        "expo-build-properties",
-        {
-          "android": {
-            "usesCleartextTraffic": true
-          }
-        }
-      ]
-    ],
-    "extra": {
-      "eas": {
-        "projectId": "4f31cd11-8344-49bb-8764-6ff33bbbcf34"
-      }
-    }
-  }
+  "name": "cracker",
+  "displayName": "cracker"
 }
